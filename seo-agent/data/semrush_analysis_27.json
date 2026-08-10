@@ -1,0 +1,15 @@
+{
+  "targeted_keywords": [
+    "ai recruitment automation"
+  ],
+  "per_kw": {
+    "ai recruitment automation": {
+      "volume": 10,
+      "kd": 0.0,
+      "competition": 0.0
+    }
+  },
+  "avg_kd": null,
+  "verdict": "UNKNOWN",
+  "notes": "میانگین KD=None (سقف 40). داده از SEMrush API دیتابیس us."
+}

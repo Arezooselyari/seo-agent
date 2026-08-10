@@ -1,0 +1,27 @@
+{
+  "targeted_keywords": [
+    "customer service platform",
+    "trend assist ai",
+    "ada chatbot features and pricing"
+  ],
+  "per_kw": {
+    "customer service platform": {
+      "volume": 1600,
+      "kd": 35.0,
+      "competition": 0.07
+    },
+    "trend assist ai": {
+      "volume": 1600,
+      "kd": 19.0,
+      "competition": 0.36
+    },
+    "ada chatbot features and pricing": {
+      "volume": 1300,
+      "kd": 26.0,
+      "competition": 0.0
+    }
+  },
+  "avg_kd": 26.7,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=26.7 (سقف 40). داده از SEMrush API دیتابیس us."
+}

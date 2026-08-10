@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدل Opus 5 Anthropic: ارزان‌تر، امن‌تر و با حریم خصوصی بیشتر برای کسب‌وکار شما</title>
+<meta name="description" content="Anthropic مدل Opus 5 را عرضه کرد. این مدل جدید ارزان‌تر، با محدودیت کمتر و بدون نگهداری داده است. کشف کنید چطور Opus 5 می‌تواند به کسب‌وکار شما کمک کند.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --radius: 14px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    /* پالت vlumis — گرم، لاکچری، روزنامه‌نگارانه */
+    --ink: #1E1408;
+    --gold: #B8853A;
+    --gold-light: #C99A52;
+    --cream: #FAF6F0;
+    --sand: #F3EBE0;
+    --gold-fill: #F5EDD8;
+    --teal: #4A8B7E;
+    --teal-light: #EAF3F1;
+    --rose: #B86A52;
+    --rose-light: #F5EAE6;
+    /* خطوط نازک به‌جای سایه‌ی سنگین + سایه‌های گرم با ته‌رنگِ ink (نه خاکستری سرد) */
+    --hairline: 1px solid rgba(30,20,8,.09);
+    --hairline-gold: 1px solid rgba(184,133,58,.22);
+    --shadow-sm: 0 2px 10px -4px rgba(30,20,8,.08);
+    --shadow-md: 0 10px 30px -14px rgba(30,20,8,.16), 0 2px 6px -3px rgba(30,20,8,.06);
+    --shadow-lg: 0 18px 44px -18px rgba(30,20,8,.20), 0 4px 12px -6px rgba(30,20,8,.08);
+    --shadow-hover: 0 22px 50px -18px rgba(30,20,8,.24), 0 6px 16px -7px rgba(30,20,8,.10);
+  }
+  body {
+    font-family: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.95;
+    color: var(--ink);
+    background: var(--cream);
+    min-height: 100vh;
+  }
+  /* متن فارسی تمام‌چین (justified) — استاندارد روزنامه‌نگاری */
+  .article-intro,
+  .article-body p,
+  .faq-item p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  /* ─── header ─── */
+  .article-header {
+    padding: 36px 0 20px;
+    border-bottom: 1px solid rgba(184,133,58,.28);
+    margin-bottom: 28px;
+  }
+  .article-breadcrumb {
+    font-size: 13px;
+    color: #8a7a63;
+    margin-bottom: 14px;
+  }
+  .article-breadcrumb a { color: var(--gold); text-decoration: none; }
+  .article-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .article-meta {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 13.5px;
+    color: #8a7a63;
+    flex-wrap: wrap;
+  }
+  .article-meta .site-name { font-weight: 600; color: var(--gold); }
+  /* ─── hero image ─── */
+  .hero-image {
+    width: 100%;
+    margin-bottom: 28px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .hero-image:hover { box-shadow: var(--shadow-lg); }
+  .hero-image img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .hero-image:hover img { transform: scale(1.04); }
+  .hero-credit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55));
+    color: rgba(255,255,255,0.85);
+    font-size: 11.5px;
+    padding: 24px 12px 8px;
+    text-align: left;
+    direction: ltr;
+  }
+  .hero-credit a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  /* ─── content ─── */
+  .article-intro {
+    position: relative;
+    overflow: hidden;
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--gold-fill);
+    border: var(--hairline-gold);
+    border-right: 4px solid var(--gold);
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    margin-bottom: 30px;
+    line-height: 1.9;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-intro:hover { box-shadow: var(--shadow-md); }
+  .article-body h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 36px 0 10px;
+    padding-right: 14px;
+    border-right: 4px solid var(--gold);
+  }
+  .article-body h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin: 24px 0 8px;
+  }
+  .article-body p {
+    margin-bottom: 16px;
+    color: #3a2f1f;
+  }
+  .article-body .answer-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--teal-light);
+    border: 1px solid rgba(74,139,126,.22);
+    border-right: 4px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-weight: 600;
+    color: #234a43;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-body .answer-box:hover { box-shadow: var(--shadow-md); }
+  .article-body blockquote {
+    background: var(--rose-light);
+    border: 1px solid rgba(184,106,82,.22);
+    border-right: 4px solid var(--rose);
+    padding: 14px 20px;
+    margin: 18px 0;
+    border-radius: var(--radius);
+    font-style: normal;
+    color: #7a3d2c;
+    box-shadow: var(--shadow-sm);
+  }
+  .article-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body a:hover { color: #936420; }
+  img.inline-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin: 0;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .inline-figure {
+    margin: 28px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .inline-figure:hover { box-shadow: var(--shadow-lg); }
+  .inline-figure:hover img.inline-img { transform: scale(1.04); }
+  .inline-credit {
+    font-size: 11.5px;
+    color: #94a3b8;
+    text-align: left;
+    direction: ltr;
+    margin-top: 6px;
+  }
+  .inline-credit a { color: #94a3b8; text-decoration: none; }
+  /* ─── tags ─── */
+  .tags-row {
+    margin: 28px 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--gold-fill);
+    color: #8a5e1f;
+    border: var(--hairline-gold);
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .2s var(--ease), color .2s var(--ease);
+  }
+  .tag:hover {
+    background: var(--gold);
+    color: var(--cream);
+  }
+  /* ─── FAQ ─── */
+  .faq-section {
+    position: relative;
+    margin: 38px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fffdf9;
+    border: var(--hairline);
+    box-shadow: var(--shadow-sm);
+  }
+  .faq-section h2 {
+    background: var(--sand);
+    margin: 0;
+    padding: 16px 22px;
+    font-size: 1.1rem;
+    border-right: none;
+    color: var(--ink);
+  }
+  .faq-item {
+    border-top: 1px solid rgba(30,20,8,.07);
+    padding: 16px 22px;
+    transition: background .2s var(--ease);
+  }
+  .faq-item:hover { background: var(--gold-fill); }
+  .faq-item h3 { font-size: 1rem; color: var(--gold); margin-bottom: 6px; }
+  .faq-item p { margin: 0; color: #3a2f1f; }
+  /* ─── source ─── */
+  .source-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--sand);
+    border: var(--hairline);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #6b5c45;
+    margin-top: 34px;
+    box-shadow: var(--shadow-sm);
+  }
+  .source-box a { color: var(--gold); }
+  .footer-meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #9a8a72;
+    text-align: center;
+  }
+  /* روی موبایل/لمسی، lift غیرفعال تا کادرها نپرند */
+  @media (hover: none), (max-width: 768px) {
+    .article-intro:hover, .answer-box:hover, .hero-image:hover,
+    .inline-figure:hover, .tag:hover {
+      transform: none;
+    }
+  }
+  /* ─── افکت اسکرول: ظاهر شدن نرمِ کادرها هنگام پایین آمدن ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  /* ─── افکت spotlight — هاله‌ی سفیدِ درخشانِ کمرنگ که دنبال ماوس روی کادر حرکت می‌کند (سبک vlumis) ─── */
+  .article-intro,
+  .article-body .answer-box,
+  .faq-section,
+  .source-box,
+  .hero-image,
+  .inline-figure {
+    position: relative;
+  }
+  .article-intro::before,
+  .article-body .answer-box::before,
+  .faq-section::before,
+  .source-box::before,
+  .hero-image::before,
+  .inline-figure::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255,249,235,.55),
+      rgba(184,133,58,.14) 38%,
+      rgba(184,133,58,0) 68%
+    );
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+    pointer-events: none;
+    z-index: 4;
+  }
+  .article-intro:hover::before,
+  .article-body .answer-box:hover::before,
+  .faq-section:hover::before,
+  .source-box:hover::before,
+  .hero-image:hover::before,
+  .inline-figure:hover::before {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .article-intro::before, .article-body .answer-box::before,
+    .faq-section::before, .source-box::before,
+    .hero-image::before, .inline-figure::before { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="article-header">
+    <div class="article-breadcrumb">
+      <a href="https://sagharnazari.ir">ساغر نظری</a> ← <a href="https://sagharnazari.ir/category/هوش-مصنوعی">هوش مصنوعی</a>
+    </div>
+    <h1 class="article-title">مدل Opus 5 Anthropic: ارزان‌تر، امن‌تر و با حریم خصوصی بیشتر برای کسب‌وکار شما</h1>
+    <div class="article-meta">
+      <span class="site-name">sagharnazari.ir</span>
+      <span>📅 25 July 2026</span>
+      <span>🏷️ مدل Opus 5 Anthropic | هوش مصنوعی Anthropic | مدل‌های زبانی بزرگ | حریم خصوصی هوش مصنوعی</span>
+    </div>
+  </header>
+
+  <div class="hero-image">
+    <img src="https://images.pexels.com/photos/25626448/pexels-photo-25626448.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="anthropic opus 5 ai model" loading="lazy">
+    <div class="hero-credit">Photo by <a href="https://www.pexels.com/@googledeepmind" target="_blank">Google DeepMind</a> on <a href="https://www.pexels.com/photo/a-diagram-of-a-model-25626448/" target="_blank">Pexels</a></div>
+  </div>
+
+
+  <div class="article-intro">
+    Anthropic، نامی آشنا در دنیای هوش مصنوعی، تازه‌ترین برگ برنده‌اش را رو کرده: مدل قدرتمند Opus 5. این مدل با قیمت رقابتی، محدودیت‌های کمتر و توجه ویژه به حریم خصوصی داده‌ها، افق‌های تازه‌ای را پیش روی کسب‌وکارها می‌گشاید.
+  </div>
+
+  <div class="article-body">
+    <h2>Opus 5 چیست و چه تفاوتی با مدل‌های قبلی دارد؟</h2>
+    <p class="answer-box">Opus 5 جدیدترین مدل قدرتمند Anthropic است که با وجود کوچک‌تر بودن از Fable 5، در برخی بنچمارک‌ها عملکرد بهتری دارد و از نظر هزینه و محدودیت‌ها، انتخاب بهتری برای بسیاری از کاربردهاست.</p>
+    <p>خب، Anthropic باز هم با معرفی Opus 5، بازار هوش مصنوعی را حسابی تکان داد. این مدل، جدیدترین عضو خانواده قدرتمند Anthropic است و قرار است جایگاه ویژه‌ای در بین ابزارهای هوش مصنوعی پیدا کند.
+شاید بپرسید، این همه هیاهو برای چیست؟ ببینید، با اینکه Opus 5 از Fable 5 کوچک‌تر است، اما Anthropic تأکید کرده که این مدل «در تأیید کار خود و تکرار دقیق تا رسیدن به موفقیت بسیار قوی‌تر است.» این یعنی چه برای کسب‌وکار شما؟
+تصور کنید به یک کارمند بسیار باهوش و باتجربه می‌گویید یک گزارش پیچیده بنویسد؛ حتی اگر دستورالعمل‌های شما کمی ناقص باشد، او خودش جزئیات را تکمیل می‌کند و بهترین نتیجه را تحویل می‌دهد. Opus 5 دقیقاً همین کار را می‌کند. مثلاً، اگر شما یک توسعه‌دهنده باشید و از مدل بخواهید یک پایپ‌لاین بینایی کامپیوتری بنویسد، حتی با پرامپت ناقص هم آن را کامل می‌کند و به نتیجه می‌رساند.
+این یعنی کارایی بیشتر، نیاز کمتر به دخالت مداوم شما و در نهایت، نتایج دقیق‌تر با هزینه کمتر. واقعاً جالبه، نه؟</p>
+    <h2>حریم خصوصی داده‌ها و کاهش محدودیت‌ها: این برای کسب‌وکار شما یعنی چه؟</h2>
+    <p class="answer-box">Opus 5 مشمول سیاست نگهداری داده ۳۰ روزه نیست و محدودیت‌های امنیتی آن در وظایف سایبری کاهش یافته است، که این امر برای کسب‌وکارهایی که نگران حریم خصوصی و آزادی عمل در پروژه‌های حساس هستند، بسیار مهم است.</p>
+    <p>راستش را بخواهید، یکی از بزرگ‌ترین دغدغه‌های ما مدیران و صاحبان کسب‌وکار، هنگام استفاده از هوش مصنوعی، مسئله حریم خصوصی داده‌هاست. احتمالاً شما هم نگران بودید که اطلاعات حساس کسب‌وکارتان برای مدت طولانی در سرورهای یک شرکت هوش مصنوعی نگهداری شود.
+خبر خوب این است که Opus 5 مشمول سیاست نگهداری داده ۳۰ روزه که برای مدل‌های Fable و Mythos اعمال می‌شود، نیست. این یعنی چه؟ یعنی آزادی عمل بیشتر و آرامش خاطر برای شما که روی پروژه‌های حساس کار می‌کنید. مثل اینکه اسناد محرمانه شرکتتان را به جای یک گاوصندوق عمومی، در گاوصندوق شخصی خودتان نگهداری کنید.
+ضمناً، Anthropic محدودیت‌های امنیتی Opus 5 را در وظایف سایبری، مثلاً اسکن آسیب‌پذیری در کد منبع، کاهش داده است. شرکت انتظار دارد که طبقه‌بندی‌کننده‌های ایمنی برای Opus 5 حدود ۸۵٪ کمتر از Fable 5 فعال شوند.
+این برای تیم‌های امنیتی یا توسعه‌دهندگانی که نیاز به بررسی کد دارند، فوق‌العاده است. مدل کمتر جلوی کارشان را می‌گیرد و می‌توانند با بهره‌وری بیشتری کار کنند. این تغییر نشان می‌دهد که <a href="https://sagharnazari.ir/%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c%d8%8c-%d9%88%d9%82%d8%aa%db%8c-%d9%81%d9%82%d8%b7-%d8%a7%d8%a8%d8%b2%d8%a7%d8%b1-%d9%86%db%8c%d8%b3%d8%aa/">هوش مصنوعی، وقتی فقط ابزار نیست</a>، می‌تواند با انعطاف‌پذیری بیشتری در کنار ما قرار بگیرد.</p>
+    <figure class="inline-figure"><img class="inline-img" src="https://images.pexels.com/photos/18069697/pexels-photo-18069697.png?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="anthropic opus 5 ai model" loading="lazy"><figcaption class="inline-credit">Photo by <a href="https://www.pexels.com/@googledeepmind" target="_blank">Google DeepMind</a> on <a href="https://www.pexels.com/photo/an-artist-s-illustration-of-artificial-intelligence-ai-this-illustration-depicts-language-models-which-generate-text-it-was-created-by-wes-cockx-as-part-of-the-visualising-ai-project-l-18069697/" target="_blank">Pexels</a></figcaption></figure>
+    <h2>«Automatic Fallbacks» و کارایی بیشتر: ابزاری برای اطمینان از عملکرد مدل</h2>
+    <p class="answer-box">Anthropic ابزار بتای «Automatic Fallbacks» را معرفی کرده که در صورت فعال شدن مکانیزم‌های ایمنی، درخواست‌ها را به صورت خودکار به مدل‌های کم‌قدرت‌تر هدایت می‌کند تا به جای پیام خطا، پاسخی کاربردی ارائه شود.</p>
+    <p>احتمالاً برای شما هم پیش آمده که در حین کار با یک مدل هوش مصنوعی، ناگهان به دلیل فعال شدن مکانیزم‌های ایمنی، با پیام خطا مواجه شوید. این اتفاق می‌تواند روند کارتان را مختل کند و زمان زیادی از شما بگیرد.
+خب، Anthropic برای حل این مشکل چه کرده است؟ آن‌ها یک ویژگی بتای جدید به نام «Automatic Fallbacks» را معرفی کرده‌اند. این قابلیت به کاربران API اجازه می‌دهد تا در صورت فعال شدن طبقه‌بندی‌کننده‌های ایمنی، درخواست‌هایشان به صورت خودکار به یک مدل کم‌قدرت‌تر هدایت شود.
+نتیجه چیست؟ به جای دیدن یک پیام خطا و توقف کامل کار، یک پاسخ کاربردی دریافت می‌کنید. این یعنی حتی اگر مدل اصلی به دلایل امنیتی نتواند پاسخ دهد، کار شما متوقف نمی‌شود و یک خروجی مفید به دست می‌آورید.
+تصور کنید در حال رانندگی در جاده هستید و ناگهان ترمز اصلی ماشین از کار می‌افتد؛ اما یک سیستم ترمز کمکی وارد عمل می‌شود و شما را نجات می‌دهد. این ویژگی دقیقاً همین حس اطمینان را می‌دهد. این قابلیت به خصوص برای کسب‌وکارهایی که پایداری و عدم وقفه در سرویس‌هایشان برایشان حیاتی است، بسیار ارزشمند است. این رویکرد به ما نشان می‌دهد که <a href="https://sagharnazari.ir/%d8%a2%db%8c%d9%86%d8%af%d9%87-%d8%aa%d8%b9%d8%a7%d9%85%d9%84-%d8%a7%d9%86%d8%b3%d8%a7%d9%86-%d8%a8%d8%a7-%d9%85%d8%af%d9%84-%d9%87%d8%a7%db%8c-%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c/">آینده تعامل انسان با مدل‌های هوش مصنوعی</a> به سمت انعطاف‌پذیری و پایداری بیشتر پیش می‌رود.</p>
+    <h2>Opus 5: فرصت‌های جدید برای کسب‌وکارهای ایرانی</h2>
+    <p class="answer-box">مدل Opus 5 با ترکیب قیمت مناسب، عملکرد قوی در تأیید کار، حریم خصوصی داده‌ها و کاهش محدودیت‌ها، فرصت‌های بی‌نظیری را برای کسب‌وکارهای ایرانی فراهم می‌کند تا با اطمینان و کارایی بیشتر از هوش مصنوعی بهره ببرند.</p>
+    <p>خب، حالا بیایید ببینیم این همه ویژگی جدید برای کسب‌وکار شما در ایران چه معنایی دارد. در شرایط اقتصادی امروز، هر ابزاری که بتواند هزینه‌ها را کاهش دهد و در عین حال کارایی را بالا ببرد، یک مزیت رقابتی بزرگ محسوب می‌شود.
+Opus 5 دقیقاً همین کار را می‌کند. با قیمت مناسب‌تر و قابلیت‌های قوی در حل مسائل پیچیده، می‌توانید پروژه‌های هوش مصنوعی خود را با بودجه‌ای بهینه‌تر پیش ببرید. این یعنی چه برای کسب‌وکار شما؟
+تصور کنید یک نیروی کار متخصص دارید که هم حقوق کمتری می‌گیرد و هم هیچ‌وقت خسته نمی‌شود و بهترین عملکرد را دارد. Opus 5 می‌تواند چنین نقشی را ایفا کند.
+ضمناً، مسئله حریم خصوصی و امنیت داده‌ها، به خصوص در فضای کسب‌وکار ایران، اهمیت دوچندانی دارد. با اطمینان از اینکه داده‌های شما برای مدت طولانی نگهداری نمی‌شوند و محدودیت‌های کمتری در استفاده از مدل وجود دارد، می‌توانید با خیال راحت‌تری روی پروژه‌های حساس و استراتژیک کار کنید.
+به نظرم، این یک فرصت طلایی است تا با استفاده از یک ابزار قدرتمند و در عین حال مقرون‌به‌صرفه، کسب‌وکار خود را متحول کنید؛ از تحلیل داده‌ها گرفته تا تولید محتوا و بهینه‌سازی فرآیندها.</p>
+    <h2>جمع‌بندی</h2><p>خلاصه کنم، Opus 5 Anthropic یک گام مهم و رو به جلو در دنیای هوش مصنوعی است. این مدل تعادل بسیار خوبی بین قدرت، هزینه و حریم خصوصی برقرار کرده است.
+برای کسب‌وکارهای ایرانی، این یک فرصت عالی برای کاهش هزینه‌ها، افزایش کارایی و البته اطمینان از امنیت داده‌هاست. پیشنهاد می‌کنم حتماً قابلیت‌های Opus 5 را دقیق بررسی کنید و پتانسیل آن را برای پروژه‌های آینده کسب‌وکارتان بسنجید. از این فناوری جدید برای رشد و توسعه کسب‌وکارتان غافل نشوید. (منبع: TechCrunch AI)</p>
+  </div>
+
+  <div class="tags-row">
+    <span class="tag">مدل Opus 5 Anthropic</span> <span class="tag">هوش مصنوعی Anthropic</span> <span class="tag">مدل‌های زبانی بزرگ</span> <span class="tag">حریم خصوصی هوش مصنوعی</span> <span class="tag">کاهش هزینه هوش مصنوعی</span> <span class="tag">ابزارهای AI برای کسب‌وکار</span>
+  </div>
+
+  <div class="faq-section">
+    <h2>پرسش‌های متداول</h2>
+    <div class="faq-item"><h3>آیا Opus 5 از Fable 5 قوی‌تر است؟</h3><p>Opus 5 با وجود کوچک‌تر بودن از Fable 5، در برخی بنچمارک‌ها عملکرد بهتری دارد و در تأیید کار و تکرار دقیق تا رسیدن به موفقیت، قوی‌تر عمل می‌کند.</p></div>
+    <div class="faq-item"><h3>سیاست نگهداری داده در Opus 5 چگونه است؟</h3><p>برخلاف مدل‌های Fable و Mythos، Opus 5 مشمول سیاست نگهداری داده ۳۰ روزه نیست که این امر نگرانی‌های حریم خصوصی کاربران را برطرف می‌کند.</p></div>
+    <div class="faq-item"><h3>ویژگی «Automatic Fallbacks» چه کاربردی دارد؟</h3><p>این ویژگی بتا در صورت فعال شدن مکانیزم‌های ایمنی، درخواست‌ها را به مدل‌های کم‌قدرت‌تر هدایت می‌کند تا به جای پیام خطا، پاسخی کاربردی ارائه شود.</p></div>
+  </div>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "آیا Opus 5 از Fable 5 قوی‌تر است؟", "acceptedAnswer": {"@type": "Answer", "text": "Opus 5 با وجود کوچک‌تر بودن از Fable 5، در برخی بنچمارک‌ها عملکرد بهتری دارد و در تأیید کار و تکرار دقیق تا رسیدن به موفقیت، قوی‌تر عمل می‌کند."}}, {"@type": "Question", "name": "سیاست نگهداری داده در Opus 5 چگونه است؟", "acceptedAnswer": {"@type": "Answer", "text": "برخلاف مدل‌های Fable و Mythos، Opus 5 مشمول سیاست نگهداری داده ۳۰ روزه نیست که این امر نگرانی‌های حریم خصوصی کاربران را برطرف می‌کند."}}, {"@type": "Question", "name": "ویژگی «Automatic Fallbacks» چه کاربردی دارد؟", "acceptedAnswer": {"@type": "Answer", "text": "این ویژگی بتا در صورت فعال شدن مکانیزم‌های ایمنی، درخواست‌ها را به مدل‌های کم‌قدرت‌تر هدایت می‌کند تا به جای پیام خطا، پاسخی کاربردی ارائه شود."}}]}</script>
+
+
+  <div class="source-box">
+    منبع: <a href="https://techcrunch.com/2026/07/24/anthropic-launches-opus-5/" rel="nofollow" target="_blank">TechCrunch AI</a>
+  </div>
+
+  <p class="footer-meta">تولیدشده توسط ایجنت محتوا — 25 July 2026</p>
+</div>
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var sel = '.article-intro, .hero-image, .article-body > h2, .article-body > p, .inline-figure, .tags-row, .faq-section, .source-box';
+  var els = [].slice.call(document.querySelectorAll(sel));
+  if (!els.length) return;
+  // کلاس مخفی فقط با JS اضافه می‌شود تا بدون JS هم محتوا دیده شود
+  els.forEach(function (el) { el.classList.add('reveal'); });
+  function show(el) {
+    el.classList.add('is-visible');
+    // بعد از پایان انیمیشن، کلاس‌ها را پاک کن تا hover سه‌بعدی سالم بماند
+    setTimeout(function () { el.classList.remove('reveal', 'is-visible'); }, 700);
+  }
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(show);
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        show(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+(function () {
+  // افکت spotlight — هاله‌ی سفید دنبالِ ماوس روی هر کادر حرکت می‌کند
+  var glowSel = '.article-intro, .article-body .answer-box, .faq-section, .source-box, .hero-image, .inline-figure';
+  [].slice.call(document.querySelectorAll(glowSel)).forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+})();
+</script>
+</body>
+</html>

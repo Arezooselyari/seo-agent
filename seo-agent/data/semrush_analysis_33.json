@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "personalization engine",
+    "personalization platform",
+    "ai personalization software for ecommerce",
+    "personalized retail insights"
+  ],
+  "per_kw": {
+    "personalization engine": {
+      "volume": 880,
+      "kd": 34.0,
+      "competition": 0.34
+    },
+    "personalization platform": {
+      "volume": 590,
+      "kd": 34.0,
+      "competition": 0.21
+    },
+    "ai personalization software for ecommerce": {
+      "volume": 390,
+      "kd": 34.0,
+      "competition": 0.0
+    },
+    "personalized retail insights": {
+      "volume": 390,
+      "kd": 30.0,
+      "competition": 0.0
+    }
+  },
+  "avg_kd": 33.0,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=33.0 (سقف 40). داده از SEMrush API دیتابیس us."
+}

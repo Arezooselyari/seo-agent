@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>هوش مصنوعی و رگولاتوری: چرا رقابت غول‌ها تغییر کرد؟</title>
+<meta name="description" content="کنترل دولت آمریکا بر انتشار مدل‌های هوش مصنوعی، رقابت آنتروپیک و اوپن‌ای‌آی را تغییر داده است. بدانید این تأخیرها چه معنایی برای کسب‌وکار شما دارد.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --radius: 14px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    /* پالت vlumis — گرم، لاکچری، روزنامه‌نگارانه */
+    --ink: #1E1408;
+    --gold: #B8853A;
+    --gold-light: #C99A52;
+    --cream: #FAF6F0;
+    --sand: #F3EBE0;
+    --gold-fill: #F5EDD8;
+    --teal: #4A8B7E;
+    --teal-light: #EAF3F1;
+    --rose: #B86A52;
+    --rose-light: #F5EAE6;
+    /* خطوط نازک به‌جای سایه‌ی سنگین + سایه‌های گرم با ته‌رنگِ ink (نه خاکستری سرد) */
+    --hairline: 1px solid rgba(30,20,8,.09);
+    --hairline-gold: 1px solid rgba(184,133,58,.22);
+    --shadow-sm: 0 2px 10px -4px rgba(30,20,8,.08);
+    --shadow-md: 0 10px 30px -14px rgba(30,20,8,.16), 0 2px 6px -3px rgba(30,20,8,.06);
+    --shadow-lg: 0 18px 44px -18px rgba(30,20,8,.20), 0 4px 12px -6px rgba(30,20,8,.08);
+    --shadow-hover: 0 22px 50px -18px rgba(30,20,8,.24), 0 6px 16px -7px rgba(30,20,8,.10);
+  }
+  body {
+    font-family: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.95;
+    color: var(--ink);
+    background: var(--cream);
+    min-height: 100vh;
+  }
+  /* متن فارسی تمام‌چین (justified) — استاندارد روزنامه‌نگاری */
+  .article-intro,
+  .article-body p,
+  .faq-item p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  /* ─── header ─── */
+  .article-header {
+    padding: 36px 0 20px;
+    border-bottom: 1px solid rgba(184,133,58,.28);
+    margin-bottom: 28px;
+  }
+  .article-breadcrumb {
+    font-size: 13px;
+    color: #8a7a63;
+    margin-bottom: 14px;
+  }
+  .article-breadcrumb a { color: var(--gold); text-decoration: none; }
+  .article-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .article-meta {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 13.5px;
+    color: #8a7a63;
+    flex-wrap: wrap;
+  }
+  .article-meta .site-name { font-weight: 600; color: var(--gold); }
+  /* ─── hero image ─── */
+  .hero-image {
+    width: 100%;
+    margin-bottom: 28px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .hero-image:hover { box-shadow: var(--shadow-lg); }
+  .hero-image img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .hero-image:hover img { transform: scale(1.04); }
+  .hero-credit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55));
+    color: rgba(255,255,255,0.85);
+    font-size: 11.5px;
+    padding: 24px 12px 8px;
+    text-align: left;
+    direction: ltr;
+  }
+  .hero-credit a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  /* ─── content ─── */
+  .article-intro {
+    position: relative;
+    overflow: hidden;
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--gold-fill);
+    border: var(--hairline-gold);
+    border-right: 4px solid var(--gold);
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    margin-bottom: 30px;
+    line-height: 1.9;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-intro:hover { box-shadow: var(--shadow-md); }
+  .article-body h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 36px 0 10px;
+    padding-right: 14px;
+    border-right: 4px solid var(--gold);
+  }
+  .article-body h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin: 24px 0 8px;
+  }
+  .article-body p {
+    margin-bottom: 16px;
+    color: #3a2f1f;
+  }
+  .article-body .answer-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--teal-light);
+    border: 1px solid rgba(74,139,126,.22);
+    border-right: 4px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-weight: 600;
+    color: #234a43;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-body .answer-box:hover { box-shadow: var(--shadow-md); }
+  .article-body blockquote {
+    background: var(--rose-light);
+    border: 1px solid rgba(184,106,82,.22);
+    border-right: 4px solid var(--rose);
+    padding: 14px 20px;
+    margin: 18px 0;
+    border-radius: var(--radius);
+    font-style: normal;
+    color: #7a3d2c;
+    box-shadow: var(--shadow-sm);
+  }
+  .article-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body a:hover { color: #936420; }
+  img.inline-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin: 0;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .inline-figure {
+    margin: 28px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .inline-figure:hover { box-shadow: var(--shadow-lg); }
+  .inline-figure:hover img.inline-img { transform: scale(1.04); }
+  .inline-credit {
+    font-size: 11.5px;
+    color: #94a3b8;
+    text-align: left;
+    direction: ltr;
+    margin-top: 6px;
+  }
+  .inline-credit a { color: #94a3b8; text-decoration: none; }
+  /* ─── tags ─── */
+  .tags-row {
+    margin: 28px 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--gold-fill);
+    color: #8a5e1f;
+    border: var(--hairline-gold);
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .2s var(--ease), color .2s var(--ease);
+  }
+  .tag:hover {
+    background: var(--gold);
+    color: var(--cream);
+  }
+  /* ─── FAQ ─── */
+  .faq-section {
+    position: relative;
+    margin: 38px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fffdf9;
+    border: var(--hairline);
+    box-shadow: var(--shadow-sm);
+  }
+  .faq-section h2 {
+    background: var(--sand);
+    margin: 0;
+    padding: 16px 22px;
+    font-size: 1.1rem;
+    border-right: none;
+    color: var(--ink);
+  }
+  .faq-item {
+    border-top: 1px solid rgba(30,20,8,.07);
+    padding: 16px 22px;
+    transition: background .2s var(--ease);
+  }
+  .faq-item:hover { background: var(--gold-fill); }
+  .faq-item h3 { font-size: 1rem; color: var(--gold); margin-bottom: 6px; }
+  .faq-item p { margin: 0; color: #3a2f1f; }
+  /* ─── source ─── */
+  .source-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--sand);
+    border: var(--hairline);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #6b5c45;
+    margin-top: 34px;
+    box-shadow: var(--shadow-sm);
+  }
+  .source-box a { color: var(--gold); }
+  .footer-meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #9a8a72;
+    text-align: center;
+  }
+  /* روی موبایل/لمسی، lift غیرفعال تا کادرها نپرند */
+  @media (hover: none), (max-width: 768px) {
+    .article-intro:hover, .answer-box:hover, .hero-image:hover,
+    .inline-figure:hover, .tag:hover {
+      transform: none;
+    }
+  }
+  /* ─── افکت اسکرول: ظاهر شدن نرمِ کادرها هنگام پایین آمدن ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  /* ─── افکت spotlight — هاله‌ی سفیدِ درخشانِ کمرنگ که دنبال ماوس روی کادر حرکت می‌کند (سبک vlumis) ─── */
+  .article-intro,
+  .article-body .answer-box,
+  .faq-section,
+  .source-box,
+  .hero-image,
+  .inline-figure {
+    position: relative;
+  }
+  .article-intro::before,
+  .article-body .answer-box::before,
+  .faq-section::before,
+  .source-box::before,
+  .hero-image::before,
+  .inline-figure::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255,249,235,.55),
+      rgba(184,133,58,.14) 38%,
+      rgba(184,133,58,0) 68%
+    );
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+    pointer-events: none;
+    z-index: 4;
+  }
+  .article-intro:hover::before,
+  .article-body .answer-box:hover::before,
+  .faq-section:hover::before,
+  .source-box:hover::before,
+  .hero-image:hover::before,
+  .inline-figure:hover::before {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .article-intro::before, .article-body .answer-box::before,
+    .faq-section::before, .source-box::before,
+    .hero-image::before, .inline-figure::before { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="article-header">
+    <div class="article-breadcrumb">
+      <a href="https://sagharnazari.ir">ساغر نظری</a> ← <a href="https://sagharnazari.ir/category/هوش-مصنوعی">هوش مصنوعی</a>
+    </div>
+    <h1 class="article-title">هوش مصنوعی و رگولاتوری: چرا رقابت غول‌ها تغییر کرد؟</h1>
+    <div class="article-meta">
+      <span class="site-name">sagharnazari.ir</span>
+      <span>📅 27 June 2026</span>
+      <span>🏷️ هوش مصنوعی و رگولاتوری | تأخیر مدل‌های هوش مصنوعی | آنتروپیک و اوپن‌ای‌آی | چالش‌های نظارتی هوش مصنوعی</span>
+    </div>
+  </header>
+
+
+
+  <div class="article-intro">
+    دولت آمریکا در حال افزایش کنترل بر انتشار مدل‌های جدید هوش مصنوعی است که این موضوع به تأخیر و محدودیت در عرضه آن‌ها منجر شده است. این اتفاق نه تنها رقابت بین شرکت‌های بزرگ را دستخوش تغییر کرده، بلکه پیامدهای اقتصادی جدی برای کل صنعت هوش مصنوعی و کسب‌وکارها به همراه دارد.
+  </div>
+
+  <div class="article-body">
+    <h2>رقابت قدیمی، چالش جدید: آنتروپیک و اوپن‌ای‌آی هم‌درد شدند</h2>
+    <p class="answer-box">کنترل فزاینده دولت آمریکا بر انتشار مدل‌های هوش مصنوعی، رقابت سنتی بین شرکت‌هایی مانند آنتروپیک و اوپن‌ای‌آی را به یک چالش مشترک تبدیل کرده است.</p>
+    <p>شاید شما هم عادت کرده باشید که از رقابت تنگاتنگ بین غول‌های هوش مصنوعی بشنوید، اما خبر امروز نشان می‌دهد که این بازی دیگر فقط بین شرکت‌ها نیست. حالا یک بازیگر جدید و قدرتمند وارد صحنه شده: دولت آمریکا. منبع ما می‌گوید: «دولت آمریکا قرار است کنترل بسیار زیادی بر روی اینکه کدام مدل‌های هوش مصنوعی منتشر شوند، داشته باشد.» این یعنی مدل‌های پیشرویی مثل Fable و Mythos از شرکت آنتروپیک، و حتی GPT 5.6 از اوپن‌ای‌آی، با تأییدهای محدود و بررسی‌های دولتی مواجه شده‌اند. این وضعیت، اوپن‌ای‌آی و آنتروپیک را در یک موقعیت کاملاً مشابه قرار داده است؛ هر دو با مشکلات یکسانی روبرو هستند و اگر نتوانند راه حلی پیدا کنند، فاجعه‌ای یکسان در انتظارشان خواهد بود.</p>
+    <h2>تأخیر در انتشار مدل‌ها: این برای کسب‌وکار شما چه معنایی دارد؟</h2>
+    <p class="answer-box">تأخیرهای ناشی از بررسی‌های دولتی در انتشار مدل‌های جدید هوش مصنوعی، مزایای اقتصادی این سیستم‌های پرهزینه را به شدت کاهش داده و سرعت نوآوری در صنعت را کند می‌کند.</p>
+    <p>احتمالاً با خودتان می‌گویید این تأخیرها چه ربطی به کسب‌وکار من دارد؟ واقعیت این است که توسعه یک مدل هوش مصنوعی پیشرفته، میلیون‌ها دلار هزینه دارد. وقتی این مدل‌ها به خاطر بررسی‌های دولتی، حتی برای چند هفته، پشت درهای بسته بمانند، سودآوری و بازگشت سرمایه آن‌ها به شدت تحت تأثیر قرار می‌گیرد. منبع ما تأکید می‌کند: «حتی چند هفته توقف برای بررسی می‌تواند مزایای اقتصادی یک سیستم جدید و پرهزینه را به شدت محدود کند، آن هم در زمانی که آزمایشگاه‌های هوش مصنوعی به شدت در تلاشند تا سود خود را بهبود بخشند.» این یعنی شرکت‌ها نمی‌توانند به سرعت نوآوری‌هایشان را به بازار بیاورند و این کندی، در نهایت به ضرر کسب‌وکارهایی است که منتظر ابزارهای جدید هوش مصنوعی برای <a href="https://sagharnazari.ir/%d9%87%d9%88%d8%b4%d9%85%d9%86%d8%af%d8%b3%d8%a7%d8%b2%db%8c-%da%a9%d8%b3%d8%a8%d9%88%da%a9%d8%a7%d8%b1-%d8%a8%d8%a7-%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c-%d8%b1%d8%a7/">هوشمندسازی کسب‌وکار</a> خود هستند.</p>
+    <h2>دولت آمریکا در این بازی کجای کار است؟</h2>
+    <p class="answer-box">دولت آمریکا فاقد تخصص و ظرفیت لازم برای آزمایش مدل‌های هوش مصنوعی است و هنوز نتوانسته خطرات مورد نگرانی خود را به وضوح بیان کند، که این امر فرآیند تأیید را نامنظم و پرهزینه ساخته است.</p>
+    <p>اینجا یک مشکل اساسی وجود دارد. منبع می‌گوید: «دولت آمریکا نه تخصص لازم را دارد و نه ظرفیت انجام آزمایش‌هایی که در این زمینه نیاز است.» یعنی نه نیروی متخصص کافی دارند و نه زیرساخت‌های لازم برای ارزیابی دقیق این مدل‌ها. از آن بدتر، هنوز به وضوح مشخص نیست که رگولاتورها دقیقاً نگران چه خطراتی هستند. تلاشی برای توضیح اینکه دولت واقعاً از چه چیزی می‌ترسد، صورت نگرفته است. این ابهام، فرآیند تأیید را بسیار نامنظم و پرهزینه کرده است. البته، این به معنای نادیده گرفتن خطرات نیست؛ ابزارهای هوش مصنوعی واقعاً در حال ایجاد انقلاب در امنیت سایبری هستند و نگرانی‌های واقعی در مورد خطرات بیولوژیکی و <a href="https://sagharnazari.ir/%d8%a2%db%8c%d9%86%d8%af%d9%87-%d8%aa%d8%b9%d8%a7%d9%85%d9%84-%d8%a7%d9%86%d8%b3%d8%a7%d9%86-%d8%a8%d8%a7-%d9%85%d8%af%d9%84-%d9%87%d8%a7%db%8c-%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c/">همسویی (Alignment)</a> وجود دارد. اما محدود کردن انتشار مدل‌ها به تنهایی نمی‌تواند پاسخ کامل باشد.</p>
+    <h2>راه چاره چیست؟ همکاری به جای رقابت</h2>
+    <p class="answer-box">برای مقابله با این چالش‌های نظارتی، صنعت هوش مصنوعی باید به جای رقابت، به سمت همکاری جمعی، اعتماد به گروه‌های مستقل و حمایت از گزینه‌های نظارتی منطقی حرکت کند.</p>
+    <p>حالا که می‌دانیم این مشکل فراتر از رقابت بین دو شرکت است و کل صنعت را درگیر کرده، راه حل چیست؟ منبع ما می‌گوید: «بهترین ایده‌ها برای حل این مشکلات، به معنای همکاری مشترک خواهد بود.» یعنی شرکت‌ها باید دست از رقابت بر سر رگولاتوری بردارند و به جای آن، برای شکل‌دهی به یک چارچوب نظارتی منطقی با هم کار کنند. این شامل اعتماد به گروه‌های مستقل برای هدایت فرآیندها می‌شود، حتی اگر اهدافشان کاملاً با اهداف شرکت‌ها همسو نباشد. همچنین، باید از گزینه‌های نظارتی «کمتر بد» حمایت کرد، به جای اینکه با هر قانونی با تمام قوا مخالفت شود. مدل‌های هوش مصنوعی به جایی رسیده‌اند که قابلیت‌هایشان پیامدهای سیاسی واقعی دارند و تنها با اقدام مشترک صنعت می‌توان این پیامدها را به درستی مدیریت کرد. این یک فرصت است تا صنعت هوش مصنوعی به عنوان یک کل، برای آینده خود بجنگد، نه اینکه ایمنی و رگولاتوری را فرصتی برای کسب مزیت رقابتی ببیند.</p>
+    <h2>جمع‌بندی</h2><p>این خبر به ما یادآوری می‌کند که دوران توسعه بی‌قید و شرط هوش مصنوعی به پایان رسیده است. حالا، با ورود دولت‌ها به صحنه، آینده این صنعت بیش از پیش به همکاری و هم‌فکری بین شرکت‌ها و نهادهای نظارتی گره خورده است. برای کسب‌وکارهای ایرانی و فارسی‌زبان، این یعنی باید آماده تغییرات نظارتی بیشتری در سطح جهانی باشند و درک کنند که سرعت دسترسی به فناوری‌های جدید هوش مصنوعی ممکن است تحت تأثیر این مسائل قرار گیرد. این یک هشدار است که باید به فکر استراتژی‌های انطباق و همکاری برای آینده بود. برای اطلاعات بیشتر، می‌توانید به منبع اصلی در TechCrunch AI مراجعه کنید.</p>
+  </div>
+
+  <div class="tags-row">
+    <span class="tag">هوش مصنوعی و رگولاتوری</span> <span class="tag">تأخیر مدل‌های هوش مصنوعی</span> <span class="tag">آنتروپیک و اوپن‌ای‌آی</span> <span class="tag">چالش‌های نظارتی هوش مصنوعی</span> <span class="tag">آینده صنعت هوش مصنوعی</span>
+  </div>
+
+  <div class="faq-section">
+    <h2>پرسش‌های متداول</h2>
+    <div class="faq-item"><h3>چرا دولت آمریکا بر انتشار مدل‌های هوش مصنوعی کنترل می‌کند؟</h3><p>دولت آمریکا نگران پیامدهای سیاسی و خطرات احتمالی مدل‌های پیشرفته هوش مصنوعی در حوزه‌هایی مانند امنیت سایبری و بیولوژیکی است، هرچند هنوز این خطرات را به وضوح تعریف نکرده است.</p></div>
+    <div class="faq-item"><h3>این تأخیرها چه تأثیری بر شرکت‌های هوش مصنوعی دارد؟</h3><p>این تأخیرها مزایای اقتصادی سیستم‌های جدید و پرهزینه هوش مصنوعی را به شدت محدود می‌کند و می‌تواند سرعت نوآوری و توسعه در صنعت را کند سازد.</p></div>
+    <div class="faq-item"><h3>صنعت هوش مصنوعی چگونه می‌تواند با این چالش‌ها مقابله کند؟</h3><p>صنعت باید از طریق همکاری جمعی، اعتماد به گروه‌های مستقل و حمایت از گزینه‌های نظارتی منطقی، به جای رقابت، به مدیریت این پیامدهای سیاسی بپردازد.</p></div>
+  </div>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "چرا دولت آمریکا بر انتشار مدل‌های هوش مصنوعی کنترل می‌کند؟", "acceptedAnswer": {"@type": "Answer", "text": "دولت آمریکا نگران پیامدهای سیاسی و خطرات احتمالی مدل‌های پیشرفته هوش مصنوعی در حوزه‌هایی مانند امنیت سایبری و بیولوژیکی است، هرچند هنوز این خطرات را به وضوح تعریف نکرده است."}}, {"@type": "Question", "name": "این تأخیرها چه تأثیری بر شرکت‌های هوش مصنوعی دارد؟", "acceptedAnswer": {"@type": "Answer", "text": "این تأخیرها مزایای اقتصادی سیستم‌های جدید و پرهزینه هوش مصنوعی را به شدت محدود می‌کند و می‌تواند سرعت نوآوری و توسعه در صنعت را کند سازد."}}, {"@type": "Question", "name": "صنعت هوش مصنوعی چگونه می‌تواند با این چالش‌ها مقابله کند؟", "acceptedAnswer": {"@type": "Answer", "text": "صنعت باید از طریق همکاری جمعی، اعتماد به گروه‌های مستقل و حمایت از گزینه‌های نظارتی منطقی، به جای رقابت، به مدیریت این پیامدهای سیاسی بپردازد."}}]}</script>
+
+
+  <div class="source-box">
+    منبع: <a href="https://techcrunch.com/2026/06/26/its-not-about-anthropic-vs-openai-anymore/" rel="nofollow" target="_blank">TechCrunch AI</a>
+  </div>
+
+  <p class="footer-meta">تولیدشده توسط ایجنت محتوا — 27 June 2026</p>
+</div>
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var sel = '.article-intro, .hero-image, .article-body > h2, .article-body > p, .inline-figure, .tags-row, .faq-section, .source-box';
+  var els = [].slice.call(document.querySelectorAll(sel));
+  if (!els.length) return;
+  // کلاس مخفی فقط با JS اضافه می‌شود تا بدون JS هم محتوا دیده شود
+  els.forEach(function (el) { el.classList.add('reveal'); });
+  function show(el) {
+    el.classList.add('is-visible');
+    // بعد از پایان انیمیشن، کلاس‌ها را پاک کن تا hover سه‌بعدی سالم بماند
+    setTimeout(function () { el.classList.remove('reveal', 'is-visible'); }, 700);
+  }
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(show);
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        show(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+(function () {
+  // افکت spotlight — هاله‌ی سفید دنبالِ ماوس روی هر کادر حرکت می‌کند
+  var glowSel = '.article-intro, .article-body .answer-box, .faq-section, .source-box, .hero-image, .inline-figure';
+  [].slice.call(document.querySelectorAll(glowSel)).forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+})();
+</script>
+</body>
+</html>

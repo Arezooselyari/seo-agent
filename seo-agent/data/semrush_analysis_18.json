@@ -1,0 +1,15 @@
+{
+  "targeted_keywords": [
+    "ai data entry automation"
+  ],
+  "per_kw": {
+    "ai data entry automation": {
+      "volume": 30,
+      "kd": 0.0,
+      "competition": 0.33
+    }
+  },
+  "avg_kd": null,
+  "verdict": "UNKNOWN",
+  "notes": "میانگین KD=None (سقف 40). داده از SEMrush API دیتابیس us."
+}

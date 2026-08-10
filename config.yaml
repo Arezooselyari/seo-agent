@@ -1,0 +1,72 @@
+# ---------------------------------------------------------------------------
+# پیکربندی Agent — هر چیزی که مخصوص «صاحب» است اینجاست، نه داخل کد.
+# در SaaS آینده، این فایل می‌شود یک ردیف در دیتابیس برای هر مشتری (tenant).
+# ---------------------------------------------------------------------------
+
+tenant_id: 1            # الان همیشه ۱؛ در SaaS برای هر مشتری متفاوت می‌شود
+
+# اطلاعات سایت صاحب (برای breadcrumb و HTML خروجی)
+site_name: "ساغر نظری"
+site_url: "https://sagharnazari.ir"
+site_category_url: "https://sagharnazari.ir/category/هوش-مصنوعی"
+site_category_name: "هوش مصنوعی"
+
+# منابع خبری (RSS). منابع تخصصی برای AI tools، agents، business
+sources:
+  # اخبار و تحلیل عمومی
+  - name: "TechCrunch AI"
+    rss: "https://techcrunch.com/category/artificial-intelligence/feed/"
+  - name: "VentureBeat AI"
+    rss: "https://venturebeat.com/category/ai/feed/"
+  - name: "The Verge"
+    rss: "https://www.theverge.com/rss/index.xml"
+  - name: "MIT Technology Review"
+    rss: "https://www.technologyreview.com/feed/"
+
+  # تخصصی و پژوهشی
+  - name: "OpenAI Blog"
+    rss: "https://openai.com/blog/feed.rss"
+  - name: "Anthropic Blog"
+    rss: "https://www.anthropic.com/news/rss.xml"
+  - name: "Google DeepMind Blog"
+    rss: "https://deepmind.google/feed.xml"
+
+  # کسب‌وکار و اتوماسیون
+  - name: "Towards Data Science"
+    rss: "https://towardsdatascience.com/feed"
+  - name: "The Rundown AI"
+    rss: "https://www.therundown.ai/feed"
+
+# تنظیمات تولید
+articles_per_run: 2      # چند مقاله در هر اجرا تولید شود (هدف: روزی یک مقاله)
+target_language: "fa"    # زبان خروجی
+run_time: "09:00"        # ساعت اجرای روزانه (برای فاز scheduler)
+
+# مدل هوش مصنوعی — قابل تغییر بدون لمس کد
+# "gemini" (ارزان‌تر) یا "claude"
+ai_provider: "gemini"
+# مدل دقیق — برای openrouter مثل google/gemini-2.0-flash-001 یا anthropic/claude-sonnet-4.6
+ai_model: "gemini-2.5-flash"
+
+# کلیدواژه‌های تخصصی: ابزارها، ایجنت‌ها، تجاری‌سازی، نه سیاست و اخلاق عمومی
+ai_keywords:
+  - "AI"
+  - "artificial intelligence"
+  - "LLM"
+  - "agent"
+  - "agentic"
+  - "tool"
+  - "API"
+  - "content generation"
+  - "automation"
+  - "OpenAI"
+  - "Anthropic"
+  - "Claude"
+  - "GPT"
+  - "Gemini"
+  - "Google DeepMind"
+  - "prompt"
+  - "fine-tuning"
+  - "RAG"
+  - "vector database"
+  - "Hugging Face"

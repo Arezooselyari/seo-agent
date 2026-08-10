@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سامانه تولید محتوا — نمونه‌ی اختصاصی</title>
+<style>
+  /* نسخِ کلاسیک — بافتِ حروف‌نگاریِ سنتیِ فارسی، متغیر ۴۰۰ تا ۷۰۰ */
+  @font-face{
+    font-family:'Naskh';
+    src:url('/fonts/naskh-arabic.woff2') format('woff2');
+    font-weight:400 700;font-style:normal;font-display:swap;
+    unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+08A0-08FF,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF;
+  }
+  @font-face{
+    font-family:'Naskh';
+    src:url('/fonts/naskh-latin.woff2') format('woff2');
+    font-weight:400 700;font-style:normal;font-display:swap;
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-2193,U+2212;
+  }
+
+  :root{
+    /* مرکب و لاجورد — رنگ‌های تذهیبِ نسخه‌های خطی، نه پالتِ نرم‌افزاری */
+    --paper:#FCFCFA;
+    --ink:#14161A;
+    --muted:#6A6862;
+    --faint:#9A968E;
+    --rule:#E2DFD8;
+    --rule-strong:#C9C5BC;
+    --lapis:#1C3F6E;
+    --lapis-deep:#142E51;
+    --lapis-wash:#F0F3F7;
+    --measure:720px;
+    --ease:cubic-bezier(.2,.7,.3,1);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Naskh',Tahoma,serif;
+    background:var(--paper); color:var(--ink);
+    font-size:16.5px; line-height:1.95;
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings:"kern" 1;
+  }
+  .wrap{max-width:var(--measure);margin:0 auto;padding:0 26px 96px}
+
+  /* ── سرلوح ── */
+  .masthead{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    padding:22px 0 16px;border-bottom:1px solid var(--rule);
+  }
+  .mark{font-size:17px;font-weight:700;letter-spacing:.01em}
+  .mark-sub{font-size:12.5px;color:var(--faint);letter-spacing:.06em}
+
+  /* ── معرفی ── */
+  .intro{padding:64px 0 12px}
+  h1{
+    font-size:clamp(28px,4.6vw,44px); font-weight:700;
+    line-height:1.52; margin:0 0 20px; letter-spacing:-.005em;
+    max-width:15ch;
+  }
+  .lede{font-size:clamp(15.5px,2vw,17.5px);color:var(--muted);max-width:48ch;margin:0}
+
+  /* ── بخش‌ها ── */
+  .sec{margin-top:52px}
+  .sec-head{
+    display:flex;align-items:center;gap:14px;margin-bottom:18px;
+  }
+  .sec-head h2{
+    font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--muted);margin:0;white-space:nowrap;
+  }
+  .sec-head::after{content:"";flex:1;height:1px;background:var(--rule)}
+  .optional{font-size:12.5px;color:var(--faint);letter-spacing:0;font-weight:400}
+
+  /* گزینه‌ها: سطرهای حروف‌چینی‌شده، نه کاشیِ رنگی */
+  .opts{display:grid;grid-template-columns:repeat(2,1fr);
+    border-top:1px solid var(--rule);border-inline-start:1px solid var(--rule)}
+  .opt{
+    padding:15px 18px;cursor:pointer;user-select:none;background:transparent;
+    border-bottom:1px solid var(--rule);border-inline-end:1px solid var(--rule);
+    font-size:15.5px;position:relative;transition:background .18s var(--ease),color .18s var(--ease);
+  }
+  .opt:hover{background:#F6F5F2}
+  .opt:focus-visible{outline:2px solid var(--lapis);outline-offset:-2px}
+  .opt[aria-pressed="true"]{background:var(--lapis-wash);color:var(--lapis-deep);font-weight:700}
+  .opt[aria-pressed="true"]::before{
+    content:"";position:absolute;inset-block:0;inset-inline-start:0;width:2px;background:var(--lapis);
+  }
+
+  .types{grid-template-columns:1fr 1fr}
+  .types .opt{padding:18px}
+  .types .opt b{display:block;font-size:16px;font-weight:700;margin-bottom:4px}
+  .types .opt span{display:block;font-size:13.5px;color:var(--muted);line-height:1.75}
+  .types .opt[aria-pressed="true"] span{color:var(--lapis-deep);opacity:.75}
+
+  /* ورودی: فقط خطِ زیرین */
+  .field{
+    width:100%;padding:12px 2px;border:0;border-bottom:1px solid var(--rule-strong);
+    background:transparent;font-family:inherit;font-size:17px;color:var(--ink);
+    transition:border-color .18s var(--ease);
+  }
+  .field:focus{outline:none;border-bottom-color:var(--lapis);border-bottom-width:2px;padding-bottom:11px}
+  .field::placeholder{color:var(--faint)}
+  .hint{font-size:13.5px;color:var(--muted);margin:12px 0 0}
+
+  /* کنش اصلی */
+  .actions{margin-top:56px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .go{
+    border:0;background:var(--ink);color:var(--paper);
+    font-family:inherit;font-size:16px;font-weight:700;
+    padding:15px 40px;cursor:pointer;letter-spacing:.02em;
+    transition:background .18s var(--ease),opacity .18s var(--ease);
+  }
+  .go:hover:not(:disabled){background:var(--lapis-deep)}
+  .go:focus-visible{outline:2px solid var(--lapis);outline-offset:3px}
+  .go:disabled{opacity:.45;cursor:default}
+  .note{font-size:13px;color:var(--faint);margin:0}
+
+  /* ── دفترِ تولید: مراحلِ واقعیِ کار، حروف‌چینی‌شده ── */
+  #log{display:none;margin-top:64px}
+  .log-rule{height:2px;background:var(--rule);position:relative;overflow:hidden}
+  .log-rule i{position:absolute;inset-block:0;inset-inline-start:0;width:0;
+    background:var(--lapis);transition:width .9s var(--ease)}
+  .log-head{display:flex;justify-content:space-between;align-items:baseline;
+    margin:0 0 20px;font-size:12.5px;letter-spacing:.14em;color:var(--muted);font-weight:700}
+  .log-time{letter-spacing:.02em;font-weight:400;color:var(--faint)}
+  ol.stages{list-style:none;margin:26px 0 0;padding:0;counter-reset:s}
+  ol.stages li{
+    counter-increment:s;display:flex;gap:16px;align-items:baseline;
+    padding:11px 0;color:var(--faint);border-bottom:1px solid var(--rule);
+    transition:color .3s var(--ease);
+  }
+  ol.stages li::before{
+    content:counter(s,decimal);min-width:1.6em;font-size:13px;font-variant-numeric:tabular-nums;
+    color:var(--faint);transition:color .3s var(--ease);
+  }
+  ol.stages li[data-state="done"]{color:var(--muted)}
+  ol.stages li[data-state="done"]::before{content:"—";color:var(--rule-strong)}
+  ol.stages li[data-state="now"]{color:var(--ink);font-weight:700}
+  ol.stages li[data-state="now"]::before{color:var(--lapis)}
+  .log-foot{font-size:13.5px;color:var(--muted);margin-top:22px}
+
+  /* ── خروجی ── */
+  #result{display:none;margin-top:56px}
+  .frame-wrap{border:1px solid var(--rule);background:#fff}
+  #artframe{width:100%;height:700px;border:0;display:block;background:var(--paper)}
+
+  .msg{border-top:2px solid var(--ink);padding:34px 0 0;max-width:52ch}
+  .msg h3{font-size:21px;font-weight:700;margin:0 0 12px;line-height:1.6}
+  .msg p{color:var(--muted);margin:0 0 24px;font-size:15.5px}
+  .msg a.link{
+    display:inline-block;border:0;background:var(--ink);color:var(--paper);
+    padding:14px 34px;font-weight:700;font-size:15.5px;text-decoration:none;
+  }
+  .msg a.link:hover{background:var(--lapis-deep)}
+
+  .after{margin-top:34px;border-top:1px solid var(--rule);padding-top:30px;
+    display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .after p{margin:0;color:var(--muted);font-size:15px;max-width:40ch}
+
+  footer{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);
+    font-size:12.5px;color:var(--faint);display:flex;justify-content:space-between;gap:12px}
+
+  @media (max-width:560px){
+    .opts{grid-template-columns:1fr}
+    .types{grid-template-columns:1fr}
+    .intro{padding-top:44px}
+    h1{max-width:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;
+    transition-duration:.001ms !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="mark">ساغر نظری</div>
+    <div class="mark-sub">سامانه تولید محتوا</div>
+  </div>
+
+  <div id="form-panel">
+    <div class="intro">
+      <h1>یک مقاله‌ی نمونه، نوشته‌شده برای حوزه‌ی کاری شما.</h1>
+      <p class="lede">حوزه و نوع مطلب را مشخص کنید. سامانه منابع معتبر را بررسی می‌کند،
+        آن‌ها را تحلیل می‌کند و یک مقاله‌ی کامل همراه با ارجاع به منابع تحویل می‌دهد.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h2>حوزه فعالیت</h2></div>
+      <div class="opts" id="niches" role="group" aria-label="حوزه فعالیت"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h2>نوع مطلب</h2></div>
+      <div class="opts types" role="group" aria-label="نوع مطلب">
+        <div class="opt" role="button" tabindex="0" data-type="tutorial" aria-pressed="true">
+          <b>آموزشی</b><span>راهنمای کاربردی و گام‌به‌گام</span></div>
+        <div class="opt" role="button" tabindex="0" data-type="news" aria-pressed="false">
+          <b>خبری</b><span>تحلیل رویدادها و تحولات تازه</span></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h2>موضوع یا کلیدواژه</h2><span class="optional">اختیاری</span></div>
+      <input class="field" id="keyword" type="text" maxlength="80"
+             placeholder="مثلاً قرارداد اجاره تجاری، مدیریت زمان، لیزر پوست">
+      <p class="hint">اگر خالی بماند، موضوع از حوزه‌ی انتخابی شما انتخاب می‌شود.</p>
+    </div>
+
+    <div class="actions">
+      <button class="go" id="go">تولید نمونه</button>
+      <p class="note">این پیوند یک‌بارمصرف است و پس از تولید مقاله بسته می‌شود.</p>
+    </div>
+  </div>
+
+  <div id="log">
+    <div class="log-head"><span>در حال تولید</span><span class="log-time" id="log-time"></span></div>
+    <div class="log-rule"><i id="log-bar"></i></div>
+    <ol class="stages" id="stages">
+      <li data-k="10">بررسی و گردآوری منابع معتبر</li>
+      <li data-k="30">تحلیل محتوای منابع</li>
+      <li data-k="45">استخراج کلیدواژه‌های هدف</li>
+      <li data-k="55">نگارش مقاله</li>
+      <li data-k="88">افزودن منابع و تصویر</li>
+    </ol>
+    <p class="log-foot">نگارش، طولانی‌ترین مرحله است و حدود دو تا سه دقیقه طول می‌کشد.
+      لطفاً صفحه را نبندید.</p>
+  </div>
+
+  <div id="result"></div>
+
+  <footer>
+    <span>سامانه تولید محتوای سئو</span>
+    <span>نسخه نمایشی</span>
+  </footer>
+</div>
+
+<script>
+const API = (window.DEMO_API_BASE || "").replace(/\/$/, "");
+// توکنِ پیوندِ یک‌بارمصرف: ?t=XXXX — کاربر هیچ کدی وارد نمی‌کند
+const TOKEN = (new URLSearchParams(location.search).get("t") || "").trim();
+
+const NICHES = [
+  {id:"business",   label:"کسب‌وکار و مدیریت"},
+  {id:"tech",       label:"فناوری و هوش مصنوعی"},
+  {id:"medical",    label:"پزشکی و سلامت"},
+  {id:"beauty",     label:"زیبایی و پوست"},
+  {id:"legal",      label:"حقوقی"},
+  {id:"realestate", label:"املاک"},
+  {id:"finance",    label:"مالی و سرمایه‌گذاری"},
+  {id:"education",  label:"آموزش"},
+];
+
+let selectedNiche = null;
+let selectedType = "tutorial";
+
+const nichesEl = document.getElementById("niches");
+NICHES.forEach(n => {
+  const el = document.createElement("div");
+  el.className = "opt";
+  el.setAttribute("role", "button");
+  el.setAttribute("tabindex", "0");
+  el.setAttribute("aria-pressed", "false");
+  el.textContent = n.label;
+  const pick = () => {
+    nichesEl.querySelectorAll(".opt").forEach(o => o.setAttribute("aria-pressed", "false"));
+    el.setAttribute("aria-pressed", "true");
+    selectedNiche = n.id;
+  };
+  el.onclick = pick;
+  el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } };
+  nichesEl.appendChild(el);
+});
+
+document.querySelectorAll(".types .opt").forEach(el => {
+  const pick = () => {
+    document.querySelectorAll(".types .opt").forEach(o => o.setAttribute("aria-pressed", "false"));
+    el.setAttribute("aria-pressed", "true");
+    selectedType = el.dataset.type;
+  };
+  el.onclick = pick;
+  el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } };
+});
+
+const go = document.getElementById("go");
+const formEl = document.getElementById("form-panel");
+const logEl = document.getElementById("log");
+const resultEl = document.getElementById("result");
+const stagesEl = document.getElementById("stages");
+const BTN = "تولید نمونه";
+
+const fa = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+
+// مراحل را از درصدِ واقعیِ سرور به وضعیتِ done / now ترجمه می‌کند
+function paintStages(percent){
+  const items = [...stagesEl.children];
+  let active = 0;
+  items.forEach((li, i) => { if (percent >= +li.dataset.k) active = i; });
+  items.forEach((li, i) => {
+    li.dataset.state = i < active ? "done" : (i === active ? "now" : "");
+  });
+  document.getElementById("log-bar").style.width = Math.min(percent, 99) + "%";
+}
+
+let timerId = null;
+function startTimer(){
+  const t0 = Date.now();
+  const el = document.getElementById("log-time");
+  const tick = () => {
+    const s = Math.floor((Date.now() - t0) / 1000);
+    el.textContent = fa(String(Math.floor(s / 60)).padStart(2, "0")) + ":" + fa(String(s % 60).padStart(2, "0"));
+  };
+  tick();
+  timerId = setInterval(tick, 1000);
+}
+
+function showArticle(html){
+  if (timerId) clearInterval(timerId);
+  formEl.style.display = "none";
+  logEl.style.display = "none";
+  resultEl.innerHTML = `
+    <div class="frame-wrap"><iframe id="artframe" title="مقاله تولیدشده"></iframe></div>
+    <div class="after">
+      <p>این مقاله همین حالا و تنها برای شما نوشته شد.</p>
+      <a class="link" href="https://sagharnazari.ir/" target="_blank" rel="noopener">ادامه همکاری</a>
+    </div>`;
+  resultEl.style.display = "block";
+  const f = document.getElementById("artframe");
+  f.srcdoc = html;
+  f.onload = () => {
+    try{
+      const h = f.contentDocument.body.scrollHeight;
+      if (h > 200) f.style.height = (h + 40) + "px";
+    }catch(e){}
+  };
+  resultEl.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function message(title, body, cta){
+  if (timerId) clearInterval(timerId);
+  formEl.style.display = "none";
+  logEl.style.display = "none";
+  resultEl.innerHTML = `<div class="msg"><h3>${title}</h3><p>${body}</p>${
+    cta ? `<a class="link" href="https://sagharnazari.ir/" target="_blank" rel="noopener">${cta}</a>` : ""}</div>`;
+  resultEl.style.display = "block";
+}
+
+function showError(msg){
+  if (timerId) clearInterval(timerId);
+  logEl.style.display = "none";
+  formEl.style.display = "";
+  resultEl.innerHTML = `<div class="msg"><h3>تولید انجام نشد</h3><p>${msg}</p></div>`;
+  resultEl.style.display = "block";
+  resultEl.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+const showUsed = () => message(
+  "این پیوند پیش‌تر استفاده شده است",
+  "هر پیوند یک مقاله تولید می‌کند. برای دریافت مقاله‌های بیشتر، اشتراک را فعال کنید.",
+  "فعال‌سازی اشتراک");
+
+const showInvalid = () => message(
+  "این پیوند معتبر نیست",
+  "لطفاً از همان نشانی‌ای که برای شما ارسال شده استفاده کنید.");
+
+async function poll(jobId){
+  while (true){
+    await new Promise(r => setTimeout(r, 3000));
+    let d;
+    try{
+      d = await (await fetch(`${API}/api/job/${jobId}`)).json();
+    }catch(e){ continue; }
+    if (!d.ok){ showError("ارتباط با سرور قطع شد."); return; }
+    if (typeof d.percent === "number") paintStages(d.percent);
+    if (d.status === "done"){ showArticle(d.html); return; }
+    if (d.status === "error"){ showError(d.error || "خطایی رخ داد."); return; }
+  }
+}
+
+go.onclick = async () => {
+  const keyword = document.getElementById("keyword").value.trim();
+
+  if (!selectedNiche && !keyword){
+    alert("لطفاً حوزه‌ی کاری خود را انتخاب کنید یا یک موضوع بنویسید.");
+    return;
+  }
+
+  go.disabled = true;
+  go.textContent = "در حال تولید…";
+  resultEl.style.display = "none";
+  logEl.style.display = "block";
+  paintStages(5);
+  startTimer();
+  logEl.scrollIntoView({behavior:"smooth", block:"center"});
+
+  try{
+    const res = await fetch(`${API}/api/generate`, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({niche:selectedNiche || "", content_type:selectedType, keyword, token: TOKEN})
+    });
+    const d = await res.json();
+    if (!d.ok){
+      if (d.used) showUsed();
+      else showError(d.error || "درخواست آغاز نشد.");
+      return;
+    }
+    await poll(d.job_id);
+  }catch(e){
+    showError("ارتباط برقرار نشد. لطفاً دوباره تلاش کنید.");
+  }finally{
+    go.disabled = false;
+    go.textContent = BTN;
+  }
+};
+
+// ── آغاز: پیش از نمایشِ فرم، اعتبارِ پیوند را بررسی کن ─────────────────────
+(async () => {
+  if (!TOKEN){ showInvalid(); return; }
+  try{
+    const d = await (await fetch(`${API}/api/token/${encodeURIComponent(TOKEN)}`)).json();
+    if (d.state === "used"){
+      if (d.html) showArticle(d.html); else showUsed();
+      return;
+    }
+    if (d.state !== "valid"){ showInvalid(); return; }
+  }catch(e){
+    message("ارتباط برقرار نشد", "لطفاً صفحه را دوباره باز کنید.");
+  }
+})();
+</script>
+</body>
+</html>

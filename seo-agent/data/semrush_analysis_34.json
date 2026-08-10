@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "ai customer support chatbot",
+    "artificial intelligence talk to",
+    "ai powered chatbot platforms",
+    "what is a chatbot"
+  ],
+  "per_kw": {
+    "ai customer support chatbot": {
+      "volume": 320,
+      "kd": 54.0,
+      "competition": 0.66
+    },
+    "artificial intelligence talk to": {
+      "volume": 22200,
+      "kd": 66.0,
+      "competition": 0.19
+    },
+    "ai powered chatbot platforms": {
+      "volume": 74000,
+      "kd": 70.0,
+      "competition": 0.33
+    },
+    "what is a chatbot": {
+      "volume": 74000,
+      "kd": 70.0,
+      "competition": 0.1
+    }
+  },
+  "avg_kd": 65.0,
+  "verdict": "WEAK",
+  "notes": "میانگین KD=65.0 (سقف 40). داده از SEMrush API دیتابیس us."
+}

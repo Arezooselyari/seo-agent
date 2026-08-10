@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "client-demo",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "uvicorn", "src.client_demo:app", "--host", "127.0.0.1", "--port", "8078", "--app-dir", "seo-agent"],
+      "port": 8078
+    },
+    {
+      "name": "seo-demo",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "uvicorn", "src.demo_api:app", "--host", "127.0.0.1", "--port", "8077"],
+      "port": 8077
+    }
+  ]
+}

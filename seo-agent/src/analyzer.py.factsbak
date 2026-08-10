@@ -1,0 +1,68 @@
+"""گام ۲ — تحلیل سئوی مقالات رقیب با Haiku و ساخت بریف رقابتی."""
+from . import llm
+
+ANALYSIS_PROMPT = """مقاله‌ی زیر را از نظر سئو تحلیل کن و فقط JSON با این ساختار برگردان:
+{{
+  "primary_keyword": "کلیدواژه‌ی اصلی (انگلیسی)",
+  "lsi_keywords": ["کلیدواژه‌های مرتبط معنایی"],
+  "search_intent": "informational | comparison | transactional",
+  "headings": ["ساختار سرفصل‌های مقاله به ترتیب"],
+  "strengths": ["نقاط قوت محتوایی"],
+  "gaps": ["خلأهای محتوا — آنچه پوشش نداده"],
+  "facts": ["آمار و داده‌های قابل استناد با ذکر مقدار دقیق"]
+}}
+
+عنوان: {title}
+منبع: {source}
+
+متن مقاله:
+{text}"""
+
+
+def analyze_article(article: dict) -> dict:
+    result = llm.ask(
+        step="seo_analysis",
+        user_content=ANALYSIS_PROMPT.format(
+            title=article["title"], source=article["source"], text=article["text"]
+        ),
+        model_tier="cheap",
+        max_tokens=2048,
+    )
+    result["source_url"] = article["url"]
+    result["source_title"] = article["title"]
+    return result
+
+
+def build_brief(topic: str, analyses: list[dict]) -> dict:
+    """ادغام تحلیل‌ها در یک بریف رقابتی واحد — کد خالص، بدون LLM."""
+    lsi, gaps, facts, headings, sources = set(), [], [], [], []
+    for a in analyses:
+        lsi.update(a.get("lsi_keywords", []))
+        gaps.extend(a.get("gaps", []))
+        facts.extend(a.get("facts", []))
+        headings.append({"title": a["source_title"], "headings": a.get("headings", [])})
+        sources.append(a["source_url"])
+    intents = [a.get("search_intent", "informational") for a in analyses]
+    return {
+        "topic": topic,
+        "primary_keywords": [a.get("primary_keyword", "") for a in analyses],
+        "lsi_keywords": sorted(lsi),
+        "search_intent": max(set(intents), key=intents.count),
+        "competitor_headings": headings,
+        "content_gaps": gaps,
+        "citable_facts": facts,
+        "source_urls": sources,
+    }
+
+
+def analyze(topic: str, articles: list[dict]) -> dict:
+    analyses = []
+    for art in articles:
+        try:
+            analyses.append(analyze_article(art))
+            print(f"[analyzer] ✓ تحلیل شد: {art['title'][:60]}")
+        except Exception as e:
+            print(f"[analyzer] ✗ خطا در تحلیل {art['url']}: {e}")
+    if not analyses:
+        raise RuntimeError("هیچ مقاله‌ای با موفقیت تحلیل نشد")
+    return build_brief(topic, analyses)

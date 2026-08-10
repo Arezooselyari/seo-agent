@@ -1,0 +1,1974 @@
+{
+  "چت‌بات هوش مصنوعی برای پشتیبانی مشتریان": {
+    "primary": "customer service platform",
+    "primary_fa": "پلتفرم خدمات مشتریان",
+    "secondary": [
+      "trend assist ai",
+      "ada chatbot features and pricing"
+    ],
+    "longtail": [
+      "which customer support ai can process refunds",
+      "how to handle customer support at scale with ai",
+      "how to reduce customer support costs with ai"
+    ],
+    "per_kw": {
+      "ai customer support": {
+        "volume": 2900,
+        "kd": null,
+        "cpc": 46.0
+      },
+      "forethought": {
+        "volume": 8100,
+        "kd": 50.0,
+        "cpc": 18.47
+      },
+      "ai customer service": {
+        "volume": 6600,
+        "kd": 85.0,
+        "cpc": 53.62
+      },
+      "ai for customer service": {
+        "volume": 4400,
+        "kd": 83.0,
+        "cpc": 53.62
+      },
+      "ai helpline": {
+        "volume": 3600,
+        "kd": 50.0,
+        "cpc": 1.58
+      },
+      "ai in customer service": {
+        "volume": 2900,
+        "kd": 70.0,
+        "cpc": 53.62
+      },
+      "customer service ai": {
+        "volume": 2400,
+        "kd": 70.0,
+        "cpc": 53.62
+      },
+      "ai assistance online": {
+        "volume": 1600,
+        "kd": 92.0,
+        "cpc": 3.78
+      },
+      "ai chatbot customer service": {
+        "volume": 1600,
+        "kd": 54.0,
+        "cpc": 79.21
+      },
+      "artificial intelligence customer service": {
+        "volume": 1600,
+        "kd": 81.0,
+        "cpc": 53.62
+      },
+      "customer service platform": {
+        "volume": 1600,
+        "kd": 35.0,
+        "cpc": 42.71
+      },
+      "trend assist ai": {
+        "volume": 1600,
+        "kd": 19.0,
+        "cpc": 6.57
+      },
+      "ada chatbot features and pricing": {
+        "volume": 1300,
+        "kd": 26.0,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "customer service platform": "پلتفرم خدمات مشتریان",
+      "trend assist ai": "هوش مصنوعی تحلیل ترند",
+      "ada chatbot features and pricing": "ویژگی‌ها و قیمت‌گذاری چت‌بات آدا"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "اتوماسیون هوش مصنوعی برای کسب‌وکارهای کوچک": {
+    "primary": "ai automation for small businesses",
+    "primary_fa": "اتوماسیون هوش مصنوعی برای کسب‌وکارهای کوچک",
+    "secondary": [
+      "ai business solutions",
+      "best ai tools for business",
+      "ai tools for business"
+    ],
+    "longtail": [
+      "is ai marketing automation affordable for small businesses",
+      "how ai agents automate customer service for small businesses",
+      "how ai automates social media engagement for small businesses"
+    ],
+    "per_kw": {
+      "ai automation for small businesses": {
+        "volume": 170,
+        "kd": null,
+        "cpc": 9.6
+      },
+      "ai automation": {
+        "volume": 9900,
+        "kd": 66.0,
+        "cpc": 9.44
+      },
+      "ai for business": {
+        "volume": 4400,
+        "kd": 77.0,
+        "cpc": 14.5
+      },
+      "ai business": {
+        "volume": 2900,
+        "kd": 76.0,
+        "cpc": 14.5
+      },
+      "ai in business": {
+        "volume": 2900,
+        "kd": 77.0,
+        "cpc": 14.5
+      },
+      "ai tools for business": {
+        "volume": 2900,
+        "kd": 54.0,
+        "cpc": 21.49
+      },
+      "best ai tools for business": {
+        "volume": 2900,
+        "kd": 43.0,
+        "cpc": 12.15
+      },
+      "ai for small business": {
+        "volume": 2400,
+        "kd": 62.0,
+        "cpc": 8.93
+      },
+      "artificial intelligence in business": {
+        "volume": 2400,
+        "kd": 68.0,
+        "cpc": 14.5
+      },
+      "ai and business": {
+        "volume": 1900,
+        "kd": 73.0,
+        "cpc": 14.5
+      },
+      "ai business solutions": {
+        "volume": 1900,
+        "kd": 41.0,
+        "cpc": 16.37
+      },
+      "artificial intelligence for business": {
+        "volume": 1900,
+        "kd": 72.0,
+        "cpc": 14.5
+      },
+      "business in artificial intelligence": {
+        "volume": 1900,
+        "kd": 70.0,
+        "cpc": 14.5
+      }
+    },
+    "fa_map": {
+      "ai automation for small businesses": "اتوماسیون هوش مصنوعی برای کسب‌وکارهای کوچک",
+      "ai business solutions": "راهکارهای هوش مصنوعی برای کسب‌وکار",
+      "best ai tools for business": "بهترین ابزارهای هوش مصنوعی برای کسب‌وکار",
+      "ai tools for business": "ابزارهای هوش مصنوعی برای کسب‌وکار"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "اتوماسیون ایمیل مارکتینگ با هوش مصنوعی": {
+    "primary": "ai email marketing automation",
+    "primary_fa": "اتوماسیون ایمیل مارکتینگ با هوش مصنوعی",
+    "secondary": [
+      "mailchimp news",
+      "mailchimp pricing",
+      "program for email marketing"
+    ],
+    "longtail": [
+      "how will ai affect email and marketing automation"
+    ],
+    "per_kw": {
+      "ai email marketing automation": {
+        "volume": 30,
+        "kd": null,
+        "cpc": 18.9
+      },
+      "mailchimp": {
+        "volume": 368000,
+        "kd": 74.0,
+        "cpc": 6.5
+      },
+      "email marketing software": {
+        "volume": 201000,
+        "kd": 72.0,
+        "cpc": 23.47
+      },
+      "mailchimp login": {
+        "volume": 60500,
+        "kd": 69.0,
+        "cpc": 2.92
+      },
+      "mail chimp": {
+        "volume": 27100,
+        "kd": 85.0,
+        "cpc": 0.0
+      },
+      "email marketing platforms": {
+        "volume": 14800,
+        "kd": 73.0,
+        "cpc": 24.69
+      },
+      "mailchimp news": {
+        "volume": 14800,
+        "kd": 58.0,
+        "cpc": 0.0
+      },
+      "email marketing services": {
+        "volume": 12100,
+        "kd": 73.0,
+        "cpc": 19.34
+      },
+      "mailchimp mailchimp mailchimp": {
+        "volume": 9900,
+        "kd": 76.0,
+        "cpc": 6.5
+      },
+      "mailchimp pricing": {
+        "volume": 8100,
+        "kd": 59.0,
+        "cpc": 8.18
+      },
+      "email marketing tools": {
+        "volume": 5400,
+        "kd": 71.0,
+        "cpc": 22.02
+      },
+      "program for email marketing": {
+        "volume": 5400,
+        "kd": 59.0,
+        "cpc": 23.47
+      },
+      "email marketing platform": {
+        "volume": 4400,
+        "kd": 66.0,
+        "cpc": 24.69
+      }
+    },
+    "fa_map": {
+      "ai email marketing automation": "اتوماسیون ایمیل مارکتینگ با هوش مصنوعی",
+      "mailchimp news": "اخبار میل‌چیمپ",
+      "mailchimp pricing": "هزینه و تعرفه‌های میل‌چیمپ",
+      "program for email marketing": "نرم‌افزار ایمیل مارکتینگ"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "هوش مصنوعی در اتوماسیون حسابداری کسب‌وکارهای کوچک": {
+    "primary": "will ai replace accountants",
+    "primary_fa": "آیا هوش مصنوعی جایگزین حسابداران می‌شود",
+    "secondary": [
+      "trullion",
+      "digits",
+      "ai accounting software"
+    ],
+    "longtail": [
+      "how to use ai to automate insurance account manager job",
+      "what ai forecasting tools offer automated data syncing with accounting",
+      "what are ai agents accounts payable automation"
+    ],
+    "per_kw": {
+      "ai accounting automation": {
+        "volume": 140,
+        "kd": null,
+        "cpc": 14.61
+      },
+      "digit": {
+        "volume": 18100,
+        "kd": 69.0,
+        "cpc": 3.26
+      },
+      "digits": {
+        "volume": 18100,
+        "kd": 54.0,
+        "cpc": 3.26
+      },
+      "accounting ai": {
+        "volume": 2900,
+        "kd": 60.0,
+        "cpc": 7.71
+      },
+      "ai accounting": {
+        "volume": 2900,
+        "kd": 59.0,
+        "cpc": 7.71
+      },
+      "ai in accounting": {
+        "volume": 2900,
+        "kd": 71.0,
+        "cpc": 7.71
+      },
+      "will ai replace accountants": {
+        "volume": 2400,
+        "kd": 34.0,
+        "cpc": 1.62
+      },
+      "accounting platforms": {
+        "volume": 1900,
+        "kd": 79.0,
+        "cpc": 18.71
+      },
+      "ai accounting software": {
+        "volume": 1900,
+        "kd": 58.0,
+        "cpc": 16.44
+      },
+      "ai for accounting": {
+        "volume": 1900,
+        "kd": 58.0,
+        "cpc": 7.71
+      },
+      "software for accounts": {
+        "volume": 1900,
+        "kd": 90.0,
+        "cpc": 18.71
+      },
+      "accounting and ai": {
+        "volume": 1600,
+        "kd": 70.0,
+        "cpc": 7.71
+      },
+      "trullion": {
+        "volume": 1600,
+        "kd": 41.0,
+        "cpc": 8.88
+      }
+    },
+    "fa_map": {
+      "will ai replace accountants": "آیا هوش مصنوعی جایگزین حسابداران می‌شود",
+      "trullion": "ترولیون",
+      "digits": "دیجیتس",
+      "ai accounting software": "نرم‌افزار حسابداری هوش مصنوعی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "مدیریت موجودی انبار با هوش مصنوعی": {
+    "primary": "inventory optimization software",
+    "primary_fa": "نرم‌افزار بهینه‌سازی موجودی",
+    "secondary": [
+      "inventory intelligence ai",
+      "visionary inventory generative ai and machine learning integration",
+      "inventory optimization tools"
+    ],
+    "longtail": [
+      "how is ai used in inventory management",
+      "what are the benefits of ai in inventory management",
+      "how ai improves medical inventory management"
+    ],
+    "per_kw": {
+      "ai inventory management": {
+        "volume": 1900,
+        "kd": null,
+        "cpc": 16.66
+      },
+      "inventory optimization software": {
+        "volume": 1300,
+        "kd": 26.0,
+        "cpc": 22.51
+      },
+      "ai for inventory management": {
+        "volume": 590,
+        "kd": 43.0,
+        "cpc": 14.87
+      },
+      "ai inventory management software": {
+        "volume": 590,
+        "kd": 55.0,
+        "cpc": 25.64
+      },
+      "inventory intelligence ai": {
+        "volume": 590,
+        "kd": 19.0,
+        "cpc": 0.0
+      },
+      "visionary inventory generative ai and machine learning integration": {
+        "volume": 480,
+        "kd": 0.0,
+        "cpc": 0.0
+      },
+      "inventory optimization tools": {
+        "volume": 390,
+        "kd": 4.0,
+        "cpc": 15.14
+      },
+      "ai in inventory management": {
+        "volume": 320,
+        "kd": 43.0,
+        "cpc": 14.87
+      },
+      "ai order management": {
+        "volume": 320,
+        "kd": 38.0,
+        "cpc": 18.46
+      },
+      "automated inventory operations": {
+        "volume": 320,
+        "kd": 20.0,
+        "cpc": 0.0
+      },
+      "inventory management software news": {
+        "volume": 320,
+        "kd": 16.0,
+        "cpc": 0.0
+      },
+      "artificial intelligence in inventory management": {
+        "volume": 260,
+        "kd": 30.0,
+        "cpc": 14.87
+      },
+      "ai inventory": {
+        "volume": 210,
+        "kd": 49.0,
+        "cpc": 18.1
+      }
+    },
+    "fa_map": {
+      "inventory optimization software": "نرم‌افزار بهینه‌سازی موجودی",
+      "inventory intelligence ai": "هوش مصنوعی تحلیل موجودی",
+      "visionary inventory generative ai and machine learning integration": "یکپارچه‌سازی هوش مصنوعی مولد و یادگیری ماشین در مدیریت موجودی",
+      "inventory optimization tools": "ابزارهای بهینه‌سازی موجودی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "تولید سرنخ فروش با هوش مصنوعی": {
+    "primary": "siemless",
+    "primary_fa": "یکپارچه",
+    "secondary": [
+      "lead generation website",
+      "seamlessly",
+      "lead generation tools"
+    ],
+    "longtail": [
+      "what are the leading generative ai features for creators",
+      "how to use ai for lead generation",
+      "how to use ai to generate leads"
+    ],
+    "per_kw": {
+      "ai lead generation": {
+        "volume": 2900,
+        "kd": null,
+        "cpc": 13.56
+      },
+      "seamless": {
+        "volume": 110000,
+        "kd": 80.0,
+        "cpc": 1.98
+      },
+      "seamless ai": {
+        "volume": 14800,
+        "kd": 64.0,
+        "cpc": 12.49
+      },
+      "seamless gutter installation": {
+        "volume": 8100,
+        "kd": 64.0,
+        "cpc": 14.94
+      },
+      "seamlessly": {
+        "volume": 8100,
+        "kd": 46.0,
+        "cpc": 1.98
+      },
+      "siemless": {
+        "volume": 8100,
+        "kd": 27.0,
+        "cpc": 1.98
+      },
+      "seemless": {
+        "volume": 6600,
+        "kd": 52.0,
+        "cpc": 1.98
+      },
+      "seamless.ai": {
+        "volume": 4400,
+        "kd": 54.0,
+        "cpc": 12.49
+      },
+      "lead generation tools": {
+        "volume": 3600,
+        "kd": 46.0,
+        "cpc": 18.09
+      },
+      "seamlessai": {
+        "volume": 2900,
+        "kd": 69.0,
+        "cpc": 12.49
+      },
+      "lead generation website": {
+        "volume": 1900,
+        "kd": 41.0,
+        "cpc": 14.88
+      },
+      "lead generators": {
+        "volume": 1600,
+        "kd": 48.0,
+        "cpc": 13.2
+      },
+      "lead generation tool": {
+        "volume": 1300,
+        "kd": 51.0,
+        "cpc": 18.09
+      }
+    },
+    "fa_map": {
+      "siemless": "یکپارچه",
+      "lead generation website": "سایت جذب لید",
+      "seamlessly": "به‌صورت یکپارچه",
+      "lead generation tools": "ابزارهای جذب مشتری راغب"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "ابزارهای بازاریابی محتوا با هوش مصنوعی": {
+    "primary": "copy ai",
+    "primary_fa": "کپی‌رایتینگ با هوش مصنوعی",
+    "secondary": [
+      "marketing automation software",
+      "marketing tools",
+      "copy artificial intelligence"
+    ],
+    "longtail": [
+      "how to use ai tools to boost content marketing productivitysports",
+      "how ai tools automate performance reporting for marketing content",
+      "how do ai content marketing tools compare in pricing"
+    ],
+    "per_kw": {
+      "ai content marketing tools": {
+        "volume": 320,
+        "kd": null,
+        "cpc": 17.37
+      },
+      "jasper": {
+        "volume": 110000,
+        "kd": 83.0,
+        "cpc": 2.53
+      },
+      "jasper ai": {
+        "volume": 22200,
+        "kd": 73.0,
+        "cpc": 4.12
+      },
+      "blaze ai": {
+        "volume": 12100,
+        "kd": 65.0,
+        "cpc": 4.89
+      },
+      "ai marketing": {
+        "volume": 9900,
+        "kd": 82.0,
+        "cpc": 9.87
+      },
+      "ai marketing tools": {
+        "volume": 6600,
+        "kd": 61.0,
+        "cpc": 10.02
+      },
+      "copi": {
+        "volume": 6600,
+        "kd": 63.0,
+        "cpc": 1.6
+      },
+      "ai in marketing": {
+        "volume": 5400,
+        "kd": 80.0,
+        "cpc": 9.89
+      },
+      "ai powered content creation platform": {
+        "volume": 5400,
+        "kd": 73.0,
+        "cpc": 0.0
+      },
+      "copy ai": {
+        "volume": 5400,
+        "kd": 40.0,
+        "cpc": 4.78
+      },
+      "marketing automation software": {
+        "volume": 5400,
+        "kd": 52.0,
+        "cpc": 22.19
+      },
+      "marketing tools": {
+        "volume": 5400,
+        "kd": 53.0,
+        "cpc": 8.49
+      },
+      "copy artificial intelligence": {
+        "volume": 4400,
+        "kd": 53.0,
+        "cpc": 4.78
+      }
+    },
+    "fa_map": {
+      "copy ai": "کپی‌رایتینگ با هوش مصنوعی",
+      "marketing automation software": "نرم‌افزار اتوماسیون بازاریابی",
+      "marketing tools": "ابزارهای بازاریابی",
+      "copy artificial intelligence": "هوش مصنوعی تولید محتوا"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "CRM هوشمند برای کسب‌وکارهای کوچک": {
+    "primary": "ai crm for small business",
+    "primary_fa": "نرم‌افزار مدیریت ارتباط با مشتری هوشمند برای کسب‌وکارهای کوچک",
+    "secondary": [],
+    "longtail": [
+      "how much does ai crm implementation cost for small business",
+      "is it ai crm for small business e-commerce"
+    ],
+    "per_kw": {
+      "ai crm for small business": {
+        "volume": 30,
+        "kd": null,
+        "cpc": 25.19
+      }
+    },
+    "fa_map": {
+      "ai crm for small business": "نرم‌افزار مدیریت ارتباط با مشتری هوشمند برای کسب‌وکارهای کوچک"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "مدیریت شبکه‌های اجتماعی با هوش مصنوعی": {
+    "primary": "ai social media management",
+    "primary_fa": "مدیریت شبکه‌های اجتماعی با هوش مصنوعی",
+    "secondary": [
+      "buffer application",
+      "social media management platforms",
+      "blaze ai"
+    ],
+    "longtail": [
+      "can ai manage my social media",
+      "how to use ai to manage social media",
+      "will ai replace social media managers"
+    ],
+    "per_kw": {
+      "ai social media management": {
+        "volume": 210,
+        "kd": null,
+        "cpc": 9.95
+      },
+      "buffer": {
+        "volume": 74000,
+        "kd": 80.0,
+        "cpc": 1.27
+      },
+      "hootsuite": {
+        "volume": 49500,
+        "kd": 75.0,
+        "cpc": 5.48
+      },
+      "later": {
+        "volume": 49500,
+        "kd": 72.0,
+        "cpc": 4.04
+      },
+      "blaze ai": {
+        "volume": 12100,
+        "kd": 65.0,
+        "cpc": 4.89
+      },
+      "business suite": {
+        "volume": 12100,
+        "kd": 73.0,
+        "cpc": 10.28
+      },
+      "ai marketing": {
+        "volume": 9900,
+        "kd": 82.0,
+        "cpc": 9.87
+      },
+      "social media management tools": {
+        "volume": 9900,
+        "kd": 74.0,
+        "cpc": 10.58
+      },
+      "buffer app": {
+        "volume": 6600,
+        "kd": 77.0,
+        "cpc": 1.27
+      },
+      "buffer application": {
+        "volume": 6600,
+        "kd": 60.0,
+        "cpc": 1.27
+      },
+      "ai powered content creation platform": {
+        "volume": 5400,
+        "kd": 73.0,
+        "cpc": 0.0
+      },
+      "buffer social media": {
+        "volume": 5400,
+        "kd": 71.0,
+        "cpc": 2.03
+      },
+      "social media management platforms": {
+        "volume": 5400,
+        "kd": 61.0,
+        "cpc": 12.63
+      }
+    },
+    "fa_map": {
+      "ai social media management": "مدیریت شبکه‌های اجتماعی با هوش مصنوعی",
+      "buffer application": "اپلیکیشن بافر",
+      "social media management platforms": "پلتفرم‌های مدیریت شبکه‌های اجتماعی",
+      "blaze ai": "بلیز ای‌آی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "اتوماسیون واتساپ بیزینس برای فروش": {
+    "primary": "whatsapp business api south africa provider automated notifications",
+    "primary_fa": "ارائه‌دهنده واتس‌اپ بیزینس API در آفریقای جنوبی برای ارسال پیام‌های خودکار",
+    "secondary": [
+      "manychat whatsapp",
+      "api whatsapp",
+      "whatsapp bot"
+    ],
+    "longtail": [
+      "how to automate whatsapp business",
+      "how to automate whatsapp business messages",
+      "how to automate whatsapp marketing campaigns for retail businesses"
+    ],
+    "per_kw": {
+      "whatsapp business automation": {
+        "volume": 30,
+        "kd": null,
+        "cpc": 7.17
+      },
+      "whatsapp api updates": {
+        "volume": 5400,
+        "kd": 56.0,
+        "cpc": 0.0
+      },
+      "whatsapp api": {
+        "volume": 3600,
+        "kd": 67.0,
+        "cpc": 5.37
+      },
+      "whatsapp business api": {
+        "volume": 2900,
+        "kd": 62.0,
+        "cpc": 6.11
+      },
+      "whatsapp ai": {
+        "volume": 1600,
+        "kd": 86.0,
+        "cpc": 2.69
+      },
+      "link api whatsapp": {
+        "volume": 1000,
+        "kd": 57.0,
+        "cpc": 2.62
+      },
+      "whatsapp bot": {
+        "volume": 1000,
+        "kd": 47.0,
+        "cpc": 3.64
+      },
+      "whatsapp business api south africa provider automated notifications": {
+        "volume": 1000,
+        "kd": 1.0,
+        "cpc": 0.0
+      },
+      "whatsapp chatbot": {
+        "volume": 880,
+        "kd": 56.0,
+        "cpc": 4.84
+      },
+      "api whatsapp": {
+        "volume": 720,
+        "kd": 46.0,
+        "cpc": 4.02
+      },
+      "manychat whatsapp": {
+        "volume": 720,
+        "kd": 41.0,
+        "cpc": 6.29
+      },
+      "whatsapp api business": {
+        "volume": 720,
+        "kd": 49.0,
+        "cpc": 6.11
+      },
+      "whatsapp business platform": {
+        "volume": 720,
+        "kd": 49.0,
+        "cpc": 6.87
+      }
+    },
+    "fa_map": {
+      "whatsapp business api south africa provider automated notifications": "ارائه‌دهنده واتس‌اپ بیزینس API در آفریقای جنوبی برای ارسال پیام‌های خودکار",
+      "manychat whatsapp": "اتصال منی‌چت به واتس‌اپ",
+      "api whatsapp": "ای‌پی‌آی واتس‌اپ",
+      "whatsapp bot": "بات واتس‌اپ"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "دستیار صوتی هوش مصنوعی برای کسب‌وکار": {
+    "primary": "ai voice assistant for business",
+    "primary_fa": "دستیار صوتی هوشمند برای کسب‌وکار",
+    "secondary": [
+      "zoom ai companion",
+      "ai-powered digital assistants",
+      "voiceflow"
+    ],
+    "longtail": [
+      "which ai voice assistant is best for small businesses",
+      "how to choose a multilingual ai voice assistant for business",
+      "how to choose an ai voice assistant for business"
+    ],
+    "per_kw": {
+      "ai voice assistant for business": {
+        "volume": 30,
+        "kd": null,
+        "cpc": 13.65
+      },
+      "lindy": {
+        "volume": 18100,
+        "kd": 70.0,
+        "cpc": 3.31
+      },
+      "voice ai": {
+        "volume": 14800,
+        "kd": 93.0,
+        "cpc": 2.0
+      },
+      "retell ai": {
+        "volume": 12100,
+        "kd": 71.0,
+        "cpc": 4.48
+      },
+      "lindy ai": {
+        "volume": 8100,
+        "kd": 66.0,
+        "cpc": 2.62
+      },
+      "voiceflow": {
+        "volume": 6600,
+        "kd": 58.0,
+        "cpc": 7.19
+      },
+      "hume ai": {
+        "volume": 5400,
+        "kd": 67.0,
+        "cpc": 1.1
+      },
+      "zoom ai companion": {
+        "volume": 5400,
+        "kd": 49.0,
+        "cpc": 2.8
+      },
+      "ai-powered digital assistants": {
+        "volume": 4400,
+        "kd": 56.0,
+        "cpc": 0.0
+      },
+      "conversational ai platform": {
+        "volume": 4400,
+        "kd": 65.0,
+        "cpc": 16.43
+      },
+      "lindy.ai": {
+        "volume": 4400,
+        "kd": 78.0,
+        "cpc": 2.62
+      },
+      "retell": {
+        "volume": 4400,
+        "kd": 65.0,
+        "cpc": 3.04
+      },
+      "voice.ai": {
+        "volume": 4400,
+        "kd": 100.0,
+        "cpc": 2.0
+      }
+    },
+    "fa_map": {
+      "ai voice assistant for business": "دستیار صوتی هوشمند برای کسب‌وکار",
+      "zoom ai companion": "هوش مصنوعی زوم",
+      "ai-powered digital assistants": "دستیارهای دیجیتال هوشمند",
+      "voiceflow": "ویس‌فلو"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "اتوماسیون ورود داده با هوش مصنوعی": {
+    "primary": "ai data entry automation",
+    "primary_fa": "اتوماسیون ورود داده با هوش مصنوعی",
+    "secondary": [],
+    "longtail": [
+      "how can ai reduce manual entry by automating data population",
+      "can ai automate complex data entry tasks",
+      "does hubspot ai automate crm data entry"
+    ],
+    "per_kw": {
+      "ai data entry automation": {
+        "volume": 30,
+        "kd": null,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai data entry automation": "اتوماسیون ورود داده با هوش مصنوعی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "چت‌بات هوش مصنوعی برای رستوران‌ها": {
+    "primary": "ai chatbot for restaurants",
+    "primary_fa": "چت‌بات هوش مصنوعی برای رستوران",
+    "secondary": [],
+    "longtail": [
+      "how to use ai chatbots for restaurant customer engagement uk"
+    ],
+    "per_kw": {
+      "ai chatbot for restaurants": {
+        "volume": 20,
+        "kd": null,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai chatbot for restaurants": "چت‌بات هوش مصنوعی برای رستوران"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "چت‌بات هوش مصنوعی برای رستوران‌ها (تست v2)": {
+    "primary": "ai chatbot for restaurants",
+    "primary_fa": "چت‌بات هوش مصنوعی برای رستوران",
+    "secondary": [],
+    "longtail": [
+      "how to use ai chatbots for restaurant customer engagement uk"
+    ],
+    "per_kw": {
+      "ai chatbot for restaurants": {
+        "volume": 20,
+        "kd": null,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai chatbot for restaurants": "چت‌بات هوش مصنوعی برای رستوران"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "چت‌بات هوش مصنوعی برای رستوران‌ها (تست v2.1)": {
+    "primary": "ai chatbot for restaurants",
+    "primary_fa": "چت‌بات هوش مصنوعی برای رستوران",
+    "secondary": [],
+    "longtail": [
+      "how to use ai chatbots for restaurant customer engagement uk"
+    ],
+    "per_kw": {
+      "ai chatbot for restaurants": {
+        "volume": 20,
+        "kd": null,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai chatbot for restaurants": "چت‌بات هوش مصنوعی برای رستوران"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "چت‌بات هوش مصنوعی برای رستوران‌ها (تست v2.1.1)": {
+    "primary": "ai chatbot for restaurants",
+    "primary_fa": "چت‌بات هوش مصنوعی برای رستوران",
+    "secondary": [],
+    "longtail": [
+      "how to use ai chatbots for restaurant customer engagement uk"
+    ],
+    "per_kw": {
+      "ai chatbot for restaurants": {
+        "volume": 20,
+        "kd": null,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai chatbot for restaurants": "چت‌بات هوش مصنوعی برای رستوران"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "چت‌بات پشتیبانی مشتری با هوش مصنوعی": {
+    "primary": "ai customer support chatbot",
+    "primary_fa": "چت‌بات پشتیبانی مشتریان هوشمند",
+    "secondary": [
+      "artificial intelligence talk to",
+      "ai powered chatbot platforms",
+      "what is a chatbot"
+    ],
+    "longtail": [
+      "can zanus ai work for customer support chatbot for ecommerce",
+      "can zanus ai run a customer support chatbot 24 7",
+      "can you analyze what customer support ai chatbot limitations are"
+    ],
+    "per_kw": {
+      "ai customer support chatbot": {
+        "volume": 320,
+        "kd": null,
+        "cpc": 27.84
+      },
+      "ai chat": {
+        "volume": 450000,
+        "kd": 100.0,
+        "cpc": 0.72
+      },
+      "chat ai": {
+        "volume": 201000,
+        "kd": 100.0,
+        "cpc": 0.64
+      },
+      "ai powered chatbot platforms": {
+        "volume": 74000,
+        "kd": 70.0,
+        "cpc": 0.0
+      },
+      "what is a chatbot": {
+        "volume": 74000,
+        "kd": 70.0,
+        "cpc": 0.21
+      },
+      "ai powered chatbot platform": {
+        "volume": 60500,
+        "kd": 70.0,
+        "cpc": 0.0
+      },
+      "chatbot": {
+        "volume": 40500,
+        "kd": 100.0,
+        "cpc": 2.79
+      },
+      "chatbot chatterbot": {
+        "volume": 27100,
+        "kd": 76.0,
+        "cpc": 1.27
+      },
+      "ai chat bot": {
+        "volume": 22200,
+        "kd": 81.0,
+        "cpc": 0.72
+      },
+      "artificial intelligence talk to": {
+        "volume": 22200,
+        "kd": 66.0,
+        "cpc": 1.86
+      },
+      "chat bot": {
+        "volume": 18100,
+        "kd": 100.0,
+        "cpc": 2.79
+      },
+      "artificial intelligence chat bot": {
+        "volume": 14800,
+        "kd": 87.0,
+        "cpc": 0.72
+      },
+      "ai chat online": {
+        "volume": 12100,
+        "kd": 83.0,
+        "cpc": 0.64
+      }
+    },
+    "fa_map": {
+      "ai customer support chatbot": "چت‌بات پشتیبانی مشتریان هوشمند",
+      "artificial intelligence talk to": "گفتگو با هوش مصنوعی",
+      "ai powered chatbot platforms": "پلتفرم‌های چت‌بات هوش مصنوعی",
+      "what is a chatbot": "چت‌بات چیست"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "تحلیل احساسات نظرات مشتریان با هوش مصنوعی": {
+    "primary": "ai--powered media and sentiment analysis leading firm",
+    "primary_fa": "شرکت پیشرو در تحلیل رسانه و احساسات مبتنی بر هوش مصنوعی",
+    "secondary": [
+      "customer sentiment",
+      "ai for crypto trading and sentiment analysis tools"
+    ],
+    "longtail": [
+      "which application of ai is used for customer sentiment analysis",
+      "how ai handles customer sentiment analysis",
+      "how does ai handle customer sentiment analysis"
+    ],
+    "per_kw": {
+      "ai customer sentiment analysis": {
+        "volume": 50,
+        "kd": null,
+        "cpc": 0.0
+      },
+      "sentiment": {
+        "volume": 49500,
+        "kd": 73.0,
+        "cpc": 0.77
+      },
+      "define sentiment": {
+        "volume": 18100,
+        "kd": 61.0,
+        "cpc": 0.0
+      },
+      "nlp for sentiment analysis": {
+        "volume": 8100,
+        "kd": 54.0,
+        "cpc": 2.83
+      },
+      "sentiment analysis": {
+        "volume": 8100,
+        "kd": 62.0,
+        "cpc": 4.08
+      },
+      "sentiment analysis methods": {
+        "volume": 3600,
+        "kd": 52.0,
+        "cpc": 0.0
+      },
+      "ai--powered media and sentiment analysis leading firm": {
+        "volume": 2400,
+        "kd": 26.0,
+        "cpc": 0.0
+      },
+      "sentiment analysis tools": {
+        "volume": 1900,
+        "kd": 52.0,
+        "cpc": 10.84
+      },
+      "what does sentiment mean": {
+        "volume": 1900,
+        "kd": 50.0,
+        "cpc": 0.0
+      },
+      "what is sentiment analysis": {
+        "volume": 1600,
+        "kd": 58.0,
+        "cpc": 0.87
+      },
+      "customer sentiment": {
+        "volume": 1300,
+        "kd": 40.0,
+        "cpc": 8.1
+      },
+      "customer sentiment analysis": {
+        "volume": 1300,
+        "kd": 47.0,
+        "cpc": 14.03
+      },
+      "ai for crypto trading and sentiment analysis tools": {
+        "volume": 1000,
+        "kd": 38.0,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai--powered media and sentiment analysis leading firm": "شرکت پیشرو در تحلیل رسانه و احساسات مبتنی بر هوش مصنوعی",
+      "customer sentiment": "احساسات مشتری",
+      "ai for crypto trading and sentiment analysis tools": "ابزارهای هوش مصنوعی برای تحلیل احساسات و معامله ارزهای دیجیتال"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "پیش‌بینی فروش با هوش مصنوعی": {
+    "primary": "sales forecasting software",
+    "primary_fa": "نرم‌افزار پیش‌بینی فروش",
+    "secondary": [
+      "predictive sales ai",
+      "sales forecasting tools",
+      "forecasting tool"
+    ],
+    "longtail": [
+      "does hubspot sales hub include ai sales forecasting features",
+      "how to incorporate ai into sales pipeline forecasting",
+      "does hubspot sales hub include ai sales forecasting feature"
+    ],
+    "per_kw": {
+      "ai sales forecasting": {
+        "volume": 260,
+        "kd": null,
+        "cpc": 17.97
+      },
+      "sales forecasting software": {
+        "volume": 1300,
+        "kd": 32.0,
+        "cpc": 27.35
+      },
+      "predictive sales ai": {
+        "volume": 590,
+        "kd": 36.0,
+        "cpc": 5.86
+      },
+      "sales forecasting tools": {
+        "volume": 480,
+        "kd": 27.0,
+        "cpc": 21.66
+      },
+      "ai forecasting": {
+        "volume": 390,
+        "kd": 51.0,
+        "cpc": 6.29
+      },
+      "clari login": {
+        "volume": 210,
+        "kd": 49.0,
+        "cpc": 0.0
+      },
+      "forecasting tool": {
+        "volume": 210,
+        "kd": 31.0,
+        "cpc": 12.2
+      },
+      "machine learning in sales": {
+        "volume": 210,
+        "kd": 5.0,
+        "cpc": 5.49
+      },
+      "sales forecasting programs": {
+        "volume": 210,
+        "kd": 36.0,
+        "cpc": 27.35
+      },
+      "ai forecasting tools": {
+        "volume": 170,
+        "kd": 51.0,
+        "cpc": 14.67
+      },
+      "clari forecasting": {
+        "volume": 170,
+        "kd": 34.0,
+        "cpc": 14.5
+      },
+      "forecasting sales software": {
+        "volume": 170,
+        "kd": 33.0,
+        "cpc": 27.35
+      },
+      "revenue forecasting tools": {
+        "volume": 170,
+        "kd": 40.0,
+        "cpc": 24.06
+      }
+    },
+    "fa_map": {
+      "sales forecasting software": "نرم‌افزار پیش‌بینی فروش",
+      "predictive sales ai": "هوش مصنوعی پیش‌بینی فروش",
+      "sales forecasting tools": "ابزارهای پیش‌بینی فروش",
+      "forecasting tool": "ابزار پیش‌بینی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "اتوماسیون فرایند استخدام با هوش مصنوعی": {
+    "primary": "ai recruitment automation",
+    "primary_fa": "اتوماسیون هوشمند استخدام",
+    "secondary": [],
+    "longtail": [
+      "how ai and automation improve recruitment processes in large companies",
+      "how to automate recruiter follow-ups with ai",
+      "how to automate recruiting with ai"
+    ],
+    "per_kw": {
+      "ai recruitment automation": {
+        "volume": 10,
+        "kd": null,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai recruitment automation": "اتوماسیون هوشمند استخدام"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "دستیار هوش مصنوعی برای مدیریت پروژه": {
+    "primary": "ai project management assistant",
+    "primary_fa": "دستیار هوشمند مدیریت پروژه",
+    "secondary": [],
+    "longtail": [
+      "how ai assistants can streamline project management",
+      "which ai assistant is best for managing complex projects",
+      "which ai assistant is best for managing projects"
+    ],
+    "per_kw": {
+      "ai project management assistant": {
+        "volume": 20,
+        "kd": null,
+        "cpc": 6.69
+      }
+    },
+    "fa_map": {
+      "ai project management assistant": "دستیار هوشمند مدیریت پروژه"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "تشخیص تقلب مالی با یادگیری ماشین": {
+    "primary": "advanced techniques fraud origination models detection prevention",
+    "primary_fa": "تکنیک‌های پیشرفته شناسایی و پیشگیری از تقلب در مدل‌های اعتبارسنجی",
+    "secondary": [
+      "fraud detection in banking",
+      "payment fraud detection"
+    ],
+    "longtail": [
+      "can machine learning systems detect fraud",
+      "how can machine learning algorithms be beneficial in fraud detection",
+      "what is fraud detection in machine learning"
+    ],
+    "per_kw": {
+      "machine learning fraud detection": {
+        "volume": 390,
+        "kd": null,
+        "cpc": 6.64
+      },
+      "fraud detection": {
+        "volume": 3600,
+        "kd": 56.0,
+        "cpc": 11.26
+      },
+      "farud ai": {
+        "volume": 1000,
+        "kd": 55.0,
+        "cpc": 0.0
+      },
+      "ai fraud detection": {
+        "volume": 880,
+        "kd": 57.0,
+        "cpc": 9.52
+      },
+      "fraud detection machine learning": {
+        "volume": 880,
+        "kd": 41.0,
+        "cpc": 5.21
+      },
+      "ai for fraud detection": {
+        "volume": 720,
+        "kd": 61.0,
+        "cpc": 9.52
+      },
+      "ai fraud": {
+        "volume": 720,
+        "kd": 59.0,
+        "cpc": 5.16
+      },
+      "advanced techniques fraud origination models detection prevention": {
+        "volume": 590,
+        "kd": 33.0,
+        "cpc": 0.0
+      },
+      "credit card fraud detection": {
+        "volume": 590,
+        "kd": 58.0,
+        "cpc": 6.24
+      },
+      "fraud detection solutions": {
+        "volume": 590,
+        "kd": 43.0,
+        "cpc": 13.24
+      },
+      "fraud detection in banking": {
+        "volume": 480,
+        "kd": 36.0,
+        "cpc": 8.69
+      },
+      "payment fraud detection": {
+        "volume": 480,
+        "kd": 36.0,
+        "cpc": 17.74
+      },
+      "financial fraud detection": {
+        "volume": 320,
+        "kd": 41.0,
+        "cpc": 8.71
+      }
+    },
+    "fa_map": {
+      "advanced techniques fraud origination models detection prevention": "تکنیک‌های پیشرفته شناسایی و پیشگیری از تقلب در مدل‌های اعتبارسنجی",
+      "fraud detection in banking": "کشف تقلب در سیستم بانکی",
+      "payment fraud detection": "شناسایی تراکنش‌های مشکوک و کلاهبرداری‌های پرداخت"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "بهینه‌سازی قیمت‌گذاری با هوش مصنوعی": {
+    "primary": "dynamic pricing",
+    "primary_fa": "قیمت‌گذاری پویا",
+    "secondary": [
+      "dynamic pricing software",
+      "ai retail optimization",
+      "pricing for ai"
+    ],
+    "longtail": [
+      "how restaurants use ai for dynamic pricing strategies",
+      "how can ai support dynamic pricing decisions in stores",
+      "how does ai dynamic pricing work in retail examples"
+    ],
+    "per_kw": {
+      "ai dynamic pricing": {
+        "volume": 110,
+        "kd": null,
+        "cpc": 4.47
+      },
+      "dynamic pricing": {
+        "volume": 12100,
+        "kd": 38.0,
+        "cpc": 3.25
+      },
+      "delta ai pricing": {
+        "volume": 3600,
+        "kd": 59.0,
+        "cpc": 0.0
+      },
+      "dynamic pricing software": {
+        "volume": 1300,
+        "kd": 26.0,
+        "cpc": 13.34
+      },
+      "ai retail optimization": {
+        "volume": 1000,
+        "kd": 26.0,
+        "cpc": 0.0
+      },
+      "pricing for ai": {
+        "volume": 1000,
+        "kd": 39.0,
+        "cpc": 1.92
+      },
+      "personalized pricing": {
+        "volume": 880,
+        "kd": 41.0,
+        "cpc": 7.0
+      },
+      "ai pricing": {
+        "volume": 590,
+        "kd": 30.0,
+        "cpc": 4.94
+      },
+      "ai-powered pricing tool e-commerce sellers real-time price optimization": {
+        "volume": 390,
+        "kd": 12.0,
+        "cpc": 0.0
+      },
+      "delta air lines ai pricing concerns": {
+        "volume": 390,
+        "kd": 49.0,
+        "cpc": 0.0
+      },
+      "delta airlines ai pricing": {
+        "volume": 390,
+        "kd": 50.0,
+        "cpc": 0.0
+      },
+      "ai pricing software": {
+        "volume": 320,
+        "kd": 19.0,
+        "cpc": 14.91
+      },
+      "dynamic pricing ecommerce": {
+        "volume": 320,
+        "kd": 22.0,
+        "cpc": 8.05
+      }
+    },
+    "fa_map": {
+      "dynamic pricing": "قیمت‌گذاری پویا",
+      "dynamic pricing software": "نرم‌افزار قیمت‌گذاری هوشمند",
+      "ai retail optimization": "بهینه‌سازی خرده‌فروشی با هوش مصنوعی",
+      "pricing for ai": "تعیین قیمت خدمات هوش مصنوعی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "اتوماسیون پشتیبانی فنی با هوش مصنوعی": {
+    "primary": "ai help desk automation",
+    "primary_fa": "اتوماسیون هلپ دسک با هوش مصنوعی",
+    "secondary": [],
+    "longtail": [
+      "how to automate help desk with ai",
+      "where to find agentic ai for help desk automation"
+    ],
+    "per_kw": {
+      "ai help desk automation": {
+        "volume": 10,
+        "kd": null,
+        "cpc": 0.0
+      }
+    },
+    "fa_map": {
+      "ai help desk automation": "اتوماسیون هلپ دسک با هوش مصنوعی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "تولید توضیحات محصول با هوش مصنوعی": {
+    "primary": "describe this outfit",
+    "primary_fa": "توصیف این استایل",
+    "secondary": [
+      "seo product description",
+      "seo product descriptions",
+      "clothing description generator"
+    ],
+    "longtail": [
+      "how to prompt ai to generate seo optimized product descriptions",
+      "how to prompt ai to generate seo-optimized product descriptions",
+      "how to rewrite ai generated product descriptions for better readability"
+    ],
+    "per_kw": {
+      "ai product description generator": {
+        "volume": 1000,
+        "kd": null,
+        "cpc": 3.98
+      },
+      "ai description generator": {
+        "volume": 2400,
+        "kd": 69.0,
+        "cpc": 1.04
+      },
+      "description generator": {
+        "volume": 2400,
+        "kd": 65.0,
+        "cpc": 1.32
+      },
+      "product description": {
+        "volume": 1900,
+        "kd": 45.0,
+        "cpc": 3.55
+      },
+      "product description generator": {
+        "volume": 1600,
+        "kd": 45.0,
+        "cpc": 3.7
+      },
+      "ahrefs paragraph generator": {
+        "volume": 1300,
+        "kd": 84.0,
+        "cpc": 0.0
+      },
+      "a description": {
+        "volume": 1000,
+        "kd": 43.0,
+        "cpc": 0.0
+      },
+      "ai description generator free": {
+        "volume": 720,
+        "kd": 63.0,
+        "cpc": 1.49
+      },
+      "describe this outfit": {
+        "volume": 590,
+        "kd": 27.0,
+        "cpc": 0.51
+      },
+      "give me a description": {
+        "volume": 590,
+        "kd": 43.0,
+        "cpc": 0.83
+      },
+      "seo product description": {
+        "volume": 590,
+        "kd": 17.0,
+        "cpc": 1.5
+      },
+      "seo product descriptions": {
+        "volume": 590,
+        "kd": 31.0,
+        "cpc": 1.38
+      },
+      "clothing description generator": {
+        "volume": 480,
+        "kd": 16.0,
+        "cpc": 1.59
+      }
+    },
+    "fa_map": {
+      "describe this outfit": "توصیف این استایل",
+      "seo product description": "توضیحات محصول سئو شده",
+      "seo product descriptions": "نوشتن توضیحات محصول برای سئو",
+      "clothing description generator": "تولیدکننده متن توضیحات لباس"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "شخصی‌سازی بازاریابی با هوش مصنوعی": {
+    "primary": "personalization engine",
+    "primary_fa": "موتور شخصی‌سازی",
+    "secondary": [
+      "personalization platform",
+      "ai personalization software for ecommerce",
+      "personalized retail insights"
+    ],
+    "longtail": [
+      "how ai helps businesses personalize marketing strategies for better engagement",
+      "how ai agents improve marketing roi personalization campaign optimization",
+      "how ai improves customer personalization in marketing"
+    ],
+    "per_kw": {
+      "ai marketing personalization": {
+        "volume": 140,
+        "kd": null,
+        "cpc": 0.0
+      },
+      "ai personalization": {
+        "volume": 1300,
+        "kd": 54.0,
+        "cpc": 6.6
+      },
+      "personalization engine": {
+        "volume": 880,
+        "kd": 34.0,
+        "cpc": 8.32
+      },
+      "personalization platform": {
+        "volume": 590,
+        "kd": 34.0,
+        "cpc": 10.02
+      },
+      "ai personalization marketing": {
+        "volume": 480,
+        "kd": 65.0,
+        "cpc": 14.15
+      },
+      "ai personalization software for ecommerce": {
+        "volume": 390,
+        "kd": 34.0,
+        "cpc": 0.0
+      },
+      "ai powered personalization": {
+        "volume": 390,
+        "kd": 55.0,
+        "cpc": 10.17
+      },
+      "personalized ai": {
+        "volume": 390,
+        "kd": 70.0,
+        "cpc": 2.04
+      },
+      "personalized retail insights": {
+        "volume": 390,
+        "kd": 30.0,
+        "cpc": 0.0
+      },
+      "website personalization tools": {
+        "volume": 390,
+        "kd": 30.0,
+        "cpc": 10.37
+      },
+      "ai content personalization": {
+        "volume": 320,
+        "kd": 40.0,
+        "cpc": 0.0
+      },
+      "ai driven personalization": {
+        "volume": 320,
+        "kd": 48.0,
+        "cpc": 11.38
+      },
+      "ai personalization tools": {
+        "volume": 320,
+        "kd": 62.0,
+        "cpc": 9.38
+      }
+    },
+    "fa_map": {
+      "personalization engine": "موتور شخصی‌سازی",
+      "personalization platform": "پلتفرم شخصی‌سازی",
+      "ai personalization software for ecommerce": "نرم‌افزار شخصی‌سازی هوشمند برای فروشگاه‌های اینترنتی",
+      "personalized retail insights": "تحلیل‌های شخصی‌سازی‌شده خرده‌فروشی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "چت‌بات پشتیبانی مشتری با هوش مصنوعی (calib)": {
+    "primary": "ai customer support chatbot",
+    "primary_fa": "چت‌بات پشتیبانی مشتریان هوشمند",
+    "secondary": [
+      "artificial intelligence talk to",
+      "ai powered chatbot platforms",
+      "what is a chatbot"
+    ],
+    "longtail": [
+      "can zanus ai work for customer support chatbot for ecommerce",
+      "can zanus ai run a customer support chatbot 24 7",
+      "can you analyze what customer support ai chatbot limitations are"
+    ],
+    "per_kw": {
+      "ai customer support chatbot": {
+        "volume": 320,
+        "kd": null,
+        "cpc": 27.84
+      },
+      "ai chat": {
+        "volume": 450000,
+        "kd": 100.0,
+        "cpc": 0.72
+      },
+      "chat ai": {
+        "volume": 201000,
+        "kd": 100.0,
+        "cpc": 0.64
+      },
+      "ai powered chatbot platforms": {
+        "volume": 74000,
+        "kd": 70.0,
+        "cpc": 0.0
+      },
+      "what is a chatbot": {
+        "volume": 74000,
+        "kd": 70.0,
+        "cpc": 0.21
+      },
+      "ai powered chatbot platform": {
+        "volume": 60500,
+        "kd": 70.0,
+        "cpc": 0.0
+      },
+      "chatbot": {
+        "volume": 40500,
+        "kd": 100.0,
+        "cpc": 2.79
+      },
+      "chatbot chatterbot": {
+        "volume": 27100,
+        "kd": 76.0,
+        "cpc": 1.27
+      },
+      "ai chat bot": {
+        "volume": 22200,
+        "kd": 81.0,
+        "cpc": 0.72
+      },
+      "artificial intelligence talk to": {
+        "volume": 22200,
+        "kd": 66.0,
+        "cpc": 1.86
+      },
+      "chat bot": {
+        "volume": 18100,
+        "kd": 100.0,
+        "cpc": 2.79
+      },
+      "artificial intelligence chat bot": {
+        "volume": 14800,
+        "kd": 87.0,
+        "cpc": 0.72
+      },
+      "ai chat online": {
+        "volume": 12100,
+        "kd": 83.0,
+        "cpc": 0.64
+      }
+    },
+    "fa_map": {
+      "ai customer support chatbot": "چت‌بات پشتیبانی مشتریان هوشمند",
+      "artificial intelligence talk to": "گفتگو با هوش مصنوعی",
+      "ai powered chatbot platforms": "پلتفرم‌های چت‌بات هوش مصنوعی",
+      "what is a chatbot": "چت‌بات چیست"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "پیش‌بینی فروش با هوش مصنوعی (calib)": {
+    "primary": "sales forecasting software",
+    "primary_fa": "نرم‌افزار پیش‌بینی فروش",
+    "secondary": [
+      "predictive sales ai",
+      "sales forecasting tools",
+      "forecasting tool"
+    ],
+    "longtail": [
+      "does hubspot sales hub include ai sales forecasting features",
+      "how to incorporate ai into sales pipeline forecasting",
+      "does hubspot sales hub include ai sales forecasting feature"
+    ],
+    "per_kw": {
+      "ai sales forecasting": {
+        "volume": 260,
+        "kd": null,
+        "cpc": 17.97
+      },
+      "sales forecasting software": {
+        "volume": 1300,
+        "kd": 32.0,
+        "cpc": 27.35
+      },
+      "predictive sales ai": {
+        "volume": 590,
+        "kd": 36.0,
+        "cpc": 5.86
+      },
+      "sales forecasting tools": {
+        "volume": 480,
+        "kd": 27.0,
+        "cpc": 21.66
+      },
+      "ai forecasting": {
+        "volume": 390,
+        "kd": 51.0,
+        "cpc": 6.29
+      },
+      "clari login": {
+        "volume": 210,
+        "kd": 49.0,
+        "cpc": 0.0
+      },
+      "forecasting tool": {
+        "volume": 210,
+        "kd": 31.0,
+        "cpc": 12.2
+      },
+      "machine learning in sales": {
+        "volume": 210,
+        "kd": 5.0,
+        "cpc": 5.49
+      },
+      "sales forecasting programs": {
+        "volume": 210,
+        "kd": 36.0,
+        "cpc": 27.35
+      },
+      "ai forecasting tools": {
+        "volume": 170,
+        "kd": 51.0,
+        "cpc": 14.67
+      },
+      "clari forecasting": {
+        "volume": 170,
+        "kd": 34.0,
+        "cpc": 14.5
+      },
+      "forecasting sales software": {
+        "volume": 170,
+        "kd": 33.0,
+        "cpc": 27.35
+      },
+      "revenue forecasting tools": {
+        "volume": 170,
+        "kd": 40.0,
+        "cpc": 24.06
+      }
+    },
+    "fa_map": {
+      "sales forecasting software": "نرم‌افزار پیش‌بینی فروش",
+      "predictive sales ai": "هوش مصنوعی پیش‌بینی فروش",
+      "sales forecasting tools": "ابزارهای پیش‌بینی فروش",
+      "forecasting tool": "ابزار پیش‌بینی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "شخصی‌سازی بازاریابی با هوش مصنوعی (calib)": {
+    "primary": "personalization engine",
+    "primary_fa": "موتور شخصی‌سازی",
+    "secondary": [
+      "personalization platform",
+      "ai personalization software for ecommerce",
+      "personalized retail insights"
+    ],
+    "longtail": [
+      "how ai helps businesses personalize marketing strategies for better engagement",
+      "how ai agents improve marketing roi personalization campaign optimization",
+      "how ai improves customer personalization in marketing"
+    ],
+    "per_kw": {
+      "ai marketing personalization": {
+        "volume": 140,
+        "kd": null,
+        "cpc": 0.0
+      },
+      "ai personalization": {
+        "volume": 1300,
+        "kd": 54.0,
+        "cpc": 6.6
+      },
+      "personalization engine": {
+        "volume": 880,
+        "kd": 34.0,
+        "cpc": 8.32
+      },
+      "personalization platform": {
+        "volume": 590,
+        "kd": 34.0,
+        "cpc": 10.02
+      },
+      "ai personalization marketing": {
+        "volume": 480,
+        "kd": 65.0,
+        "cpc": 14.15
+      },
+      "ai personalization software for ecommerce": {
+        "volume": 390,
+        "kd": 34.0,
+        "cpc": 0.0
+      },
+      "ai powered personalization": {
+        "volume": 390,
+        "kd": 55.0,
+        "cpc": 10.17
+      },
+      "personalized ai": {
+        "volume": 390,
+        "kd": 70.0,
+        "cpc": 2.04
+      },
+      "personalized retail insights": {
+        "volume": 390,
+        "kd": 30.0,
+        "cpc": 0.0
+      },
+      "website personalization tools": {
+        "volume": 390,
+        "kd": 30.0,
+        "cpc": 10.37
+      },
+      "ai content personalization": {
+        "volume": 320,
+        "kd": 40.0,
+        "cpc": 0.0
+      },
+      "ai driven personalization": {
+        "volume": 320,
+        "kd": 48.0,
+        "cpc": 11.38
+      },
+      "ai personalization tools": {
+        "volume": 320,
+        "kd": 62.0,
+        "cpc": 9.38
+      }
+    },
+    "fa_map": {
+      "personalization engine": "موتور شخصی‌سازی",
+      "personalization platform": "پلتفرم شخصی‌سازی",
+      "ai personalization software for ecommerce": "نرم‌افزار شخصی‌سازی هوشمند برای فروشگاه‌های اینترنتی",
+      "personalized retail insights": "تحلیل‌های شخصی‌سازی‌شده خرده‌فروشی"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  },
+  "امنیت و هک در هوش مصنوعی": {
+    "primary": "AI security and hacking",
+    "primary_fa": "امنیت هوش مصنوعی و هک",
+    "secondary": [],
+    "longtail": [],
+    "per_kw": {},
+    "fa_map": {
+      "AI security and hacking": "امنیت هوش مصنوعی و هک"
+    },
+    "market": "us",
+    "note": "داده از SEMrush API (دیتابیس us). معادل فارسی هنگام تولید ساخته می‌شود."
+  }
+}

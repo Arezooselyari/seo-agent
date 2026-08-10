@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "ai automation for small businesses",
+    "ai business solutions",
+    "best ai tools for business",
+    "ai tools for business"
+  ],
+  "per_kw": {
+    "ai automation for small businesses": {
+      "volume": 170,
+      "kd": 24.0,
+      "competition": 0.46
+    },
+    "ai business solutions": {
+      "volume": 1900,
+      "kd": 41.0,
+      "competition": 0.09
+    },
+    "best ai tools for business": {
+      "volume": 2900,
+      "kd": 43.0,
+      "competition": 0.51
+    },
+    "ai tools for business": {
+      "volume": 2900,
+      "kd": 54.0,
+      "competition": 0.22
+    }
+  },
+  "avg_kd": 40.5,
+  "verdict": "WEAK",
+  "notes": "میانگین KD=40.5 (سقف 40). داده از SEMrush API دیتابیس us."
+}

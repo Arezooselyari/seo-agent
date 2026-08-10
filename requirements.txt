@@ -1,0 +1,11 @@
+# وابستگی‌های سبکِ دموی وب — همین فایل توسط Railway نصب می‌شود.
+# ⚠️ برای اجرای کاملِ ایجنت روی ویندوز از requirements-agent.txt استفاده کن.
+# دمو فقط به FastAPI + Gemini نیاز دارد (بدون supabase/feedparser/trafilatura
+# که با هم تضاد نسخه‌ی pydantic می‌ساختند و باعث شکست build می‌شدند).
+fastapi==0.115.5
+uvicorn==0.32.1
+google-generativeai==0.8.3
+pydantic==2.9.2
+pydantic-settings==2.6.1
+PyYAML==6.0.2
+httpx==0.27.2

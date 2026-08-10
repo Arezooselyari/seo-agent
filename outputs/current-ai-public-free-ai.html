@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>هوش مصنوعی عمومی و آزاد: فرصتی برای رقابت با غول‌های AI</title>
+<meta name="description" content="Current AI می‌خواهد هوش مصنوعی عمومی و آزاد بسازد. این یعنی چه برای کسب‌وکار شما؟ با این زیرساخت متن‌باز، دیگر غول‌های AI تنها نیستند و فرصت‌های جدیدی در راه است.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --radius: 14px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    /* پالت vlumis — گرم، لاکچری، روزنامه‌نگارانه */
+    --ink: #1E1408;
+    --gold: #B8853A;
+    --gold-light: #C99A52;
+    --cream: #FAF6F0;
+    --sand: #F3EBE0;
+    --gold-fill: #F5EDD8;
+    --teal: #4A8B7E;
+    --teal-light: #EAF3F1;
+    --rose: #B86A52;
+    --rose-light: #F5EAE6;
+    /* خطوط نازک به‌جای سایه‌ی سنگین + سایه‌های گرم با ته‌رنگِ ink (نه خاکستری سرد) */
+    --hairline: 1px solid rgba(30,20,8,.09);
+    --hairline-gold: 1px solid rgba(184,133,58,.22);
+    --shadow-sm: 0 2px 10px -4px rgba(30,20,8,.08);
+    --shadow-md: 0 10px 30px -14px rgba(30,20,8,.16), 0 2px 6px -3px rgba(30,20,8,.06);
+    --shadow-lg: 0 18px 44px -18px rgba(30,20,8,.20), 0 4px 12px -6px rgba(30,20,8,.08);
+    --shadow-hover: 0 22px 50px -18px rgba(30,20,8,.24), 0 6px 16px -7px rgba(30,20,8,.10);
+  }
+  body {
+    font-family: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.95;
+    color: var(--ink);
+    background: var(--cream);
+    min-height: 100vh;
+  }
+  /* متن فارسی تمام‌چین (justified) — استاندارد روزنامه‌نگاری */
+  .article-intro,
+  .article-body p,
+  .faq-item p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  /* ─── header ─── */
+  .article-header {
+    padding: 36px 0 20px;
+    border-bottom: 1px solid rgba(184,133,58,.28);
+    margin-bottom: 28px;
+  }
+  .article-breadcrumb {
+    font-size: 13px;
+    color: #8a7a63;
+    margin-bottom: 14px;
+  }
+  .article-breadcrumb a { color: var(--gold); text-decoration: none; }
+  .article-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .article-meta {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 13.5px;
+    color: #8a7a63;
+    flex-wrap: wrap;
+  }
+  .article-meta .site-name { font-weight: 600; color: var(--gold); }
+  /* ─── hero image ─── */
+  .hero-image {
+    width: 100%;
+    margin-bottom: 28px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .hero-image:hover { box-shadow: var(--shadow-lg); }
+  .hero-image img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .hero-image:hover img { transform: scale(1.04); }
+  .hero-credit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55));
+    color: rgba(255,255,255,0.85);
+    font-size: 11.5px;
+    padding: 24px 12px 8px;
+    text-align: left;
+    direction: ltr;
+  }
+  .hero-credit a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  /* ─── content ─── */
+  .article-intro {
+    position: relative;
+    overflow: hidden;
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--gold-fill);
+    border: var(--hairline-gold);
+    border-right: 4px solid var(--gold);
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    margin-bottom: 30px;
+    line-height: 1.9;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-intro:hover { box-shadow: var(--shadow-md); }
+  .article-body h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 36px 0 10px;
+    padding-right: 14px;
+    border-right: 4px solid var(--gold);
+  }
+  .article-body h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin: 24px 0 8px;
+  }
+  .article-body p {
+    margin-bottom: 16px;
+    color: #3a2f1f;
+  }
+  .article-body .answer-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--teal-light);
+    border: 1px solid rgba(74,139,126,.22);
+    border-right: 4px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-weight: 600;
+    color: #234a43;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-body .answer-box:hover { box-shadow: var(--shadow-md); }
+  .article-body blockquote {
+    background: var(--rose-light);
+    border: 1px solid rgba(184,106,82,.22);
+    border-right: 4px solid var(--rose);
+    padding: 14px 20px;
+    margin: 18px 0;
+    border-radius: var(--radius);
+    font-style: normal;
+    color: #7a3d2c;
+    box-shadow: var(--shadow-sm);
+  }
+  .article-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body a:hover { color: #936420; }
+  img.inline-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin: 0;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .inline-figure {
+    margin: 28px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .inline-figure:hover { box-shadow: var(--shadow-lg); }
+  .inline-figure:hover img.inline-img { transform: scale(1.04); }
+  .inline-credit {
+    font-size: 11.5px;
+    color: #94a3b8;
+    text-align: left;
+    direction: ltr;
+    margin-top: 6px;
+  }
+  .inline-credit a { color: #94a3b8; text-decoration: none; }
+  /* ─── tags ─── */
+  .tags-row {
+    margin: 28px 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--gold-fill);
+    color: #8a5e1f;
+    border: var(--hairline-gold);
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .2s var(--ease), color .2s var(--ease);
+  }
+  .tag:hover {
+    background: var(--gold);
+    color: var(--cream);
+  }
+  /* ─── FAQ ─── */
+  .faq-section {
+    position: relative;
+    margin: 38px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fffdf9;
+    border: var(--hairline);
+    box-shadow: var(--shadow-sm);
+  }
+  .faq-section h2 {
+    background: var(--sand);
+    margin: 0;
+    padding: 16px 22px;
+    font-size: 1.1rem;
+    border-right: none;
+    color: var(--ink);
+  }
+  .faq-item {
+    border-top: 1px solid rgba(30,20,8,.07);
+    padding: 16px 22px;
+    transition: background .2s var(--ease);
+  }
+  .faq-item:hover { background: var(--gold-fill); }
+  .faq-item h3 { font-size: 1rem; color: var(--gold); margin-bottom: 6px; }
+  .faq-item p { margin: 0; color: #3a2f1f; }
+  /* ─── source ─── */
+  .source-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--sand);
+    border: var(--hairline);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #6b5c45;
+    margin-top: 34px;
+    box-shadow: var(--shadow-sm);
+  }
+  .source-box a { color: var(--gold); }
+  .footer-meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #9a8a72;
+    text-align: center;
+  }
+  /* روی موبایل/لمسی، lift غیرفعال تا کادرها نپرند */
+  @media (hover: none), (max-width: 768px) {
+    .article-intro:hover, .answer-box:hover, .hero-image:hover,
+    .inline-figure:hover, .tag:hover {
+      transform: none;
+    }
+  }
+  /* ─── افکت اسکرول: ظاهر شدن نرمِ کادرها هنگام پایین آمدن ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  /* ─── افکت spotlight — هاله‌ی سفیدِ درخشانِ کمرنگ که دنبال ماوس روی کادر حرکت می‌کند (سبک vlumis) ─── */
+  .article-intro,
+  .article-body .answer-box,
+  .faq-section,
+  .source-box,
+  .hero-image,
+  .inline-figure {
+    position: relative;
+  }
+  .article-intro::before,
+  .article-body .answer-box::before,
+  .faq-section::before,
+  .source-box::before,
+  .hero-image::before,
+  .inline-figure::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255,249,235,.55),
+      rgba(184,133,58,.14) 38%,
+      rgba(184,133,58,0) 68%
+    );
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+    pointer-events: none;
+    z-index: 4;
+  }
+  .article-intro:hover::before,
+  .article-body .answer-box:hover::before,
+  .faq-section:hover::before,
+  .source-box:hover::before,
+  .hero-image:hover::before,
+  .inline-figure:hover::before {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .article-intro::before, .article-body .answer-box::before,
+    .faq-section::before, .source-box::before,
+    .hero-image::before, .inline-figure::before { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="article-header">
+    <div class="article-breadcrumb">
+      <a href="https://sagharnazari.ir">ساغر نظری</a> ← <a href="https://sagharnazari.ir/category/هوش-مصنوعی">هوش مصنوعی</a>
+    </div>
+    <h1 class="article-title">هوش مصنوعی عمومی و آزاد: فرصتی برای رقابت با غول‌های AI</h1>
+    <div class="article-meta">
+      <span class="site-name">sagharnazari.ir</span>
+      <span>📅 20 July 2026</span>
+      <span>🏷️ هوش مصنوعی | Current AI | هوش مصنوعی متن‌باز | کسب‌وکار</span>
+    </div>
+  </header>
+
+  <div class="hero-image">
+    <img src="https://images.pexels.com/photos/34804018/pexels-photo-34804018.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="public open source AI infrastructure" loading="lazy">
+    <div class="hero-credit">Photo by <a href="https://www.pexels.com/@dkomov" target="_blank">Daniil Komov</a> on <a href="https://www.pexels.com/photo/ai-assisted-code-debugging-on-screen-display-34804018/" target="_blank">Pexels</a></div>
+  </div>
+
+
+  <div class="article-intro">
+    Current AI، یک سازمان غیرانتفاعی، با جذب سرمایه‌ای ۴۰۰ میلیون دلاری، مشغول ساخت زیرساختی برای هوش مصنوعی عمومی و آزاد است. این حرکت می‌تواند هوش مصنوعی را از چنگ انحصار شرکت‌های بزرگ درآورد و دریچه‌های تازه‌ای به روی کسب‌وکارهای کوچک و جوامع محلی بگشاید.
+  </div>
+
+  <div class="article-body">
+    <h2>چرا هوش مصنوعی عمومی برای کسب‌وکار شما مهم است؟</h2>
+    <p class="answer-box">Current AI می‌خواهد انحصار هوش مصنوعی را بشکند و زیرساختی آزاد و رایگان برای همه ایجاد کند تا مدل‌های هوش مصنوعی به نفع عموم مردم و جوامع محلی باشند.</p>
+    <p>ببینید، امروز بیشتر ابزارهای هوش مصنوعی در انحصار چند شرکت بزرگ هستند. این یعنی چه برای کسب‌وکار شما؟ یعنی آن‌ها هستند که تصمیم می‌گیرند چه زبانی پشتیبانی شود، چه فرهنگی دیده شود و اصلاً چه کسی به این فناوری دسترسی داشته باشد.</p>
+    <h2>Current AI چطور می‌خواهد این رویا را عملی کند؟</h2>
+    <p class="answer-box">این سازمان با جذب ۴۰۰ میلیون دلار سرمایه و همکاری با دولت‌ها و بنیادها، ابزارهای هوش مصنوعی متن‌باز مانند Suno Sutra و Alpha Chat را توسعه می‌دهد و از پروژه‌های محلی حمایت می‌کند.</p>
+    <p>خب، این انحصار، دست و پای نوآوری را می‌بندد و باعث می‌شود خیلی از کسب‌وکارها و جوامع از مزایای هوش مصنوعی بی‌نصیب بمانند. احتمالاً شما هم تجربه کرده‌اید؛ مثلاً یک کسب‌وکار کوچک در ایران دارید و می‌خواهید از هوش مصنوعی برای پشتیبانی مشتریان استفاده کنید، اما مدل‌های موجود فقط به انگلیسی یا چند زبان محدود دیگر خوب کار می‌کنند و هزینه‌هایشان هم سرسام‌آور است. آیا این واقعاً عادلانه است؟</p>
+    <figure class="inline-figure"><img class="inline-img" src="https://images.pexels.com/photos/270366/pexels-photo-270366.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="public open source AI infrastructure" loading="lazy"><figcaption class="inline-credit">Photo by <a href="https://www.pexels.com/@pixabay" target="_blank">Pixabay</a> on <a href="https://www.pexels.com/photo/html-code-270366/" target="_blank">Pexels</a></figcaption></figure>
+    <h2>مالکیت داده‌ها و فرهنگ‌های بومی: برگ برنده Current AI چیست؟</h2>
+    <p class="answer-box">رویکرد Current AI بر کنترل جامعه بر داده‌ها، ذخیره‌سازی محلی و مشارکت متخصصان بومی تمرکز دارد تا از نمایندگی زبان‌ها و فرهنگ‌های محلی در هوش مصنوعی اطمینان حاصل کند.</p>
+    <p>Current AI دقیقاً همین مشکل را هدف قرار داده. راستش را بخواهید، آن‌ها می‌خواهند هوش مصنوعی را مثل وب جهانی، رایگان و بدون محدودیت، در دسترس همه قرار دهند. این یعنی یک زمین بازی برابرتر برای همه.</p>
+    <h2>این تحول برای کسب‌وکار شما چه فرصت‌هایی ایجاد می‌کند؟</h2>
+    <p class="answer-box">زیرساخت‌های هوش مصنوعی عمومی و متن‌باز Current AI، فرصت‌های بی‌نظیری برای توسعه‌دهندگان، استارتاپ‌ها و کسب‌وکارهای کوچک فراهم می‌کند تا بدون نیاز به سرمایه‌گذاری‌های عظیم، راه‌حل‌های هوش مصنوعی سفارشی و محلی بسازند.</p>
+    <p>برای رسیدن به این هدف بزرگ، Current AI واقعاً دست به کار شده. آن‌ها تاکنون ۴۰۰ میلیون دلار سرمایه تعهد شده از نهادهایی مثل دولت فرانسه، بنیاد فورد، بنیاد مک‌آرتور، دیپ‌مایند و Salesforce جذب کرده‌اند. این سرمایه عظیم به آن‌ها کمک می‌کند پروژه‌هایی را در سراسر جهان، از آفریقا و خاورمیانه گرفته تا آمریکای جنوبی، حمایت کنند و به سازمان‌های محلی کمک مالی برسانند.</p>
+    <h2>جمع‌بندی</h2><p>خلاصه کنم، Current AI با هدف دموکراتیک کردن هوش مصنوعی، مشغول ساخت زیرساختی است که واقعاً می‌تواند قواعد بازی را تغییر دهد. برای کسب‌وکارهای ایرانی، این خبر یعنی یک فرصت طلایی برای دسترسی به ابزارهای هوش مصنوعی قدرتمند و ارزان‌تر، و رقابت شانه به شانه با غول‌های جهانی. پس، حواستان به این تحول بزرگ باشد و برای بهره‌برداری از آن آماده شوید.</p>
+  </div>
+
+  <div class="tags-row">
+    <span class="tag">هوش مصنوعی</span> <span class="tag">Current AI</span> <span class="tag">هوش مصنوعی متن‌باز</span> <span class="tag">کسب‌وکار</span> <span class="tag">استارتاپ</span> <span class="tag">مالکیت داده</span> <span class="tag">زبان‌های بومی</span>
+  </div>
+
+  <div class="faq-section">
+    <h2>پرسش‌های متداول</h2>
+    <div class="faq-item"><h3>Current AI دقیقاً چیست؟</h3><p>Current AI یک سازمان غیرانتفاعی است که با هدف ایجاد زیرساخت هوش مصنوعی عمومی، آزاد و متن‌باز، مشابه وب جهانی، فعالیت می‌کند.</p></div>
+    <div class="faq-item"><h3>Current AI چه تفاوتی با شرکت‌های بزرگ هوش مصنوعی دارد؟</h3><p>برخلاف شرکت‌های بزرگ که هوش مصنوعی را به صورت خصوصی و انحصاری توسعه می‌دهند، Current AI بر دسترسی آزاد، کنترل جامعه بر داده‌ها و نمایندگی زبان‌ها و فرهنگ‌های بومی تمرکز دارد.</p></div>
+    <div class="faq-item"><h3>آیا کسب‌وکارهای کوچک ایرانی هم می‌توانند از Current AI استفاده کنند؟</h3><p>بله، هدف Current AI فراهم کردن ابزارهای هوش مصنوعی متن‌باز و رایگان است که می‌تواند به کسب‌وکارهای کوچک و توسعه‌دهندگان در ایران کمک کند تا راه‌حل‌های بومی و سفارشی بسازند.</p></div>
+  </div>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Current AI دقیقاً چیست؟", "acceptedAnswer": {"@type": "Answer", "text": "Current AI یک سازمان غیرانتفاعی است که با هدف ایجاد زیرساخت هوش مصنوعی عمومی، آزاد و متن‌باز، مشابه وب جهانی، فعالیت می‌کند."}}, {"@type": "Question", "name": "Current AI چه تفاوتی با شرکت‌های بزرگ هوش مصنوعی دارد؟", "acceptedAnswer": {"@type": "Answer", "text": "برخلاف شرکت‌های بزرگ که هوش مصنوعی را به صورت خصوصی و انحصاری توسعه می‌دهند، Current AI بر دسترسی آزاد، کنترل جامعه بر داده‌ها و نمایندگی زبان‌ها و فرهنگ‌های بومی تمرکز دارد."}}, {"@type": "Question", "name": "آیا کسب‌وکارهای کوچک ایرانی هم می‌توانند از Current AI استفاده کنند؟", "acceptedAnswer": {"@type": "Answer", "text": "بله، هدف Current AI فراهم کردن ابزارهای هوش مصنوعی متن‌باز و رایگان است که می‌تواند به کسب‌وکارهای کوچک و توسعه‌دهندگان در ایران کمک کند تا راه‌حل‌های بومی و سفارشی بسازند."}}]}</script>
+
+
+  <div class="source-box">
+    منبع: <a href="https://techcrunch.com/2026/07/19/nonprofit-current-ai-is-racing-to-build-the-world-wide-web-of-ai-free-for-all/" rel="nofollow" target="_blank">TechCrunch AI</a>
+  </div>
+
+  <p class="footer-meta">تولیدشده توسط ایجنت محتوا — 20 July 2026</p>
+</div>
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var sel = '.article-intro, .hero-image, .article-body > h2, .article-body > p, .inline-figure, .tags-row, .faq-section, .source-box';
+  var els = [].slice.call(document.querySelectorAll(sel));
+  if (!els.length) return;
+  // کلاس مخفی فقط با JS اضافه می‌شود تا بدون JS هم محتوا دیده شود
+  els.forEach(function (el) { el.classList.add('reveal'); });
+  function show(el) {
+    el.classList.add('is-visible');
+    // بعد از پایان انیمیشن، کلاس‌ها را پاک کن تا hover سه‌بعدی سالم بماند
+    setTimeout(function () { el.classList.remove('reveal', 'is-visible'); }, 700);
+  }
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(show);
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        show(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+(function () {
+  // افکت spotlight — هاله‌ی سفید دنبالِ ماوس روی هر کادر حرکت می‌کند
+  var glowSel = '.article-intro, .article-body .answer-box, .faq-section, .source-box, .hero-image, .inline-figure';
+  [].slice.call(document.querySelectorAll(glowSel)).forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "inventory optimization software",
+    "inventory intelligence ai",
+    "visionary inventory generative ai and machine learning integration",
+    "inventory optimization tools"
+  ],
+  "per_kw": {
+    "inventory optimization software": {
+      "volume": 1300,
+      "kd": 26.0,
+      "competition": 0.04
+    },
+    "inventory intelligence ai": {
+      "volume": 590,
+      "kd": 19.0,
+      "competition": 0.0
+    },
+    "visionary inventory generative ai and machine learning integration": {
+      "volume": 480,
+      "kd": 0.0,
+      "competition": 0.0
+    },
+    "inventory optimization tools": {
+      "volume": 390,
+      "kd": 4.0,
+      "competition": 0.08
+    }
+  },
+  "avg_kd": 16.3,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=16.3 (سقف 40). داده از SEMrush API دیتابیس us."
+}

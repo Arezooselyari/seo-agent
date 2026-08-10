@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "dynamic pricing",
+    "dynamic pricing software",
+    "ai retail optimization",
+    "pricing for ai"
+  ],
+  "per_kw": {
+    "dynamic pricing": {
+      "volume": 12100,
+      "kd": 38.0,
+      "competition": 0.05
+    },
+    "dynamic pricing software": {
+      "volume": 1300,
+      "kd": 26.0,
+      "competition": 0.05
+    },
+    "ai retail optimization": {
+      "volume": 1000,
+      "kd": 26.0,
+      "competition": 0.0
+    },
+    "pricing for ai": {
+      "volume": 1000,
+      "kd": 39.0,
+      "competition": 0.5
+    }
+  },
+  "avg_kd": 32.2,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=32.2 (سقف 40). داده از SEMrush API دیتابیس us."
+}

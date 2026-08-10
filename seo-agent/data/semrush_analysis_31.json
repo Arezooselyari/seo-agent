@@ -1,0 +1,15 @@
+{
+  "targeted_keywords": [
+    "ai help desk automation"
+  ],
+  "per_kw": {
+    "ai help desk automation": {
+      "volume": 10,
+      "kd": 0.0,
+      "competition": 0.0
+    }
+  },
+  "avg_kd": null,
+  "verdict": "UNKNOWN",
+  "notes": "میانگین KD=None (سقف 40). داده از SEMrush API دیتابیس us."
+}

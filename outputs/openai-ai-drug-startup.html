@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>خروج پژوهشگر OpenAI: استارتاپ کشف دارو با هوش مصنوعی و فرصت‌های جدید</title>
+<meta name="description" content="پژوهشگر OpenAI استارتاپ کشف دارو با هوش مصنوعی راه‌اندازی می‌کند. این خبر چه فرصت‌های سرمایه‌گذاری و نوآوری برای کسب‌وکار شما دارد؟">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --radius: 14px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    /* پالت vlumis — گرم، لاکچری، روزنامه‌نگارانه */
+    --ink: #1E1408;
+    --gold: #B8853A;
+    --gold-light: #C99A52;
+    --cream: #FAF6F0;
+    --sand: #F3EBE0;
+    --gold-fill: #F5EDD8;
+    --teal: #4A8B7E;
+    --teal-light: #EAF3F1;
+    --rose: #B86A52;
+    --rose-light: #F5EAE6;
+    /* خطوط نازک به‌جای سایه‌ی سنگین + سایه‌های گرم با ته‌رنگِ ink (نه خاکستری سرد) */
+    --hairline: 1px solid rgba(30,20,8,.09);
+    --hairline-gold: 1px solid rgba(184,133,58,.22);
+    --shadow-sm: 0 2px 10px -4px rgba(30,20,8,.08);
+    --shadow-md: 0 10px 30px -14px rgba(30,20,8,.16), 0 2px 6px -3px rgba(30,20,8,.06);
+    --shadow-lg: 0 18px 44px -18px rgba(30,20,8,.20), 0 4px 12px -6px rgba(30,20,8,.08);
+    --shadow-hover: 0 22px 50px -18px rgba(30,20,8,.24), 0 6px 16px -7px rgba(30,20,8,.10);
+  }
+  body {
+    font-family: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.95;
+    color: var(--ink);
+    background: var(--cream);
+    min-height: 100vh;
+  }
+  /* متن فارسی تمام‌چین (justified) — استاندارد روزنامه‌نگاری */
+  .article-intro,
+  .article-body p,
+  .faq-item p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  /* ─── header ─── */
+  .article-header {
+    padding: 36px 0 20px;
+    border-bottom: 1px solid rgba(184,133,58,.28);
+    margin-bottom: 28px;
+  }
+  .article-breadcrumb {
+    font-size: 13px;
+    color: #8a7a63;
+    margin-bottom: 14px;
+  }
+  .article-breadcrumb a { color: var(--gold); text-decoration: none; }
+  .article-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .article-meta {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 13.5px;
+    color: #8a7a63;
+    flex-wrap: wrap;
+  }
+  .article-meta .site-name { font-weight: 600; color: var(--gold); }
+  /* ─── hero image ─── */
+  .hero-image {
+    width: 100%;
+    margin-bottom: 28px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .hero-image:hover { box-shadow: var(--shadow-lg); }
+  .hero-image img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .hero-image:hover img { transform: scale(1.04); }
+  .hero-credit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55));
+    color: rgba(255,255,255,0.85);
+    font-size: 11.5px;
+    padding: 24px 12px 8px;
+    text-align: left;
+    direction: ltr;
+  }
+  .hero-credit a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  /* ─── content ─── */
+  .article-intro {
+    position: relative;
+    overflow: hidden;
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--gold-fill);
+    border: var(--hairline-gold);
+    border-right: 4px solid var(--gold);
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    margin-bottom: 30px;
+    line-height: 1.9;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-intro:hover { box-shadow: var(--shadow-md); }
+  .article-body h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 36px 0 10px;
+    padding-right: 14px;
+    border-right: 4px solid var(--gold);
+  }
+  .article-body h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin: 24px 0 8px;
+  }
+  .article-body p {
+    margin-bottom: 16px;
+    color: #3a2f1f;
+  }
+  .article-body .answer-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--teal-light);
+    border: 1px solid rgba(74,139,126,.22);
+    border-right: 4px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-weight: 600;
+    color: #234a43;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-body .answer-box:hover { box-shadow: var(--shadow-md); }
+  .article-body blockquote {
+    background: var(--rose-light);
+    border: 1px solid rgba(184,106,82,.22);
+    border-right: 4px solid var(--rose);
+    padding: 14px 20px;
+    margin: 18px 0;
+    border-radius: var(--radius);
+    font-style: normal;
+    color: #7a3d2c;
+    box-shadow: var(--shadow-sm);
+  }
+  .article-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body a:hover { color: #936420; }
+  img.inline-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin: 0;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .inline-figure {
+    margin: 28px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .inline-figure:hover { box-shadow: var(--shadow-lg); }
+  .inline-figure:hover img.inline-img { transform: scale(1.04); }
+  .inline-credit {
+    font-size: 11.5px;
+    color: #94a3b8;
+    text-align: left;
+    direction: ltr;
+    margin-top: 6px;
+  }
+  .inline-credit a { color: #94a3b8; text-decoration: none; }
+  /* ─── tags ─── */
+  .tags-row {
+    margin: 28px 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--gold-fill);
+    color: #8a5e1f;
+    border: var(--hairline-gold);
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .2s var(--ease), color .2s var(--ease);
+  }
+  .tag:hover {
+    background: var(--gold);
+    color: var(--cream);
+  }
+  /* ─── FAQ ─── */
+  .faq-section {
+    position: relative;
+    margin: 38px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fffdf9;
+    border: var(--hairline);
+    box-shadow: var(--shadow-sm);
+  }
+  .faq-section h2 {
+    background: var(--sand);
+    margin: 0;
+    padding: 16px 22px;
+    font-size: 1.1rem;
+    border-right: none;
+    color: var(--ink);
+  }
+  .faq-item {
+    border-top: 1px solid rgba(30,20,8,.07);
+    padding: 16px 22px;
+    transition: background .2s var(--ease);
+  }
+  .faq-item:hover { background: var(--gold-fill); }
+  .faq-item h3 { font-size: 1rem; color: var(--gold); margin-bottom: 6px; }
+  .faq-item p { margin: 0; color: #3a2f1f; }
+  /* ─── source ─── */
+  .source-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--sand);
+    border: var(--hairline);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #6b5c45;
+    margin-top: 34px;
+    box-shadow: var(--shadow-sm);
+  }
+  .source-box a { color: var(--gold); }
+  .footer-meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #9a8a72;
+    text-align: center;
+  }
+  /* روی موبایل/لمسی، lift غیرفعال تا کادرها نپرند */
+  @media (hover: none), (max-width: 768px) {
+    .article-intro:hover, .answer-box:hover, .hero-image:hover,
+    .inline-figure:hover, .tag:hover {
+      transform: none;
+    }
+  }
+  /* ─── افکت اسکرول: ظاهر شدن نرمِ کادرها هنگام پایین آمدن ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  /* ─── افکت spotlight — هاله‌ی سفیدِ درخشانِ کمرنگ که دنبال ماوس روی کادر حرکت می‌کند (سبک vlumis) ─── */
+  .article-intro,
+  .article-body .answer-box,
+  .faq-section,
+  .source-box,
+  .hero-image,
+  .inline-figure {
+    position: relative;
+  }
+  .article-intro::before,
+  .article-body .answer-box::before,
+  .faq-section::before,
+  .source-box::before,
+  .hero-image::before,
+  .inline-figure::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255,249,235,.55),
+      rgba(184,133,58,.14) 38%,
+      rgba(184,133,58,0) 68%
+    );
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+    pointer-events: none;
+    z-index: 4;
+  }
+  .article-intro:hover::before,
+  .article-body .answer-box:hover::before,
+  .faq-section:hover::before,
+  .source-box:hover::before,
+  .hero-image:hover::before,
+  .inline-figure:hover::before {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .article-intro::before, .article-body .answer-box::before,
+    .faq-section::before, .source-box::before,
+    .hero-image::before, .inline-figure::before { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="article-header">
+    <div class="article-breadcrumb">
+      <a href="https://sagharnazari.ir">ساغر نظری</a> ← <a href="https://sagharnazari.ir/category/هوش-مصنوعی">هوش مصنوعی</a>
+    </div>
+    <h1 class="article-title">خروج پژوهشگر OpenAI: استارتاپ کشف دارو با هوش مصنوعی و فرصت‌های جدید</h1>
+    <div class="article-meta">
+      <span class="site-name">sagharnazari.ir</span>
+      <span>📅 15 July 2026</span>
+      <span>🏷️ هوش مصنوعی | کشف دارو | استارتاپ | سرمایه‌گذاری هوش مصنوعی</span>
+    </div>
+  </header>
+
+  <div class="hero-image">
+    <img src="https://images.pexels.com/photos/9742765/pexels-photo-9742765.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="AI drug discovery startup" loading="lazy">
+    <div class="hero-credit">Photo by <a href="https://www.pexels.com/@shvets-production" target="_blank">SHVETS production</a> on <a href="https://www.pexels.com/photo/assorted-pills-on-purple-surface-9742765/" target="_blank">Pexels</a></div>
+  </div>
+
+
+  <div class="article-intro">
+    مایلز وانگ، پژوهشگر نام‌آشنای OpenAI، این شرکت را ترک می‌کند تا استارتاپی نوآورانه در زمینه کشف دارو با هوش مصنوعی راه‌اندازی کند. این اتفاق، نشانه‌ای روشن از موج جدید سرمایه‌گذاری و خلاقیت در پیوند هوش مصنوعی و علوم زیستی است که می‌تواند قواعد بازی کسب‌وکارها را به کلی تغییر دهد.
+  </div>
+
+  <div class="article-body">
+    <h2>پژوهشگر OpenAI و تولد یک استارتاپ میلیاردی: چه خبر است؟</h2>
+    <p class="answer-box">Miles Wang، یکی از پژوهشگران کلیدی OpenAI که در زمینه تسریع کشف علمی با هوش مصنوعی فعالیت می‌کرد، این شرکت را ترک می‌کند تا استارتاپی جدید با تمرکز بر کشف دارو با هوش مصنوعی راه‌اندازی کند. این استارتاپ در حال مذاکره برای جذب سرمایه‌ای قابل توجه است که ارزش‌گذاری آن را تا ۲ میلیارد دلار هم مطرح کرده‌اند، هرچند این ارقام هنوز قطعی نیستند و خود وانگ آن‌ها را مورد مناقشه قرار داده است.</p>
+    <p>ببینید، این خبر واقعاً مهم است. چرا؟ چون نشان می‌دهد که نخبگان و استعدادهای برتر حوزه هوش مصنوعی، حالا به دنبال خلق ارزش‌های تازه و مستقل هستند. مایلز وانگ که در سال ۲۰۲۴ به OpenAI پیوسته بود، روی پروژه‌هایی کار می‌کرد که هوش مصنوعی چطور می‌تواند پیشرفت‌های علمی، به‌ویژه در علوم زیستی را سرعت ببخشد.
+
+حالا او می‌خواهد این دانش را به یک کسب‌وکار واقعی تبدیل کند. جالب اینجاست که احتمالاً چند پژوهشگر دیگر از OpenAI هم به او ملحق می‌شوند. این یعنی از همان ابتدا یک تیم قدرتمند شکل می‌گیرد که می‌تواند معادلات را به هم بزند. راستش را بخواهید، این اتفاق مثل این است که بهترین مهندس‌های یک شرکت بزرگ نرم‌افزاری در ایران، تصمیم بگیرند استارتاپ خودشان را بزنند و بازار را متحول کنند. خب، این برای کسب‌وکار شما چه معنایی دارد؟</p>
+    <h2>مدل کسب‌وکار هوشمندانه: هوش مصنوعی چطور داروهای شکست‌خورده را احیا می‌کند؟</h2>
+    <p class="answer-box">استارتاپ جدید Miles Wang قصد دارد از هوش مصنوعی برای یافتن کاربردهای جدید برای داروهای موجود یا حتی آن‌هایی که قبلاً در آزمایش‌ها شکست خورده‌اند، استفاده کند. این رویکرد می‌تواند فرآیند رسیدن به بازار را به شکل چشمگیری تسریع کند، چون ایمنی این داروها قبلاً تأیید شده است.</p>
+    <p>ببینید، توسعه یک داروی کاملاً جدید از صفر، هم زمان‌بر است و هم پرریسک. راستش را بخواهید، سال‌ها تحقیق، آزمایش‌های بالینی و میلیاردها دلار سرمایه می‌خواهد. اما نکته‌ی اصلی اینجاست: اگر بتوانید با کمک هوش مصنوعی، کاربردهای جدیدی برای داروهایی پیدا کنید که قبلاً توسط سازمان‌هایی مثل FDA تأیید شده‌اند، داستان کاملاً فرق می‌کند.
+
+این داروها قبلاً از نظر ایمنی تست شده‌اند. به همین دلیل، مسیر رسیدن به درآمد بسیار کوتاه‌تر می‌شود. خب، این مدل کسب‌وکار چقدر هوشمندانه است؟ واقعاً جالبه؛ مثل این می‌ماند که شما در کسب‌وکار خودتان، به جای اختراع یک محصول کاملاً جدید، با استفاده از فناوری‌های نوین، به محصولات یا خدمات قدیمی و حتی شکست‌خورده‌تان جان تازه‌ای ببخشید و آن‌ها را دوباره به بازار برگردانید. این رویکرد می‌تواند <a href="https://sagharnazari.ir/%d9%87%d9%88%d8%b4%d9%85%d9%86%d8%af%d8%b3%d8%a7%d8%b2%db%8c-%da%a9%d8%b3%d8%a8%d9%88%da%a9%d8%a7%d8%b1-%d8%a8%d8%a7-%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c-%d8%b1%d8%a7/">هوشمندسازی کسب‌وکار با هوش مصنوعی</a> را در ابعادی جدید نشان دهد.</p>
+    <figure class="inline-figure"><img class="inline-img" src="https://images.pexels.com/photos/8539653/pexels-photo-8539653.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="AI drug discovery startup" loading="lazy"><figcaption class="inline-credit">Photo by <a href="https://www.pexels.com/@karola-g" target="_blank">www.kaboompics.com</a> on <a href="https://www.pexels.com/photo/empty-test-tubes-on-racks-8539653/" target="_blank">Pexels</a></figcaption></figure>
+    <h2>چرا سرمایه‌گذاران میلیاردی به هوش مصنوعی در علوم زیستی روی آورده‌اند؟</h2>
+    <p class="answer-box">علاقه سرمایه‌گذاران به ترکیب هوش مصنوعی و علوم زیستی به شدت در حال افزایش است، زیرا این فناوری می‌تواند به کشف‌های علمی سرعت ببخشد و بازدهی بالایی داشته باشد. این روند با سرمایه‌گذاری‌های اخیر در شرکت‌هایی مانند Chai Discovery و Isomorphic Labs نیز تأیید می‌شود.</p>
+    <p>صادقانه بگویم، این حجم از سرمایه‌گذاری و ارزش‌گذاری‌های بالا اصلاً بی‌دلیل نیست. سرمایه‌گذاران به خوبی می‌دانند که هوش مصنوعی پتانسیل بی‌نظیری برای تحول در صنایع مختلف دارد؛ به‌خصوص در حوزه‌هایی که نیاز به تحلیل حجم عظیمی از داده‌ها و کشف الگوهای پیچیده وجود دارد، مثل علوم زیستی و داروسازی.
+
+آن‌ها به دنبال شرکت‌هایی هستند که بتوانند با هوش مصنوعی، فرآیندهای تحقیق و توسعه را سریع‌تر، ارزان‌تر و کارآمدتر کنند. این فقط یک ترند گذرا نیست، بلکه یک تغییر پارادایم واقعی است. پس چی؟ اگر شما هم به دنبال فرصت‌های سرمایه‌گذاری هستید، باید به این ترکیب هوش مصنوعی و علوم زیستی توجه ویژه‌ای داشته باشید. مثل اینکه یک شرکت ایرانی با استفاده از هوش مصنوعی، بتواند رفتار مشتریانش را در بازار پیچیده ایران با دقت بی‌سابقه‌ای پیش‌بینی کند. این موضوع اهمیت <a href="https://sagharnazari.ir/%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c-%da%86%d9%86%d8%af%d9%88%d8%ac%d9%87%db%8c-%d9%88-%d8%aa%d8%ba%db%8c%db%8c%d8%b1-%da%a9%d8%a7%d8%b1-%d8%a8%d8%a7-%d9%85%d8%af%d9%84/">هوش مصنوعی چندوجهی</a> و توانایی آن در حل مسائل پیچیده را در عمل نشان می‌دهد.</p>
+    <h2>این خبر برای کسب‌وکار شما، حتی اگر داروساز نیستید، چه معنایی دارد؟</h2>
+    <p class="answer-box">خروج پژوهشگران کلیدی از شرکت‌های بزرگ و راه‌اندازی استارتاپ‌های نوآورانه، نشان‌دهنده‌ی فرصت‌های بی‌نظیر برای کارآفرینی و استفاده از هوش مصنوعی در هر صنعتی است. این اتفاق می‌تواند الهام‌بخش مدیران و متخصصان برای بازنگری در مدل‌های کسب‌وکارشان باشد.</p>
+    <p>احتمالاً الان دارید فکر می‌کنید این خبر فقط به درد صنعت داروسازی می‌خورد. اما بگذارید مستقیم باشم: اشتباه می‌کنید! این یک درس بزرگ برای همه کسب‌وکارهاست. اول اینکه، مهاجرت استعدادهای برتر از شرکت‌های بزرگ به استارتاپ‌های نوپا، نشان‌دهنده پویایی بازار و جذابیت کارآفرینی در حوزه هوش مصنوعی است.
+
+اگر شما یک متخصص هوش مصنوعی هستید، این می‌تواند الهام‌بخش شما برای راه‌اندازی کسب‌وکار خودتان باشد. دوم، توانایی هوش مصنوعی در تسریع کشف علمی و بیولوژیکی، درسی برای هر صنعتی است. آیا کسب‌وکار شما هم فرآیندهای تحقیق و توسعه‌ای دارد که می‌توان با هوش مصنوعی آن‌ها را سریع‌تر و کارآمدتر کرد؟ از تولید محصول گرفته تا بازاریابی و خدمات مشتری، هوش مصنوعی می‌تواند بازی را عوض کند. مثل اینکه یک تولیدکننده پوشاک در ایران، با هوش مصنوعی، بتواند ترندهای فصلی را پیش‌بینی کند و طراحی‌هایش را بر اساس آن بهینه کند. این اتفاق به ما یادآوری می‌کند که <a href="https://sagharnazari.ir/%d8%a2%db%8c%d9%86%d8%af%d9%87-%d8%aa%d8%b9%d8%a7%d9%85%d9%84-%d8%a7%d9%86%d8%b3%d8%a7%d9%86-%d8%a8%d8%a7-%d9%85%d8%af%d9%84-%d9%87%d8%a7%db%8c-%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c/">آینده تعامل انسان با مدل‌های هوش مصنوعی</a>، آینده‌ای پر از فرصت‌های جدید است.</p>
+    <h2>جمع‌بندی</h2><p>خلاصه کنم، خبر راه‌اندازی استارتاپ مایلز وانگ، فقط یک خبر تکنولوژیک ساده نیست؛ به نظرم این یک چراغ راهنماست برای آینده‌ی کسب‌وکارها. این اتفاق به ما نشان می‌دهد که هوش مصنوعی نه تنها می‌تواند صنایع را متحول کند، بلکه فرصت‌های بی‌نظیری برای کارآفرینی و سرمایه‌گذاری هم ایجاد می‌کند. پس، حالا وقت آن است که کسب‌وکار شما هم به این موج بپیوندد و با بررسی دقیق، ببیند چطور می‌تواند از قدرت هوش مصنوعی برای رشد و نوآوری استفاده کند. (منبع: TechCrunch AI)</p>
+  </div>
+
+  <div class="tags-row">
+    <span class="tag">هوش مصنوعی</span> <span class="tag">کشف دارو</span> <span class="tag">استارتاپ</span> <span class="tag">سرمایه‌گذاری هوش مصنوعی</span> <span class="tag">علوم زیستی</span> <span class="tag">Miles Wang</span> <span class="tag">OpenAI</span>
+  </div>
+
+  <div class="faq-section">
+    <h2>پرسش‌های متداول</h2>
+    <div class="faq-item"><h3>Miles Wang کیست و چه نقشی در OpenAI داشت؟</h3><p>Miles Wang پژوهشگر OpenAI بود که در زمینه تسریع کشف علمی و بیولوژیکی با هوش مصنوعی فعالیت می‌کرد و اکنون برای راه‌اندازی استارتاپ خود از این شرکت جدا شده است.</p></div>
+    <div class="faq-item"><h3>استارتاپ جدید Miles Wang دقیقاً روی چه چیزی تمرکز دارد؟</h3><p>این استارتاپ بر توسعه مدل‌های هوش مصنوعی برای یافتن کاربردهای جدید برای داروهای موجود یا داروهایی که قبلاً در آزمایش‌ها شکست خورده‌اند، تمرکز دارد.</p></div>
+    <div class="faq-item"><h3>چرا این مدل کسب‌وکار (بازیافت دارو با AI) جذاب است؟</h3><p>این مدل به دلیل تأیید قبلی ایمنی داروها، می‌تواند زمان رسیدن به درآمد را به شکل قابل توجهی تسریع کند و ریسک کمتری نسبت به توسعه داروی کاملاً جدید دارد.</p></div>
+  </div>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Miles Wang کیست و چه نقشی در OpenAI داشت؟", "acceptedAnswer": {"@type": "Answer", "text": "Miles Wang پژوهشگر OpenAI بود که در زمینه تسریع کشف علمی و بیولوژیکی با هوش مصنوعی فعالیت می‌کرد و اکنون برای راه‌اندازی استارتاپ خود از این شرکت جدا شده است."}}, {"@type": "Question", "name": "استارتاپ جدید Miles Wang دقیقاً روی چه چیزی تمرکز دارد؟", "acceptedAnswer": {"@type": "Answer", "text": "این استارتاپ بر توسعه مدل‌های هوش مصنوعی برای یافتن کاربردهای جدید برای داروهای موجود یا داروهایی که قبلاً در آزمایش‌ها شکست خورده‌اند، تمرکز دارد."}}, {"@type": "Question", "name": "چرا این مدل کسب‌وکار (بازیافت دارو با AI) جذاب است؟", "acceptedAnswer": {"@type": "Answer", "text": "این مدل به دلیل تأیید قبلی ایمنی داروها، می‌تواند زمان رسیدن به درآمد را به شکل قابل توجهی تسریع کند و ریسک کمتری نسبت به توسعه داروی کاملاً جدید دارد."}}]}</script>
+
+
+  <div class="source-box">
+    منبع: <a href="https://techcrunch.com/2026/07/14/openai-researcher-miles-wang-in-talks-to-launch-ai-drug-discovery-startup-valued-at-2b/" rel="nofollow" target="_blank">TechCrunch AI</a>
+  </div>
+
+  <p class="footer-meta">تولیدشده توسط ایجنت محتوا — 15 July 2026</p>
+</div>
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var sel = '.article-intro, .hero-image, .article-body > h2, .article-body > p, .inline-figure, .tags-row, .faq-section, .source-box';
+  var els = [].slice.call(document.querySelectorAll(sel));
+  if (!els.length) return;
+  // کلاس مخفی فقط با JS اضافه می‌شود تا بدون JS هم محتوا دیده شود
+  els.forEach(function (el) { el.classList.add('reveal'); });
+  function show(el) {
+    el.classList.add('is-visible');
+    // بعد از پایان انیمیشن، کلاس‌ها را پاک کن تا hover سه‌بعدی سالم بماند
+    setTimeout(function () { el.classList.remove('reveal', 'is-visible'); }, 700);
+  }
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(show);
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        show(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+(function () {
+  // افکت spotlight — هاله‌ی سفید دنبالِ ماوس روی هر کادر حرکت می‌کند
+  var glowSel = '.article-intro, .article-body .answer-box, .faq-section, .source-box, .hero-image, .inline-figure';
+  [].slice.call(document.querySelectorAll(glowSel)).forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>رزرو جلسه‌ی مشاوره — ساغر نظری</title>
+<style>
+  @font-face{
+    font-family:'Vazirmatn';
+    src:url('/static/fonts/vazirmatn-arabic.woff2') format('woff2');
+    font-weight:100 900;font-style:normal;font-display:swap;
+    unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+08A0-08FF,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF;
+  }
+  @font-face{
+    font-family:'Vazirmatn';
+    src:url('/static/fonts/vazirmatn-latin.woff2') format('woff2');
+    font-weight:100 900;font-style:normal;font-display:swap;
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-2193,U+2212;
+  }
+  :root{
+    --bg:#FFFFFF; --bg-tint:#F1F7F4; --card:#FFFFFF; --card-2:#FBFDFC;
+    --line:#E2EAE6; --line-soft:#EDF2EF;
+    --ink:#17282C; --muted:#5C6E72; --muted-2:#8A9A9D;
+    --green:#12876A; --green-hi:#1BA37D; --green-dark:#0E6B54; --green-deep:#0B5946;
+    --green-wash:#E7F3EE;
+    --red:#C0392B; --red-wash:#FBEAE8;
+    --r-lg:24px; --r-md:16px; --r-sm:12px;
+    --shadow:0 18px 50px rgba(18,74,58,.10);
+    --shadow-sm:0 6px 18px rgba(18,74,58,.06);
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Vazirmatn',Tahoma,'Segoe UI',sans-serif;
+    background:
+      radial-gradient(900px 460px at 84% -10%, rgba(18,135,106,.08), transparent 60%),
+      radial-gradient(720px 400px at -6% 2%, rgba(27,163,125,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink); line-height:1.85; min-height:100vh;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    font-size:16px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:28px 20px 56px}
+
+  header{text-align:center;padding:30px 0 6px}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:600;color:var(--green-dark);
+    background:var(--green-wash);
+    border:1px solid rgba(18,135,106,.24);
+    padding:7px 16px;border-radius:100px;margin-bottom:20px;
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green-hi);
+    box-shadow:0 0 0 4px rgba(27,163,125,.16)}
+  h1{
+    font-size:clamp(24px,4.6vw,34px);line-height:1.32;margin:0 0 14px;
+    font-weight:800;letter-spacing:-.01em;color:var(--ink);
+  }
+  .sub{color:var(--muted);font-size:15px;line-height:1.85;max-width:480px;margin:0 auto;font-weight:400}
+
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);margin-top:28px;
+    position:relative;overflow:hidden;
+  }
+  .panel::before{
+    content:"";position:absolute;top:0;inset-inline:0;height:4px;
+    background:linear-gradient(90deg,var(--green-hi),var(--green),var(--green-deep));
+  }
+
+  .steps{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:22px}
+  .steps .s{width:8px;height:8px;border-radius:50%;background:var(--line)}
+  .steps .s.active{background:var(--green-hi);width:20px;border-radius:5px;transition:all .25s var(--ease)}
+  .steps .s.done{background:var(--green)}
+
+  h2{font-size:18px;font-weight:800;margin:0 0 18px;display:flex;align-items:center;gap:8px}
+
+  /* تقویم */
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .cal-head button{
+    border:1px solid var(--line);background:var(--card-2);border-radius:10px;
+    width:32px;height:32px;cursor:pointer;font-size:15px;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;transition:all .15s var(--ease);
+  }
+  .cal-head button:hover{border-color:var(--green-hi);color:var(--green)}
+  .cal-head span{font-weight:700;font-size:14.5px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .cal-grid .dh{text-align:center;font-size:11px;font-weight:700;color:var(--muted-2);padding-bottom:6px}
+  .cal-grid button{
+    aspect-ratio:1;border-radius:10px;border:1px solid transparent;background:transparent;
+    font-size:13px;font-weight:500;color:var(--ink);cursor:pointer;font-family:inherit;
+    display:flex;align-items:center;justify-content:center;transition:all .15s var(--ease);
+  }
+  .cal-grid button:disabled{color:var(--muted-2);cursor:not-allowed;opacity:.45}
+  .cal-grid button:not(:disabled):hover{border-color:var(--green-hi);background:var(--green-wash)}
+  .cal-grid button.today{border-color:rgba(18,135,106,.35)}
+  .cal-grid button.selected{background:var(--green);color:#fff;font-weight:800}
+
+  .picked-date{margin-top:14px;text-align:center;font-size:13.5px;color:var(--green-dark);font-weight:600}
+
+  /* اسلات‌های ساعت */
+  .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin-top:16px}
+  .slots button{
+    padding:11px 6px;border-radius:11px;border:1px solid var(--line);background:var(--card-2);
+    font-family:inherit;font-size:13.5px;font-weight:700;color:var(--ink);cursor:pointer;
+    transition:all .15s var(--ease);
+  }
+  .slots button:hover{border-color:var(--green-hi)}
+  .slots button.selected{background:var(--green);border-color:var(--green);color:#fff}
+  .empty-msg{text-align:center;color:var(--muted);font-size:14px;padding:22px 0}
+  .spinner{display:flex;justify-content:center;padding:22px 0}
+  .spinner .ring{
+    width:26px;height:26px;border-radius:50%;border:3px solid var(--line-soft);
+    border-top-color:var(--green-hi);animation:spin .8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* فرم */
+  label{display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px}
+  .field{margin-bottom:14px}
+  input,textarea{
+    width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--line);
+    font-family:inherit;font-size:14px;color:var(--ink);background:var(--card-2);
+    outline:none;transition:border-color .15s var(--ease);
+  }
+  input:focus,textarea:focus{border-color:var(--green-hi)}
+  textarea{resize:vertical;min-height:70px}
+  input[type=tel]{direction:ltr;text-align:right}
+
+  /* دکمه‌ها */
+  .row{display:flex;gap:10px;margin-top:22px}
+  .btn{
+    flex:1;padding:14px 16px;border:0;border-radius:var(--r-md);cursor:pointer;
+    font-size:15px;font-weight:700;font-family:inherit;display:flex;align-items:center;
+    justify-content:center;gap:8px;transition:all .18s var(--ease);
+  }
+  .btn-primary{
+    color:#fff;background:linear-gradient(96deg,var(--green-hi),var(--green) 60%,var(--green-dark));
+    box-shadow:0 12px 26px rgba(18,135,106,.24);
+  }
+  .btn-primary:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
+  .btn-primary:not(:disabled):hover{transform:translateY(-1px)}
+  .btn-secondary{background:var(--card-2);color:var(--ink);border:1px solid var(--line)}
+  .btn-secondary:hover{border-color:var(--green-hi)}
+
+  .summary{background:var(--green-wash);border:1px solid rgba(18,135,106,.2);border-radius:var(--r-md);
+    padding:16px 18px;margin-bottom:6px;font-size:14px}
+  .summary .r{display:flex;justify-content:space-between;padding:5px 0}
+  .summary .r span:first-child{color:var(--muted)}
+  .summary .r span:last-child{font-weight:700}
+
+  .error-msg{color:var(--red);background:var(--red-wash);border:1px solid rgba(192,57,43,.25);
+    border-radius:10px;padding:10px 14px;font-size:13.5px;margin-bottom:14px}
+
+  .done{text-align:center;padding:8px 0}
+  .done .check{
+    width:64px;height:64px;border-radius:50%;margin:0 auto 18px;
+    background:var(--green-wash);border:2px solid rgba(18,135,106,.35);
+    display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--green);
+  }
+  .done h2{justify-content:center}
+  .ref-code{
+    display:inline-block;margin-top:6px;font-family:monospace;font-size:15px;font-weight:700;
+    background:var(--card-2);border:1px dashed var(--line);border-radius:8px;padding:6px 14px;
+    letter-spacing:.03em;color:var(--green-dark);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="badge"><span class="dot"></span> رزرو آنلاین</div>
+    <h1>جلسه‌ی مشاوره رزرو کنید</h1>
+    <p class="sub">تاریخ و ساعت مورد نظرتان را از تقویم زیر انتخاب کنید.</p>
+  </header>
+
+  <div class="panel">
+    <div class="steps">
+      <div class="s" data-s="1"></div>
+      <div class="s" data-s="2"></div>
+      <div class="s" data-s="3"></div>
+    </div>
+
+    <!-- مرحله ۱: تاریخ + ساعت -->
+    <div id="step1">
+      <h2>📅 تاریخ و ساعت را انتخاب کنید</h2>
+
+      <div class="cal-head">
+        <button id="nextMonth">‹</button>
+        <span id="calLabel"></span>
+        <button id="prevMonth">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div id="pickedDate" class="picked-date" style="display:none"></div>
+      <div id="slotsArea"></div>
+
+      <div class="row">
+        <button class="btn btn-primary" id="toStep2" disabled>مرحله‌ی بعد</button>
+      </div>
+    </div>
+
+    <!-- مرحله ۲: اطلاعات تماس -->
+    <div id="step2" style="display:none">
+      <h2>👤 اطلاعات تماس</h2>
+      <div class="field">
+        <label>نام و نام خانوادگی *</label>
+        <input type="text" id="fName" placeholder="مثال: مریم احمدی">
+      </div>
+      <div class="field">
+        <label>شماره تماس *</label>
+        <input type="tel" id="fPhone" placeholder="09xxxxxxxxx">
+      </div>
+      <div class="field">
+        <label>موضوع (اختیاری)</label>
+        <input type="text" id="fTopic" placeholder="مثلاً: اتوماسیون هوش مصنوعی">
+      </div>
+      <div class="field">
+        <label>توضیحات (اختیاری)</label>
+        <textarea id="fNotes" placeholder="سؤال یا نکته‌ی خاصی که دارید..."></textarea>
+      </div>
+      <div class="row">
+        <button class="btn btn-secondary" id="backToStep1">قبلی</button>
+        <button class="btn btn-primary" id="toStep3">مرور و تأیید</button>
+      </div>
+    </div>
+
+    <!-- مرحله ۳: تأیید -->
+    <div id="step3" style="display:none">
+      <h2>✅ تأیید نهایی</h2>
+      <div class="summary">
+        <div class="r"><span>تاریخ</span><span id="sumDate"></span></div>
+        <div class="r"><span>ساعت</span><span id="sumTime"></span></div>
+        <div class="r"><span>نام</span><span id="sumName"></span></div>
+        <div class="r"><span>تماس</span><span id="sumPhone"></span></div>
+      </div>
+      <div id="submitError"></div>
+      <div class="row">
+        <button class="btn btn-secondary" id="backToStep2">ویرایش</button>
+        <button class="btn btn-primary" id="submitBtn">ثبت رزرو</button>
+      </div>
+    </div>
+
+    <!-- پیام موفقیت -->
+    <div id="stepDone" style="display:none" class="done">
+      <div class="check">✓</div>
+      <h2>رزرو شما ثبت شد!</h2>
+      <p class="sub" style="margin:0 auto">به‌زودی برای هماهنگی نهایی با شما تماس گرفته می‌شود.</p>
+      <div class="ref-code" id="refCode"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/booking/jalali.js"></script>
+<script>
+(function(){
+  // تقویم شمسی. قرارداد: هرچه به API می‌رود میلادی ISO (YYYY-MM-DD) است؛
+  // شمسی فقط لایه‌ی نمایش است. توابع تبدیل در /static/booking/jalali.js.
+  var J = globalThis.Jalali;
+
+  // state.jy/jm = ماهِ در حال نمایش (شمسی). state.date همچنان میلادی ISO.
+  var state = { jy:null, jm:null, date:null, time:null };
+  var today = new Date();
+  var todayJ = J.toJalali(today.getFullYear(), today.getMonth()+1, today.getDate());
+  state.jy = todayJ.jy;
+  state.jm = todayJ.jm;
+
+  function todayISO(){ return J.dateToIso(today); }
+
+  function fa(v){ return J.faDigits(v); }
+
+  function formatFa(iso){ return fa(J.isoToJalaliLong(iso)); }
+
+  function setStep(n){
+    ["step1","step2","step3","stepDone"].forEach(function(id, i){
+      document.getElementById(id).style.display = (i+1===n) ? "" : "none";
+    });
+    document.querySelectorAll(".steps .s").forEach(function(el){
+      var s = parseInt(el.dataset.s, 10);
+      el.classList.toggle("active", s===n);
+      el.classList.toggle("done", s<n);
+    });
+    if (n > 3) document.querySelector(".steps").style.display = "none";
+  }
+
+  function renderCalendar(){
+    document.getElementById("calLabel").textContent =
+      J.JALALI_MONTHS[state.jm-1] + " " + fa(state.jy);
+    var grid = document.getElementById("calGrid");
+    grid.innerHTML = "";
+    J.WEEKDAY_SHORT_FA.forEach(function(d){
+      var el = document.createElement("div");
+      el.className = "dh";
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+    // چیدمان شنبه‌محور: ستون روز اول ماه را از تاریخ میلادی معادلش می‌گیریم
+    var firstIso = J.jalaliToIso(state.jy, state.jm, 1);
+    var lead = J.saturdayFirstColumn(J.isoToDate(firstIso));
+    var daysInMonth = J.jalaliMonthLength(state.jy, state.jm);
+    for (var i=0;i<lead;i++){
+      grid.appendChild(document.createElement("div"));
+    }
+    for (var d=1; d<=daysInMonth; d++){
+      (function(day){
+        var iso = J.jalaliToIso(state.jy, state.jm, day);
+        var btn = document.createElement("button");
+        btn.textContent = fa(day);
+        var isPast = iso < todayISO();
+        btn.disabled = isPast;
+        if (iso === todayISO()) btn.classList.add("today");
+        if (iso === state.date) btn.classList.add("selected");
+        btn.addEventListener("click", function(){
+          state.date = iso;
+          state.time = null;
+          renderCalendar();
+          loadSlots(iso);
+        });
+        grid.appendChild(btn);
+      })(d);
+    }
+  }
+
+  function loadSlots(iso){
+    var area = document.getElementById("slotsArea");
+    var picked = document.getElementById("pickedDate");
+    picked.style.display = "";
+    picked.textContent = formatFa(iso) + " انتخاب شد";
+    area.innerHTML = '<div class="spinner"><div class="ring"></div></div>';
+    document.getElementById("toStep2").disabled = true;
+
+    fetch("/api/booking/available-slots?date=" + encodeURIComponent(iso))
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var slots = data.slots || [];
+        if (slots.length === 0){
+          area.innerHTML = '<p class="empty-msg">در این روز وقت خالی نیست. روز دیگری را امتحان کنید.</p>';
+          return;
+        }
+        var wrap = document.createElement("div");
+        wrap.className = "slots";
+        slots.forEach(function(t){
+          var b = document.createElement("button");
+          b.textContent = t;
+          b.addEventListener("click", function(){
+            state.time = t;
+            wrap.querySelectorAll("button").forEach(function(x){ x.classList.remove("selected"); });
+            b.classList.add("selected");
+            document.getElementById("toStep2").disabled = false;
+          });
+          wrap.appendChild(b);
+        });
+        area.innerHTML = "";
+        area.appendChild(wrap);
+      })
+      .catch(function(){
+        area.innerHTML = '<p class="empty-msg">خطا در دریافت ساعت‌های خالی. دوباره تلاش کنید.</p>';
+      });
+  }
+
+  // نام این دو المان با جهتشان در RTL برعکس است — عمداً دست‌نخورده مانده
+  // تا با چیدمان فعلی صفحه بخواند.
+  document.getElementById("prevMonth").addEventListener("click", function(){
+    state.jm++; if (state.jm>12){ state.jm=1; state.jy++; }
+    renderCalendar();
+  });
+  document.getElementById("nextMonth").addEventListener("click", function(){
+    state.jm--; if (state.jm<1){ state.jm=12; state.jy--; }
+    renderCalendar();
+  });
+
+  document.getElementById("toStep2").addEventListener("click", function(){ setStep(2); });
+  document.getElementById("backToStep1").addEventListener("click", function(){ setStep(1); });
+
+  document.getElementById("toStep3").addEventListener("click", function(){
+    var name = document.getElementById("fName").value.trim();
+    var phone = document.getElementById("fPhone").value.trim();
+    if (!name || !phone){
+      alert("لطفاً نام و شماره تماس را وارد کنید.");
+      return;
+    }
+    document.getElementById("sumDate").textContent = formatFa(state.date);
+    document.getElementById("sumTime").textContent = state.time;
+    document.getElementById("sumName").textContent = name;
+    document.getElementById("sumPhone").textContent = phone;
+    setStep(3);
+  });
+  document.getElementById("backToStep2").addEventListener("click", function(){ setStep(2); });
+
+  document.getElementById("submitBtn").addEventListener("click", function(){
+    var btn = this;
+    var errEl = document.getElementById("submitError");
+    errEl.innerHTML = "";
+    btn.disabled = true;
+    btn.textContent = "در حال ثبت...";
+
+    fetch("/api/booking/create", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name: document.getElementById("fName").value.trim(),
+        phone: document.getElementById("fPhone").value.trim(),
+        date: state.date,
+        time: state.time,
+        topic: document.getElementById("fTopic").value.trim() || null,
+        notes: document.getElementById("fNotes").value.trim() || null,
+      }),
+    })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
+      .then(function(res){
+        if (!res.ok){
+          errEl.innerHTML = '<div class="error-msg">' + (res.data.detail || "خطا در ثبت رزرو") + '</div>';
+          btn.disabled = false;
+          btn.textContent = "ثبت رزرو";
+          if (res.data.detail && res.data.detail.indexOf("خالی نیست") !== -1){
+            loadSlots(state.date);
+            setStep(1);
+          }
+          return;
+        }
+        document.getElementById("refCode").textContent = res.data.reference_code;
+        setStep(4);
+      })
+      .catch(function(){
+        errEl.innerHTML = '<div class="error-msg">خطا در ارتباط با سرور. دوباره تلاش کنید.</div>';
+        btn.disabled = false;
+        btn.textContent = "ثبت رزرو";
+      });
+  });
+
+  renderCalendar();
+  setStep(1);
+})();
+</script>
+</body>
+</html>

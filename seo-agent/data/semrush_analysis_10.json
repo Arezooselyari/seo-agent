@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "will ai replace accountants",
+    "trullion",
+    "digits",
+    "ai accounting software"
+  ],
+  "per_kw": {
+    "will ai replace accountants": {
+      "volume": 2400,
+      "kd": 34.0,
+      "competition": 0.04
+    },
+    "trullion": {
+      "volume": 1600,
+      "kd": 41.0,
+      "competition": 0.63
+    },
+    "digits": {
+      "volume": 18100,
+      "kd": 54.0,
+      "competition": 0.06
+    },
+    "ai accounting software": {
+      "volume": 1900,
+      "kd": 58.0,
+      "competition": 0.36
+    }
+  },
+  "avg_kd": 46.8,
+  "verdict": "WEAK",
+  "notes": "میانگین KD=46.8 (سقف 40). داده از SEMrush API دیتابیس us."
+}

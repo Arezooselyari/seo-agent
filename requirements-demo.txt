@@ -1,0 +1,9 @@
+# وابستگی‌های سبکِ فقط برای دموی وب (Railway).
+# دمو فقط به FastAPI + Gemini نیاز دارد؛ supabase/feedparser/trafilatura لازم نیست.
+fastapi==0.115.5
+uvicorn==0.32.1
+google-generativeai==0.8.3
+pydantic==2.9.2
+pydantic-settings==2.6.1
+PyYAML==6.0.2
+httpx==0.27.2

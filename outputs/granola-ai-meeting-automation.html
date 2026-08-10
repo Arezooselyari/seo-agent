@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>خودکارسازی جلسات با هوش مصنوعی: چطور بهره‌وری کسب‌وکار را متحول می‌کند؟</title>
+<meta name="description" content="با گرنولا و هوش مصنوعی، یادداشت‌برداری و مدیریت جلسات را متحول کنید. وظایف CRM و سازماندهی کارها را خودکار کرده و بهره‌وری تیمتان را افزایش دهید.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --radius: 14px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    /* پالت vlumis — گرم، لاکچری، روزنامه‌نگارانه */
+    --ink: #1E1408;
+    --gold: #B8853A;
+    --gold-light: #C99A52;
+    --cream: #FAF6F0;
+    --sand: #F3EBE0;
+    --gold-fill: #F5EDD8;
+    --teal: #4A8B7E;
+    --teal-light: #EAF3F1;
+    --rose: #B86A52;
+    --rose-light: #F5EAE6;
+    /* خطوط نازک به‌جای سایه‌ی سنگین + سایه‌های گرم با ته‌رنگِ ink (نه خاکستری سرد) */
+    --hairline: 1px solid rgba(30,20,8,.09);
+    --hairline-gold: 1px solid rgba(184,133,58,.22);
+    --shadow-sm: 0 2px 10px -4px rgba(30,20,8,.08);
+    --shadow-md: 0 10px 30px -14px rgba(30,20,8,.16), 0 2px 6px -3px rgba(30,20,8,.06);
+    --shadow-lg: 0 18px 44px -18px rgba(30,20,8,.20), 0 4px 12px -6px rgba(30,20,8,.08);
+    --shadow-hover: 0 22px 50px -18px rgba(30,20,8,.24), 0 6px 16px -7px rgba(30,20,8,.10);
+  }
+  body {
+    font-family: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.95;
+    color: var(--ink);
+    background: var(--cream);
+    min-height: 100vh;
+  }
+  /* متن فارسی تمام‌چین (justified) — استاندارد روزنامه‌نگاری */
+  .article-intro,
+  .article-body p,
+  .faq-item p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  /* ─── header ─── */
+  .article-header {
+    padding: 36px 0 20px;
+    border-bottom: 1px solid rgba(184,133,58,.28);
+    margin-bottom: 28px;
+  }
+  .article-breadcrumb {
+    font-size: 13px;
+    color: #8a7a63;
+    margin-bottom: 14px;
+  }
+  .article-breadcrumb a { color: var(--gold); text-decoration: none; }
+  .article-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .article-meta {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 13.5px;
+    color: #8a7a63;
+    flex-wrap: wrap;
+  }
+  .article-meta .site-name { font-weight: 600; color: var(--gold); }
+  /* ─── hero image ─── */
+  .hero-image {
+    width: 100%;
+    margin-bottom: 28px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .hero-image:hover { box-shadow: var(--shadow-lg); }
+  .hero-image img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .hero-image:hover img { transform: scale(1.04); }
+  .hero-credit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55));
+    color: rgba(255,255,255,0.85);
+    font-size: 11.5px;
+    padding: 24px 12px 8px;
+    text-align: left;
+    direction: ltr;
+  }
+  .hero-credit a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  /* ─── content ─── */
+  .article-intro {
+    position: relative;
+    overflow: hidden;
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--gold-fill);
+    border: var(--hairline-gold);
+    border-right: 4px solid var(--gold);
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    margin-bottom: 30px;
+    line-height: 1.9;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-intro:hover { box-shadow: var(--shadow-md); }
+  .article-body h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 36px 0 10px;
+    padding-right: 14px;
+    border-right: 4px solid var(--gold);
+  }
+  .article-body h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin: 24px 0 8px;
+  }
+  .article-body p {
+    margin-bottom: 16px;
+    color: #3a2f1f;
+  }
+  .article-body .answer-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--teal-light);
+    border: 1px solid rgba(74,139,126,.22);
+    border-right: 4px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-weight: 600;
+    color: #234a43;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .3s var(--ease);
+  }
+  .article-body .answer-box:hover { box-shadow: var(--shadow-md); }
+  .article-body blockquote {
+    background: var(--rose-light);
+    border: 1px solid rgba(184,106,82,.22);
+    border-right: 4px solid var(--rose);
+    padding: 14px 20px;
+    margin: 18px 0;
+    border-radius: var(--radius);
+    font-style: normal;
+    color: #7a3d2c;
+    box-shadow: var(--shadow-sm);
+  }
+  .article-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body a:hover { color: #936420; }
+  img.inline-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin: 0;
+    display: block;
+    transition: transform .5s var(--ease);
+  }
+  .inline-figure {
+    margin: 28px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: var(--hairline);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s var(--ease);
+  }
+  .inline-figure:hover { box-shadow: var(--shadow-lg); }
+  .inline-figure:hover img.inline-img { transform: scale(1.04); }
+  .inline-credit {
+    font-size: 11.5px;
+    color: #94a3b8;
+    text-align: left;
+    direction: ltr;
+    margin-top: 6px;
+  }
+  .inline-credit a { color: #94a3b8; text-decoration: none; }
+  /* ─── tags ─── */
+  .tags-row {
+    margin: 28px 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--gold-fill);
+    color: #8a5e1f;
+    border: var(--hairline-gold);
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .2s var(--ease), color .2s var(--ease);
+  }
+  .tag:hover {
+    background: var(--gold);
+    color: var(--cream);
+  }
+  /* ─── FAQ ─── */
+  .faq-section {
+    position: relative;
+    margin: 38px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fffdf9;
+    border: var(--hairline);
+    box-shadow: var(--shadow-sm);
+  }
+  .faq-section h2 {
+    background: var(--sand);
+    margin: 0;
+    padding: 16px 22px;
+    font-size: 1.1rem;
+    border-right: none;
+    color: var(--ink);
+  }
+  .faq-item {
+    border-top: 1px solid rgba(30,20,8,.07);
+    padding: 16px 22px;
+    transition: background .2s var(--ease);
+  }
+  .faq-item:hover { background: var(--gold-fill); }
+  .faq-item h3 { font-size: 1rem; color: var(--gold); margin-bottom: 6px; }
+  .faq-item p { margin: 0; color: #3a2f1f; }
+  /* ─── source ─── */
+  .source-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--sand);
+    border: var(--hairline);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #6b5c45;
+    margin-top: 34px;
+    box-shadow: var(--shadow-sm);
+  }
+  .source-box a { color: var(--gold); }
+  .footer-meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #9a8a72;
+    text-align: center;
+  }
+  /* روی موبایل/لمسی، lift غیرفعال تا کادرها نپرند */
+  @media (hover: none), (max-width: 768px) {
+    .article-intro:hover, .answer-box:hover, .hero-image:hover,
+    .inline-figure:hover, .tag:hover {
+      transform: none;
+    }
+  }
+  /* ─── افکت اسکرول: ظاهر شدن نرمِ کادرها هنگام پایین آمدن ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  /* ─── افکت spotlight — هاله‌ی سفیدِ درخشانِ کمرنگ که دنبال ماوس روی کادر حرکت می‌کند (سبک vlumis) ─── */
+  .article-intro,
+  .article-body .answer-box,
+  .faq-section,
+  .source-box,
+  .hero-image,
+  .inline-figure {
+    position: relative;
+  }
+  .article-intro::before,
+  .article-body .answer-box::before,
+  .faq-section::before,
+  .source-box::before,
+  .hero-image::before,
+  .inline-figure::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255,249,235,.55),
+      rgba(184,133,58,.14) 38%,
+      rgba(184,133,58,0) 68%
+    );
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+    pointer-events: none;
+    z-index: 4;
+  }
+  .article-intro:hover::before,
+  .article-body .answer-box:hover::before,
+  .faq-section:hover::before,
+  .source-box:hover::before,
+  .hero-image:hover::before,
+  .inline-figure:hover::before {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .article-intro::before, .article-body .answer-box::before,
+    .faq-section::before, .source-box::before,
+    .hero-image::before, .inline-figure::before { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="article-header">
+    <div class="article-breadcrumb">
+      <a href="https://sagharnazari.ir">ساغر نظری</a> ← <a href="https://sagharnazari.ir/category/هوش-مصنوعی">هوش مصنوعی</a>
+    </div>
+    <h1 class="article-title">خودکارسازی جلسات با هوش مصنوعی: چطور بهره‌وری کسب‌وکار را متحول می‌کند؟</h1>
+    <div class="article-meta">
+      <span class="site-name">sagharnazari.ir</span>
+      <span>📅 17 July 2026</span>
+      <span>🏷️ خودکارسازی جلسات | هوش مصنوعی در کسب‌وکار | بهره‌وری تیم | مدیریت یادداشت جلسات</span>
+    </div>
+  </header>
+
+  <div class="hero-image">
+    <img src="https://images.pexels.com/photos/15096572/pexels-photo-15096572.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="AI meeting notes dashboard" loading="lazy">
+    <div class="hero-credit">Photo by <a href="https://www.pexels.com/@srijonism" target="_blank">Md Jawadur Rahman</a> on <a href="https://www.pexels.com/photo/brainstorming-during-presentation-15096572/" target="_blank">Pexels</a></div>
+  </div>
+
+
+  <div class="article-intro">
+    ابزار جدید گرنولا با ادغام MCP، به هوش مصنوعی‌هایی مثل Claude و ChatGPT این امکان را می‌دهد که به یادداشت‌های جلسات شما دسترسی داشته باشند. خب، این یعنی کسب‌وکار شما می‌تواند با خودکارسازی کارهای بعد از جلسه، بهره‌وری‌اش را حسابی بالا ببرد.
+  </div>
+
+  <div class="article-body">
+    <h2>جلسات کاری: چطور هوش مصنوعی به کمک بهره‌وری کسب‌وکار می‌آید؟</h2>
+    <p class="answer-box">ابزاری مانند گرنولا با اتصال هوش مصنوعی به یادداشت‌های جلسات، فرآیندهای پس از جلسه را خودکار می‌کند. این کار باعث می‌شود زمان کمتری برای کارهای تکراری صرف شود و تیم روی وظایف مهم‌تر تمرکز کند.</p>
+    <p>ببینید، تصور کنید بعد از یک جلسه‌ی طولانی با مشتری، دیگر لازم نیست ساعت‌ها وقت بگذارید. نه برای استخراج نکات مهم از یادداشت‌های پراکنده، نه برای به‌روزرسانی CRM شرکت. گرنولا دقیقاً همین بار سنگین را از دوش شما برمی‌دارد.
+
+این ابزار با یکپارچه‌سازی MCP، یادداشت‌های جلسات شما را طوری آماده می‌کند که هوش مصنوعی‌هایی مثل Claude یا ChatGPT بتوانند به راحتی به آن‌ها دسترسی داشته باشند. خب، این یعنی چه برای کسب‌وکار شما؟
+
+راستش را بخواهید، با یک دستور ساده (prompt)، می‌توانید از هوش مصنوعی بخواهید که CRM شما را بر اساس جلسات مشتریان هفته‌ی گذشته به‌روز کند. مثل اینکه یک کارمند ارشد دارید که هرگز خسته نمی‌شود و تمام کارهای اداری بعد از جلسه را بدون کوچکترین خطایی انجام می‌دهد.
+
+یا مثلاً، می‌توانید از ChatGPT بخواهید وظایف استخراج‌شده از چندین مکالمه را جمع‌آوری کرده و آن‌ها را در ابز</p>
+    <h2>چرا دسترسی کامل هوش مصنوعی به محتوای جلسات اینقدر مهم است؟</h2>
+    <p class="answer-box">دسترسی هوش مصنوعی به یادداشت‌های کامل و پالایش‌شده جلسات، بدون نیاز به کپی و پیست دستی، دقت و کارایی آن را به شدت افزایش می‌دهد. این یعنی هوش مصنوعی می‌تواند تصمیمات بهتر و اقدامات دقیق‌تری انجام دهد.</p>
+    <p>یکی از بزرگترین چالش‌ها در استفاده از هوش مصنوعی برای کارهای اداری، فراهم کردن اطلاعات کافی و دقیق برای آن است. معمولاً باید بخش‌هایی از متن را کپی و پیست کنیم، که هم زمان‌بر است و هم ممکن است جزئیاتی از قلم بیفتد. اما گرنولا این مشکل را حل کرده است. این سیستم تضمین می‌کند که هوش مصنوعی شما به تمام محتوای جلسات، به صورت غنی‌شده و پالایش‌شده دسترسی کامل دارد، بدون اینکه نیاز به کپی و پیست کردن باشد.
+
+این ویژگی به هوش مصنوعی اجازه می‌دهد تا با درک عمیق‌تری از مکالمات، وظایف را با دقت بیشتری انجام دهد و خروجی‌های مفیدتری ارائه کند. در واقع، هوش مصنوعی دیگر فقط یک ابزار نیست، بلکه به یک دستیار هوشمند تبدیل می‌شود که می‌تواند با درک کامل زمینه، به شما کمک کند. این رویکرد نشان می‌دهد که <a href="https://sagharnazari.ir/%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c%d8%8c-%d9%88%d9%82%d8%aa%db%8c-%d9%81%d9%82%d8%b7-%d8%a7%d8%a8%d8%b2%d8%a7%d8%b1-%d9%86%db%8c%d8%b3%d8%aa/">هوش مصنوعی می‌تواند فراتر از یک ابزار ساده باشد</a> و نقش استراتژیک‌تری در کسب‌وکار ایفا کند.</p>
+    <figure class="inline-figure"><img class="inline-img" src="https://images.pexels.com/photos/5990265/pexels-photo-5990265.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="AI meeting notes dashboard" loading="lazy"><figcaption class="inline-credit">Photo by <a href="https://www.pexels.com/@cottonbro" target="_blank">cottonbro studio</a> on <a href="https://www.pexels.com/photo/close-up-photo-of-sticky-notes-on-whiteboard-5990265/" target="_blank">Pexels</a></figcaption></figure>
+    <h2>گرنولا چطور به فریلنسرها و تیم‌های کوچک کمک می‌کند؟</h2>
+    <p class="answer-box">فریلنسرها و تیم‌های کوچک می‌توانند با استفاده از ابزارهایی مثل گرنولا، فرآیند یادداشت‌برداری و پیگیری کارهای مشتریان را بدون نیاز به حضور ربات‌ها در تماس‌ها یا صرف زمان زیاد برای سازماندهی دستی، بهبود بخشند. این یعنی تمرکز بیشتر روی کار اصلی و مشتری.</p>
+    <p>اگر شما یک فریلنسر هستید یا تیمی کوچک را مدیریت می‌کنید، احتمالاً با چالش‌های مدیریت زمان و پیگیری وظایف متعدد آشنا هستید. هر جلسه با مشتری، انبوهی از اطلاعات و وظایف جدید را به همراه دارد که باید به‌درستی ثبت و پیگیری شوند. گرنولا این فرآیند را ساده می‌کند.
+
+جالب اینجاست که این سیستم یادداشت‌های جلسات عالی را بدون نیاز به حضور ربات‌ها در تماس‌های شما ارائه می‌دهد. یعنی حریم خصوصی جلسه حفظ می‌شود و در عین حال، هوش مصنوعی در پس‌زمینه به شما کمک می‌کند تا هیچ نکته‌ای از قلم نیفتد. این برای کسب‌وکار شما یعنی چه؟ یعنی می‌توانید بدون نگرانی از جزئیات، روی ارائه‌ی بهترین خدمات به مشتریانتان تمرکز کنید و اجازه دهید هوش مصنوعی کارهای تکراری را انجام دهد. این نوع ابزارها، مثل <a href="https://sagharnazari.ir/%d9%be%d8%b4%d8%aa-%d8%b5%d8%ad%d9%86%d9%87-%d9%87%d9%88%d8%b4-%d9%85%d8%b5%d9%86%d9%88%d8%b9%db%8c-%d9%86%d9%82%d8%b4-%d8%ad%db%8c%d8%a7%d8%aa%db%8c-api%d9%87%d8%a7-%d8%af%d8%b1-%d9%be%d8%a7%db%8c/">APIهایی که پشت صحنه هوش مصنوعی عمل می‌کنند</a>، زیرساختی برای بهره‌وری بیشتر فراهم می‌آورند.</p>
+    <h2>خودکارسازی وظایف اداری: کاهش خطا و صرفه‌جویی در هزینه‌ها</h2>
+    <p class="answer-box">خودکارسازی وظایف تکراری و اداری با کمک هوش مصنوعی، به کاهش خطاهای انسانی و صرفه‌جویی قابل توجه در هزینه‌های عملیاتی منجر می‌شود. این یعنی منابع مالی و انسانی کسب‌وکار به شکل بهینه‌تری استفاده خواهند شد.</p>
+    <p>یکی از بزرگترین مزایای خودکارسازی، کاهش چشمگیر خطاهای انسانی است. وقتی وظایفی مثل به‌روزرسانی CRM یا استخراج وظایف به صورت دستی انجام می‌شوند، همیشه احتمال اشتباه وجود دارد. اما هوش مصنوعی با دقت بالا این کارها را انجام می‌دهد و این یعنی داده‌های شما قابل اعتمادتر خواهند بود.
+
+علاوه بر این، صرفه‌جویی در زمان تیم به معنای صرفه‌جویی در هزینه‌هاست. زمان آزاد شده می‌تواند صرف کارهای استراتژیک‌تر، توسعه محصول یا بهبود روابط با مشتری شود. برای اینکه کسب‌وکارهای ایرانی بتوانند این مزایا را از نزدیک تجربه کنند، گرنولا ماه اول استفاده از سرویس خود را با کد TLDR1MO رایگان ارائه می‌دهد. این فرصتی عالی است تا بدون ریسک، تأثیر خودکارسازی هوشمند را بر بهره‌وری و هزینه‌های عملیاتی خود بسنجید.</p>
+    <h2>جمع‌بندی</h2><p>در مجموع، ابزارهایی مانند گرنولا نشان می‌دهند که آینده مدیریت جلسات و کارهای اداری به سمت خودکارسازی هوشمند پیش می‌رود. برای کسب‌وکارهای ایرانی، این فرصتی است تا با پذیرش این فناوری‌ها، نه تنها بهره‌وری خود را بالا ببرند، بلکه از رقبای خود پیشی بگیرند. پیشنهاد می‌کنیم برای شروع، به فکر استفاده از راهکارهای مشابه برای خودکارسازی بخشی از فرآیندهای تکراری تیمتان باشید و نتایج آن را بسنجید. (منبع: TLDR AI, https://tldr.tech/ai/2026-07-16)</p>
+  </div>
+
+  <div class="tags-row">
+    <span class="tag">خودکارسازی جلسات</span> <span class="tag">هوش مصنوعی در کسب‌وکار</span> <span class="tag">بهره‌وری تیم</span> <span class="tag">مدیریت یادداشت جلسات</span> <span class="tag">اتوماسیون وظایف</span> <span class="tag">ابزارهای هوش مصنوعی</span>
+  </div>
+
+  <div class="faq-section">
+    <h2>پرسش‌های متداول</h2>
+    <div class="faq-item"><h3>گرنولا دقیقاً چه کاری انجام می‌دهد؟</h3><p>گرنولا با ادغام MCP، به هوش مصنوعی اجازه می‌دهد یادداشت‌های جلسات را پردازش کند و وظایفی مانند به‌روزرسانی CRM یا سازماندهی کارها را به صورت خودکار انجام دهد.</p></div>
+    <div class="faq-item"><h3>آیا برای استفاده از گرنولا نیاز به حضور ربات در جلسات است؟</h3><p>خیر، یکی از مزایای اصلی گرنولا این است که یادداشت‌های جلسات عالی را بدون نیاز به حضور ربات‌ها در تماس‌ها ارائه می‌دهد.</p></div>
+    <div class="faq-item"><h3>هوش مصنوعی چطور به یادداشت‌های جلسات دسترسی پیدا می‌کند؟</h3><p>هوش مصنوعی بدون نیاز به کپی و پیست کردن دستی، به تمام محتوای جلسات که توسط گرنولا غنی و پالایش شده‌اند، دسترسی کامل دارد.</p></div>
+  </div>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "گرنولا دقیقاً چه کاری انجام می‌دهد؟", "acceptedAnswer": {"@type": "Answer", "text": "گرنولا با ادغام MCP، به هوش مصنوعی اجازه می‌دهد یادداشت‌های جلسات را پردازش کند و وظایفی مانند به‌روزرسانی CRM یا سازماندهی کارها را به صورت خودکار انجام دهد."}}, {"@type": "Question", "name": "آیا برای استفاده از گرنولا نیاز به حضور ربات در جلسات است؟", "acceptedAnswer": {"@type": "Answer", "text": "خیر، یکی از مزایای اصلی گرنولا این است که یادداشت‌های جلسات عالی را بدون نیاز به حضور ربات‌ها در تماس‌ها ارائه می‌دهد."}}, {"@type": "Question", "name": "هوش مصنوعی چطور به یادداشت‌های جلسات دسترسی پیدا می‌کند؟", "acceptedAnswer": {"@type": "Answer", "text": "هوش مصنوعی بدون نیاز به کپی و پیست کردن دستی، به تمام محتوای جلسات که توسط گرنولا غنی و پالایش شده‌اند، دسترسی کامل دارد."}}]}</script>
+
+
+  <div class="source-box">
+    منبع: <a href="https://tldr.tech/ai/2026-07-16" rel="nofollow" target="_blank">TLDR AI</a>
+  </div>
+
+  <p class="footer-meta">تولیدشده توسط ایجنت محتوا — 17 July 2026</p>
+</div>
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var sel = '.article-intro, .hero-image, .article-body > h2, .article-body > p, .inline-figure, .tags-row, .faq-section, .source-box';
+  var els = [].slice.call(document.querySelectorAll(sel));
+  if (!els.length) return;
+  // کلاس مخفی فقط با JS اضافه می‌شود تا بدون JS هم محتوا دیده شود
+  els.forEach(function (el) { el.classList.add('reveal'); });
+  function show(el) {
+    el.classList.add('is-visible');
+    // بعد از پایان انیمیشن، کلاس‌ها را پاک کن تا hover سه‌بعدی سالم بماند
+    setTimeout(function () { el.classList.remove('reveal', 'is-visible'); }, 700);
+  }
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(show);
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        show(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+(function () {
+  // افکت spotlight — هاله‌ی سفید دنبالِ ماوس روی هر کادر حرکت می‌کند
+  var glowSel = '.article-intro, .article-body .answer-box, .faq-section, .source-box, .hero-image, .inline-figure';
+  [].slice.call(document.querySelectorAll(glowSel)).forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+})();
+</script>
+</body>
+</html>

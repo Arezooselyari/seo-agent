@@ -1,0 +1,101 @@
+tools:
+- name: ChatGPT
+  keyword_seed: آموزش ChatGPT
+  official_url: https://openai.com/chatgpt/
+  usage_count: 1
+- name: Claude
+  keyword_seed: آموزش Claude
+  official_url: https://www.anthropic.com/claude
+  usage_count: 1
+- name: Gemini
+  keyword_seed: آموزش Gemini
+  official_url: https://gemini.google.com/
+  usage_count: 0
+- name: Perplexity
+  keyword_seed: آموزش Perplexity
+  official_url: https://www.perplexity.ai/
+  usage_count: 1
+- name: Midjourney
+  keyword_seed: آموزش Midjourney
+  official_url: https://www.midjourney.com/
+  usage_count: 0
+- name: Notion AI
+  keyword_seed: آموزش Notion AI
+  official_url: https://www.notion.so/product/ai
+  usage_count: 0
+- name: GitHub Copilot
+  keyword_seed: آموزش GitHub Copilot
+  official_url: https://github.com/features/copilot
+  usage_count: 0
+- name: Cursor
+  keyword_seed: آموزش Cursor
+  official_url: https://www.cursor.com/
+  usage_count: 0
+- name: n8n
+  keyword_seed: آموزش n8n
+  official_url: https://n8n.io/
+  usage_count: 0
+- name: Zapier AI
+  keyword_seed: آموزش Zapier AI
+  official_url: https://zapier.com/ai
+  usage_count: 0
+- name: Canva Magic Studio
+  keyword_seed: آموزش Canva Magic Studio
+  official_url: https://www.canva.com/magic-studio/
+  usage_count: 1
+- name: Adobe Firefly
+  keyword_seed: آموزش Adobe Firefly
+  official_url: https://www.adobe.com/products/firefly.html
+  usage_count: 0
+- name: Grammarly
+  keyword_seed: آموزش Grammarly
+  official_url: https://www.grammarly.com/
+  usage_count: 0
+- name: Otter.ai
+  keyword_seed: آموزش Otter.ai
+  official_url: https://otter.ai/
+  usage_count: 1
+- name: Synthesia
+  keyword_seed: آموزش Synthesia
+  official_url: https://www.synthesia.io/
+  usage_count: 0
+- name: HeyGen
+  keyword_seed: آموزش HeyGen
+  official_url: https://www.heygen.com/
+  usage_count: 0
+- name: ElevenLabs
+  keyword_seed: آموزش ElevenLabs
+  official_url: https://elevenlabs.io/
+  usage_count: 0
+- name: Suno
+  keyword_seed: آموزش Suno
+  official_url: https://suno.com/
+  usage_count: 0
+- name: Google NotebookLM
+  keyword_seed: آموزش NotebookLM
+  official_url: https://notebooklm.google/
+  usage_count: 1
+- name: Microsoft Copilot
+  keyword_seed: آموزش Microsoft Copilot
+  official_url: https://copilot.microsoft.com/
+  usage_count: 0
+- name: Character.AI
+  keyword_seed: آموزش Character.AI
+  official_url: https://character.ai/
+  usage_count: 0
+- name: Replit AI
+  keyword_seed: آموزش Replit AI
+  official_url: https://replit.com/ai
+  usage_count: 0
+- name: Framer AI
+  keyword_seed: آموزش Framer AI
+  official_url: https://www.framer.com/ai
+  usage_count: 0
+- name: Runway
+  keyword_seed: آموزش Runway
+  official_url: https://runwayml.com/
+  usage_count: 0
+- name: v0 by Vercel
+  keyword_seed: آموزش v0
+  official_url: https://v0.dev/
+  usage_count: 0

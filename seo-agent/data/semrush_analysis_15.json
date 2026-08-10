@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "ai social media management",
+    "buffer application",
+    "social media management platforms",
+    "blaze ai"
+  ],
+  "per_kw": {
+    "ai social media management": {
+      "volume": 210,
+      "kd": 100.0,
+      "competition": 0.48
+    },
+    "buffer application": {
+      "volume": 6600,
+      "kd": 60.0,
+      "competition": 0.19
+    },
+    "social media management platforms": {
+      "volume": 5400,
+      "kd": 61.0,
+      "competition": 0.02
+    },
+    "blaze ai": {
+      "volume": 12100,
+      "kd": 65.0,
+      "competition": 0.61
+    }
+  },
+  "avg_kd": 71.5,
+  "verdict": "WEAK",
+  "notes": "میانگین KD=71.5 (سقف 40). داده از SEMrush API دیتابیس us."
+}

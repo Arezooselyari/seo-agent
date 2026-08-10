@@ -1,0 +1,181 @@
+"""گام ۱ — جمع‌آوری مقالات از منابع معتبر.
+
+روند: RSS (یا اسکرپ صفحه‌ی فهرست) -> حذف تکراری‌ها -> فیلتر ارتباط با Haiku
+-> دانلود متن کامل مقالات برتر با trafilatura.
+"""
+import time
+from datetime import datetime, timedelta, timezone
+
+import feedparser
+import requests
+import trafilatura
+from bs4 import BeautifulSoup
+
+from . import db, llm
+from .config import load_settings, load_sources
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+}
+
+
+def _fetch_rss(source: dict, max_items: int, max_age_days: int) -> list[dict]:
+    feed = feedparser.parse(source["rss"], request_headers=HEADERS)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    items = []
+    for entry in feed.entries[:max_items]:
+        published = None
+        for key in ("published_parsed", "updated_parsed"):
+            t = getattr(entry, key, None)
+            if t:
+                published = datetime(*t[:6], tzinfo=timezone.utc)
+                break
+        if published and published < cutoff:
+            continue
+        items.append(
+            {
+                "source": source["name"],
+                "url": entry.link,
+                "title": entry.get("title", ""),
+                "summary": BeautifulSoup(
+                    entry.get("summary", ""), "html.parser"
+                ).get_text()[:500],
+            }
+        )
+    return items
+
+
+def _fetch_listing(source: dict, max_items: int) -> list[dict]:
+    """در نبود RSS: لینک‌های مقاله را از صفحه‌ی فهرست استخراج می‌کند."""
+    resp = requests.get(source["list_url"], headers=HEADERS, timeout=30)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+    items, seen = [], set()
+    for a in soup.select("article a[href], h2 a[href], h3 a[href]"):
+        href = a.get("href", "")
+        title = a.get_text(strip=True)
+        if not title or len(title) < 25 or href in seen:
+            continue
+        if href.startswith("/"):
+            from urllib.parse import urljoin
+
+            href = urljoin(source["list_url"], href)
+        if not href.startswith("http"):
+            continue
+        seen.add(href)
+        items.append({"source": source["name"], "url": href, "title": title, "summary": ""})
+        if len(items) >= max_items:
+            break
+    return items
+
+
+def gather_candidates() -> list[dict]:
+    settings = load_settings()["collect"]
+    conn = db.connect()
+    candidates = []
+    for source in load_sources():
+        try:
+            if source.get("rss"):
+                items = _fetch_rss(source, settings["max_per_source"], settings["max_age_days"])
+            elif source.get("list_url"):
+                items = _fetch_listing(source, settings["max_per_source"])
+            else:
+                continue
+        except Exception as e:
+            print(f"[collector] خطا در منبع {source['name']}: {e}")
+            continue
+        for item in items:
+            if not db.is_seen(conn, item["url"]):
+                candidates.append(item)
+        time.sleep(settings["request_delay_seconds"])
+    conn.close()
+    return candidates
+
+
+def rank_by_relevance(topic: str, candidates: list[dict]) -> list[dict]:
+    """همه‌ی عناوین در یک فراخوانی Haiku امتیاز ارتباط می‌گیرند."""
+    if not candidates:
+        return []
+    listing = "\n".join(
+        f"{i}. {c['title']} — {c['summary'][:150]}" for i, c in enumerate(candidates)
+    )
+    result = llm.ask(
+        step="relevance_filter",
+        user_content=(
+            f"موضوع امروز: «{topic}»\n\n"
+            "برای هر مقاله‌ی زیر امتیاز ارتباط با موضوع از ۰ تا ۱۰ بده.\n"
+            "فقط JSON برگردان: " '[{"index": 0, "score": 8}, ...]\n\n' + listing
+        ),
+        model_tier="cheap",
+        max_tokens=2048,
+    )
+    # مدل‌های مختلف شکلِ JSON را متفاوت برمی‌گردانند: گاهی لیستِ خام، گاهی داخلِ
+    # کلیدی مثل {"results": [...]}. اگر کورکورانه .get صدا بزنیم، عوض‌کردنِ پروایدر
+    # کلِ خطِ تولید را می‌شکند؛ پس شکل را نرم تفسیر می‌کنیم.
+    if isinstance(result, dict):
+        for v in result.values():
+            if isinstance(v, list):
+                result = v
+                break
+    scored = 0
+    for r in result if isinstance(result, list) else []:
+        if not isinstance(r, dict):
+            continue
+        idx = r.get("index")
+        if isinstance(idx, int) and 0 <= idx < len(candidates):
+            candidates[idx]["relevance"] = r.get("score", 0)
+            scored += 1
+    if not scored:
+        # بدونِ امتیاز، ترتیبِ اصلی (تازه‌ترین‌ها) حفظ می‌شود — بهتر از سقوطِ کامل
+        print("[collector] هشدار: امتیازِ ارتباط خوانده نشد؛ ترتیبِ زمانی حفظ شد.")
+        return candidates
+    return sorted(candidates, key=lambda c: c.get("relevance", 0), reverse=True)
+
+
+def download_full_text(article: dict) -> str | None:
+    # trafilatura.fetch_url از UA پیش‌فرضِ خودش استفاده می‌کند که بعضی سایت‌ها (مثل
+    # VentureBeat) با 403 بلاک می‌کنند. با UA مرورگر (همان که RSS استفاده می‌کند) دانلود
+    # و سپس extract کن؛ در نبودِ متن، fallback به fetch_url پیش‌فرض.
+    try:
+        resp = requests.get(article["url"], headers=HEADERS, timeout=30)
+        if resp.status_code == 200 and resp.text:
+            text = trafilatura.extract(resp.text, include_comments=False, include_tables=False)
+            if text:
+                return text
+    except Exception as e:
+        print(f"[collector] دانلود با UA مرورگر نشد ({article['url'][:60]}): {e}")
+    downloaded = trafilatura.fetch_url(article["url"])
+    if not downloaded:
+        return None
+    return trafilatura.extract(downloaded, include_comments=False, include_tables=False)
+
+
+def collect(topic: str, relevance_topic: str | None = None) -> list[dict]:
+    """خروجی: لیست مقالات برتر با متن کامل.
+
+    relevance_topic: عبارتِ کوتاه‌تری که برای امتیازدهیِ ارتباط به‌کار می‌رود (اگر متفاوت
+    از `topic` باشد) — مثلاً برای موضوعِ آموزشیِ «آموزش استفاده از X: راهنمای...»، نامِ
+    خودِ ابزار («X») تطابقِ بهتری با تیترهای خبری پیدا می‌کند تا جمله‌ی کاملِ آموزشی.
+    """
+    settings = load_settings()["collect"]
+    candidates = gather_candidates()
+    print(f"[collector] {len(candidates)} مقاله‌ی جدید پیدا شد")
+    ranked = rank_by_relevance(relevance_topic or topic, candidates)
+    selected = [c for c in ranked if c.get("relevance", 0) >= settings["min_relevance"]]
+    selected = selected[: settings["top_n_articles"]]
+
+    conn = db.connect()
+    results = []
+    for art in selected:
+        text = download_full_text(art)
+        db.mark_seen(conn, art["url"])
+        if text and len(text) > 500:
+            art["text"] = text[:15000]  # سقف توکن برای کنترل هزینه
+            results.append(art)
+            print(f"[collector] ✓ {art['title'][:60]} (score={art.get('relevance')})")
+        else:
+            print(f"[collector] ✗ متن قابل استخراج نبود: {art['url']}")
+        time.sleep(settings["request_delay_seconds"])
+    conn.close()
+    return results

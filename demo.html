@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persian AI Agent - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .pipeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            animation: scaleIn 0.6s ease;
+        }
+
+        .step:nth-child(1) { animation-delay: 0.2s; }
+        .step:nth-child(3) { animation-delay: 0.4s; }
+        .step:nth-child(5) { animation-delay: 0.6s; }
+        .step:nth-child(7) { animation-delay: 0.8s; }
+
+        .step-circle {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .step h3 {
+            color: white;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .step p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: white;
+            animation: slideRight 1s ease infinite;
+        }
+
+        .articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.8s ease;
+            transform: translateY(30px);
+        }
+
+        .article-card:nth-child(1) {
+            animation: slideUp 0.8s ease 1.2s forwards;
+        }
+        .article-card:nth-child(2) {
+            animation: slideUp 0.8s ease 1.4s forwards;
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .article-content {
+            padding: 30px;
+        }
+
+        .article-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .article-meta {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .article-desc {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .article-btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+
+        .article-btn:hover {
+            background: #764ba2;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 60px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideUp 0.8s ease 1.6s both;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .footer p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .pipeline {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Persian AI Agent</h1>
+            <p>مقالات هوشمند، هر روز صبح، خودکار</p>
+        </div>
+
+        <div class="pipeline">
+            <div class="step">
+                <div class="step-circle">📰</div>
+                <h3>جمع‌آوری</h3>
+                <p>منابع AI</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step">
+                <div class="step-circle">⭐</div>
+                <h3>انتخاب</h3>
+                <p>بهترین‌ها</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step">
+                <div class="step-circle">🧠</div>
+                <h3>تحلیل</h3>
+                <p>Gemini AI</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step">
+                <div class="step-circle">✍️</div>
+                <h3>نوشتن</h3>
+                <p>انسان‌گونه</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step">
+                <div class="step-circle">📤</div>
+                <h3>انتشار</h3>
+                <p>تلگرام</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: white; margin-bottom: 40px;">
+            <h2 style="margin-bottom: 20px;">✨ مقالات نمونه امروز</h2>
+        </div>
+
+        <div class="articles">
+            <div class="article-card">
+                <div class="article-image">🏗️</div>
+                <div class="article-content">
+                    <div class="article-title">زیرساخت هوش مصنوعی AWS</div>
+                    <div class="article-meta">
+                        <span>📅 امروز</span>
+                        <span>⏱️ 3 دقیقه</span>
+                    </div>
+                    <div class="article-desc">بلوک‌های قدرتمند برای مدل‌های بنیادی و پردازش داده در ابر...</div>
+                    <a href="#" class="article-btn">خواندن مقاله</a>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-image">🚀</div>
+                <div class="article-content">
+                    <div class="article-title">Mellum2: مدل سریع و ارزان</div>
+                    <div class="article-meta">
+                        <span>📅 امروز</span>
+                        <span>⏱️ 3 دقیقه</span>
+                    </div>
+                    <div class="article-desc">حل‌ جدید برای کسب‌وکار‌های کوچک و متوسط ایران...</div>
+                    <a href="#" class="article-btn">خواندن مقاله</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">2</div>
+                <div class="stat-label">مقاله هر روز</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">15</div>
+                <div class="stat-label">منبع RSS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">خودکار</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">📱</div>
+                <div class="stat-label">تلگرام</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🎯 مقالات انسان‌گونه، بدون دخالت انسان</p>
+            <p style="font-size: 0.9em; opacity: 0.8; margin-top: 20px;">ساغر نظری | مشاوره هوش مصنوعی</p>
+        </div>
+    </div>
+</body>
+</html>

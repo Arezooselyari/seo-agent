@@ -1,0 +1,82 @@
+{
+  "human_tone_rules": [
+    "Open with a concrete problem or situation, not a ceremonial address or greeting to the reader.",
+    "Use at most one rhetorical question per section; convert the rest into declarative statements.",
+    "Vary sentence length deliberately, mixing short and long sentences to break a uniform machine rhythm.",
+    "To fix a vague claim, follow this order: (1) use existing data from citable_facts, (2) explain the process precisely without numbers, (3) remove the claim if there is not enough information. NEVER invent a number, case study, experience, or business result to make text more concrete.",
+    "Write in a direct, plain voice and avoid stacking emotional or dramatic adjectives.",
+    "Prefer active voice and specific subjects over abstract, generic phrasing."
+  ],
+  "seo_rules": [
+    "Place the primary keyword within the first 30 characters of the title and inside the H1.",
+    "Use exactly one H1 and organize all remaining content under a logical H2/H3 hierarchy.",
+    "Write short, topical, keyword-oriented headings instead of long rhetorical sentences.",
+    "Always include a meta description of 120-155 characters containing keyword, benefit, and a call to action.",
+    "Keep 2-3 internal links with descriptive anchor text and at least one external link to an authoritative source.",
+    "Use a short, keyword-based slug.",
+    "Preserve a structured FAQ section that can be mapped to FAQ schema."
+  ],
+  "eeat_rules": [
+    "Judge expertise by technical precision: correct definitions, distinguishing an AI capability from its API/workflow/integration requirements, and exact claim-source matching — never by tone, first-person voice, or claimed experience.",
+    "State limitations, prerequisites, and risks of any solution explicitly — honest constraints are a stronger E-E-A-T signal than confident claims.",
+    "Back every quantitative claim with a cited, linked authoritative source from citable_facts; a case study, client story, or internal project may appear ONLY if recorded in verified_facts or business_context.",
+    "Provide decision criteria (when it is worth it, for whom, under what conditions) instead of universal recommendations.",
+    "Use sources precisely: a source only supports the exact claim it makes (allowed_scope) — never stretch a general source to back a specific commercial result.",
+    "Retain domain-specific and local context that demonstrates specialized knowledge, without inventing local entities (cities, companies, clients) as evidence."
+  ],
+  "search_intent_rules": [
+    "Match the title format to the query intent, using a question format for informational topics.",
+    "Answer the core question directly and early, before secondary details.",
+    "Cover the subtopics a reader with this intent expects, using distinct sections per subquestion.",
+    "Use FAQ entries to capture long-tail and 'people also ask' style queries.",
+    "Keep the content scope aligned with the query type and avoid drifting off-intent."
+  ],
+  "conversion_rules": [
+    "End the conclusion with a single, specific, actionable call to action.",
+    "Frame benefits as outcomes for the reader rather than product features.",
+    "Keep one primary call to action and avoid competing conversion prompts.",
+    "Include a soft in-body link to the relevant solution or service page as a conversion path.",
+    "Write the meta description with a value promise and an explicit invitation to click."
+  ],
+  "readability_rules": [
+    "Limit each paragraph to a single idea and split any paragraph longer than 3-4 lines.",
+    "Insert a scannable visual element (table, bullet list, or numbered list) every 2-3 paragraphs.",
+    "Convert any X-versus-Y comparison into a table instead of prose.",
+    "Convert processes and step sequences into numbered lists.",
+    "Use descriptive subheadings so the article can be understood by scanning alone.",
+    "Cut filler content to raise the signal-to-noise ratio without removing depth."
+  ],
+  "anti_ai_writing_rules": [
+    "Remove clichéd connective phrases and dramatic transitions typical of AI output.",
+    "Delete repeated intensifier adverbs and keep any single intensifier to at most one use.",
+    "Avoid ceremonial openers, filler reassurances, and empty summarizing sentences.",
+    "Replace generic boilerplate with specific facts, data, or firsthand detail.",
+    "Do not restate the same idea in multiple reworded sentences.",
+    "Before editing, list the valuable existing elements (E-E-A-T, cited data, FAQ, CTA, meta, internal links) and remove only filler, never signal."
+  ],
+  "accuracy_rules": [
+    "Before answering any yes/no question (in a heading or body), verify the polarity: a question like 'only for X?' takes 'No' as the expansive answer — a mismatched answer is a critical logic error.",
+    "State capability claims conditionally, naming what results depend on (document quality, language, model, configuration) — never promise certainty about behavior that varies in practice.",
+    "Banned certainty framing for capabilities: 'تضمین می‌کند', 'پاسخ قاطعانه', 'به‌درستی می‌خواند', 'بدون هیچ وقفه', 'یکپارچگی کامل' — replace with scoped, conditional statements.",
+    "For AI/data systems, describe confidence scores and human-in-the-loop review for sensitive fields (financial, medical, legal) — never claim the system silently completes or corrects missing data.",
+    "Distinguish detection from verification: detecting that something exists (a signature, a field) is not the same as reading, authenticating, or validating it — state the limit explicitly.",
+    "Security wording: never 'guarantee' security; instead list what must be evaluated (encryption in transit/at rest, access control, data location and retention, deletion policy, audit logs).",
+    "Any number, percentage, price, duration, growth/reduction rate, or quantitative result may come ONLY from citable_facts with a source_id; a hypothetical scenario may describe a process but may NOT contain any invented quantitative value or business outcome.",
+    "Technology definitions must reflect real scope (e.g. IDP = OCR + layout detection + ML classification + NLP + validation + human review), not oversimplified equations like 'X is just A plus B'.",
+    "The conclusion must be an actionable recommendation with decision criteria (when it is economically justified, how to start small, what to measure) — never a fear-based warning about competitors.",
+    "For commercial-intent topics, include an implementation-oriented section: when the investment is justified (volume, error rate, cost), rollout steps, and success metrics (KPIs).",
+    "Soft quantitative claims are quantitative claims too: phrases like 'معمولاً', 'اغلب', 'بسیاری از', 'چند هفته', 'در مدت کوتاه', 'دقت بالا', 'سریع‌تر', 'رشد چشمگیر', 'افزایش قابل‌توجه', 'کاهش محسوس', 'هزینه کمتر', 'عملکرد بهتر' are DENIED without a verified_fact — remove them or neutralize.",
+    "Allowed neutral replacements for unsupported soft claims: conditional scope-dependent statements such as 'زمان راه‌اندازی به دامنه پروژه بستگی دارد', 'دقت سیستم باید روی داده‌های واقعی آزمایش شود', 'میزان کاهش هزینه بدون اندازه‌گیری پروژه قابل تعیین نیست'.",
+    "The second half of the title must state concrete scope (کاربردها، مزایا، چالش‌ها یا محدوده‌ی فنی), and the meta must describe the article's actual contents — no generic benefit phrases.",
+    "Use the primary keyword's natural Persian synonyms alongside it (e.g. 'ورود داده' با 'ورود اطلاعات' و 'خودکارسازی ورود اطلاعات') instead of repeating a single form."
+  ],
+  "voice_spec_rules": [
+    "Voice: a professional Persian SEO copywriter producing a general blog post — direct, clear, warm; confident but never salesy. The article is NOT written in the site owner's or any specific person's personal voice.",
+    "First person is permitted only as light editorial framing — it is never required, never rewarded, and never a substitute for evidence; its absence must not lower any score.",
+    "Never claim personal or organizational experience ('تجربه به من نشان داده', 'در پروژه‌های ما', 'مشتریان ما', 'یادم می‌آید', 'در جلسه‌ای با مدیر') unless that exact experience is recorded in verified_facts or business_context.",
+    "A hypothetical scenario may explain a process and must be marked with 'فرض کنید' or 'تصور کنید'; it must NOT contain numbers, percentages, prices, timeframes, or business outcomes, and must never read as a real client or project.",
+    "Any number, percentage, price, duration, or quantitative result may come ONLY from citable_facts with a source — with no exception for illustrative examples.",
+    "Show expertise through technical detail, limitations, prerequisites, and decision criteria — not through storytelling, dramatization, or claimed experience.",
+    "For the reviewer: judge tone by clarity, rhythm, and natural prose; do NOT reward first-person anecdotes, do NOT penalize their absence, and treat fabricated experience or unsourced numbers as hard failures."
+  ]
+}

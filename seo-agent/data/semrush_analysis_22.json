@@ -1,0 +1,15 @@
+{
+  "targeted_keywords": [
+    "ai chatbot for restaurants"
+  ],
+  "per_kw": {
+    "ai chatbot for restaurants": {
+      "volume": 20,
+      "kd": 0.0,
+      "competition": 0.13
+    }
+  },
+  "avg_kd": null,
+  "verdict": "UNKNOWN",
+  "notes": "میانگین KD=None (سقف 40). داده از SEMrush API دیتابیس us."
+}

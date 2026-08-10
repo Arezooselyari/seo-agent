@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ایجنت تولید محتوای سئو — نسخه‌ی آزمایشی رایگان</title>
+<style>
+  /* فونت Vazirmatn — self-hosted (بدون Google Fonts؛ در ایران هم مطمئن لود می‌شود) */
+  @font-face{
+    font-family:'Vazirmatn';
+    src:url('/fonts/vazirmatn-arabic.woff2') format('woff2');
+    font-weight:100 900;font-style:normal;font-display:swap;
+    unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+08A0-08FF,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF;
+  }
+  @font-face{
+    font-family:'Vazirmatn';
+    src:url('/fonts/vazirmatn-latin.woff2') format('woff2');
+    font-weight:100 900;font-style:normal;font-display:swap;
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-2193,U+2212;
+  }
+  :root{
+    /* پالت روشن + سبزِ زمردی — هماهنگ با برند sagharnazari.ir */
+    --bg:#FFFFFF; --bg-tint:#F1F7F4; --card:#FFFFFF; --card-2:#FBFDFC;
+    --line:#E2EAE6; --line-soft:#EDF2EF;
+    --ink:#17282C; --muted:#5C6E72; --muted-2:#8A9A9D;
+    --green:#12876A; --green-hi:#1BA37D; --green-dark:#0E6B54; --green-deep:#0B5946;
+    --green-wash:#E7F3EE; --cream:#FAF6F0;
+    --r-lg:24px; --r-md:16px; --r-sm:12px;
+    --shadow:0 18px 50px rgba(18,74,58,.10);
+    --shadow-sm:0 6px 18px rgba(18,74,58,.06);
+    --shadow-green:0 14px 34px rgba(18,135,106,.28);
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Vazirmatn',Tahoma,'Segoe UI',sans-serif;
+    background:
+      radial-gradient(900px 460px at 84% -10%, rgba(18,135,106,.08), transparent 60%),
+      radial-gradient(720px 400px at -6% 2%, rgba(27,163,125,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink); line-height:1.85; min-height:100vh;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    font-size:16px;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:28px 20px 72px}
+
+  /* ── هدر ── */
+  header{text-align:center;padding:44px 0 8px}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:600;color:var(--green-dark);
+    background:var(--green-wash);
+    border:1px solid rgba(18,135,106,.24);
+    padding:7px 16px;border-radius:100px;margin-bottom:22px;
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green-hi);
+    box-shadow:0 0 0 4px rgba(27,163,125,.16)}
+  h1{
+    font-size:clamp(30px,5.4vw,52px);line-height:1.32;margin:0 0 18px;
+    font-weight:800;letter-spacing:-.01em;color:var(--ink);
+  }
+  h1 .hl{color:var(--green)}
+  .sub{
+    color:var(--muted);font-size:clamp(15.5px,2.3vw,19px);line-height:1.85;
+    max-width:600px;margin:0 auto;font-weight:400;
+  }
+
+  /* ── پنل ── */
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:clamp(20px,3.4vw,32px);box-shadow:var(--shadow);margin-top:40px;
+    position:relative;overflow:hidden;
+  }
+  .panel::before{
+    content:"";position:absolute;top:0;inset-inline:0;height:4px;
+    background:linear-gradient(90deg,var(--green-hi),var(--green),var(--green-deep));
+  }
+  .step{
+    display:flex;align-items:center;gap:9px;
+    font-size:14px;color:var(--muted);margin:0 0 14px;font-weight:600;
+  }
+  .step .n{
+    width:22px;height:22px;border-radius:50%;flex:0 0 auto;
+    display:grid;place-items:center;font-size:12px;font-weight:700;
+    color:#fff;background:linear-gradient(180deg,var(--green-hi),var(--green));
+  }
+
+  .niches{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:11px}
+  .niche{
+    cursor:pointer;text-align:center;padding:16px 10px;border-radius:var(--r-md);
+    border:1px solid var(--line);background:var(--card-2);
+    transition:transform .18s var(--ease),border-color .18s var(--ease),box-shadow .18s var(--ease);
+    font-size:15px;font-weight:500;user-select:none;position:relative;color:var(--ink);
+  }
+  .niche .emo{display:block;font-size:22px;margin-bottom:6px;line-height:1}
+  .niche:hover{border-color:var(--green-hi);transform:translateY(-3px);box-shadow:var(--shadow-sm)}
+  .niche:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .niche.active{
+    border-color:var(--green);
+    background:var(--green-wash);
+    box-shadow:0 0 0 1px var(--green) inset,0 10px 24px rgba(18,135,106,.14);
+  }
+  .niche.active::after{
+    content:"✓";position:absolute;top:8px;inset-inline-end:10px;
+    font-size:12px;color:var(--green);font-weight:700;
+  }
+  .niche.soon{cursor:not-allowed;opacity:.5}
+  .niche.soon:hover{border-color:var(--line);transform:none;box-shadow:none}
+  .niche .soon-tag{
+    display:block;font-size:10.5px;color:var(--muted-2);margin-top:5px;font-weight:600;
+    letter-spacing:.02em;
+  }
+
+  .go{
+    width:100%;margin-top:24px;padding:17px 18px;border:0;border-radius:var(--r-md);
+    cursor:pointer;font-size:clamp(16px,2.2vw,18px);font-weight:700;color:#fff;
+    font-family:inherit;letter-spacing:.005em;
+    background:linear-gradient(96deg,var(--green-hi),var(--green) 60%,var(--green-dark));
+    box-shadow:var(--shadow-green);
+    transition:transform .16s var(--ease),filter .16s var(--ease),box-shadow .16s var(--ease);
+  }
+  .go:hover{filter:brightness(1.05);transform:translateY(-2px);box-shadow:0 18px 42px rgba(18,135,106,.34)}
+  .go:active{transform:translateY(0)}
+  .go:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+  .go:disabled{opacity:.75;cursor:default;transform:none;filter:none}
+  .hint{text-align:center;color:var(--muted);font-size:13px;margin-top:15px}
+  .hint b{color:var(--green);font-weight:600}
+
+  .topic{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+  /* ── نتیجه ── */
+  #result{margin-top:28px;display:none}
+  .frame-wrap{
+    background:var(--cream);border:1px solid var(--line);border-radius:var(--r-lg);
+    overflow:hidden;box-shadow:var(--shadow);
+  }
+  #artframe{width:100%;height:900px;border:0;display:block;background:var(--cream)}
+  .article-shell{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;
+  }
+  .err{
+    color:var(--muted);text-align:center;padding:20px 16px;font-size:14.5px;line-height:1.8;
+  }
+  .err .em{font-size:26px;display:block;margin-bottom:8px}
+
+  .cta{
+    margin-top:22px;text-align:center;padding:clamp(20px,3vw,30px);border-radius:var(--r-lg);
+    background:var(--green-wash);
+    border:1px solid rgba(18,135,106,.22);
+  }
+  .cta b{color:var(--ink);font-size:clamp(16px,2.3vw,19px);font-weight:700;display:block}
+  .cta p{color:var(--muted);margin:10px 0 18px;font-size:14.5px;line-height:1.8}
+  .contact{
+    display:inline-flex;align-items:center;gap:8px;padding:14px 30px;border-radius:var(--r-sm);
+    font-weight:700;text-decoration:none;color:#fff;font-size:15.5px;
+    background:linear-gradient(96deg,var(--green-hi),var(--green-dark));
+    box-shadow:var(--shadow-green);transition:transform .16s var(--ease),filter .16s var(--ease);
+  }
+  .contact:hover{filter:brightness(1.05);transform:translateY(-2px)}
+
+  .spinner{
+    width:20px;height:20px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;
+    border-radius:50%;display:inline-block;vertical-align:-4px;
+    animation:spin .8s linear infinite;margin-inline-end:9px
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ── ویژگی‌ها ── */
+  .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin-top:44px}
+  .feat{
+    background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r-md);padding:22px 18px;text-align:center;
+    box-shadow:var(--shadow-sm);
+    transition:transform .18s var(--ease),border-color .18s var(--ease);
+  }
+  .feat:hover{transform:translateY(-3px);border-color:var(--green-hi)}
+  .feat .ic{
+    width:46px;height:46px;margin:0 auto 12px;border-radius:13px;display:grid;place-items:center;
+    font-size:22px;background:var(--green-wash);
+    border:1px solid rgba(18,135,106,.2);
+  }
+  .feat b{display:block;margin:0 0 5px;font-size:15px;font-weight:700;color:var(--ink)}
+  .feat span{color:var(--muted);font-size:13px;line-height:1.7}
+
+  footer{text-align:center;color:var(--muted-2);font-size:12.5px;margin-top:52px}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="badge"><span class="dot"></span> هوش مصنوعی — تولید محتوای خودکار</div>
+    <h1>هر روز یک <span class="hl">مقاله‌ی سئوشده</span>،<br>بدون اینکه یک کلمه بنویسید</h1>
+    <p class="sub">حوزه‌ی تخصصی‌تان را انتخاب کنید و همین حالا یک نمونه‌ی واقعی از کیفیت مقاله‌ها را ببینید — رایگان و بدون ثبت‌نام.</p>
+  </header>
+
+  <div class="panel">
+    <p class="step"><span class="n">۱</span> حوزه‌ی کاری‌تان را انتخاب کنید</p>
+    <div class="niches" id="niches"></div>
+
+    <input class="topic" id="topic" type="text" tabindex="-1" aria-hidden="true">
+
+    <button class="go" id="go">✨ نمونه‌ی رایگان را ببینید</button>
+    <p class="hint">نمونه‌ی واقعی توسط <b>همان ایجنتی</b> ساخته شده که برای شما کار خواهد کرد.</p>
+  </div>
+
+  <div id="result"></div>
+
+  <div class="feats">
+    <div class="feat"><div class="ic">📅</div><b>کاملاً خودکار</b><span>هر روز، بدون دخالت شما</span></div>
+    <div class="feat"><div class="ic">🎯</div><b>کاملاً سئوشده</b><span>عنوان، متا و کلمات کلیدی</span></div>
+    <div class="feat"><div class="ic">🖼️</div><b>عکس خودکار</b><span>تصویر مرتبط برای هر مقاله</span></div>
+    <div class="feat"><div class="ic">📲</div><b>در تلگرام شما</b><span>آماده‌ی انتشار و بازبینی</span></div>
+  </div>
+
+  <footer>ایجنت تولید محتوای هوش مصنوعی — نسخه‌ی آزمایشی</footer>
+</div>
+
+<script>
+// آدرس موتور API. وقتی صفحه خودش روی Railway سرو می‌شود، خالی بماند (same-origin).
+// اگر این HTML مستقیماً روی وردپرس گذاشته شد، قبل از این اسکریپت مقداردهی کن:
+//   <script>window.DEMO_API_BASE="https://xxx.up.railway.app";<\/script>
+const API_BASE = (window.DEMO_API_BASE || "").replace(/\/$/, "");
+
+// ready:true → نمونه‌ی آماده داریم و فوری نمایش می‌دهیم.
+// ready:false → «به‌زودی» (بعد از تکمیل کتابخانه فعال می‌شود).
+const NICHES = [
+  {id:"tech",label:"فناوری و AI",emo:"🤖",ready:true},
+  {id:"business",label:"کسب‌وکار",emo:"💼",ready:true},
+  {id:"news",label:"خبر و تحلیل صنعت",emo:"📰",ready:true},
+  {id:"finance",label:"مالی و سرمایه",emo:"💰",ready:false},
+  {id:"medical",label:"پزشکی و سلامت",emo:"🩺",ready:false},
+  {id:"beauty",label:"زیبایی و پوست",emo:"💄",ready:false},
+  {id:"legal",label:"حقوقی",emo:"⚖️",ready:false},
+  {id:"realestate",label:"املاک",emo:"🏠",ready:false},
+  {id:"education",label:"آموزش",emo:"📚",ready:false},
+];
+let selected = null;
+
+const nichesEl = document.getElementById("niches");
+NICHES.forEach(n=>{
+  const d = document.createElement("div");
+  d.dataset.id = n.id;
+  if(n.ready){
+    d.className = "niche";
+    d.setAttribute("role","button");
+    d.setAttribute("tabindex","0");
+    d.setAttribute("aria-label", n.label);
+    d.innerHTML = `<span class="emo" aria-hidden="true">${n.emo}</span>${n.label}`;
+    const pick = ()=>{
+      document.querySelectorAll(".niche").forEach(x=>x.classList.remove("active"));
+      d.classList.add("active"); selected = n.id;
+    };
+    d.onclick = pick;
+    d.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(); } };
+  }else{
+    d.className = "niche soon";
+    d.setAttribute("aria-disabled","true");
+    d.innerHTML = `<span class="emo" aria-hidden="true">${n.emo}</span>${n.label}<span class="soon-tag">به‌زودی</span>`;
+  }
+  nichesEl.appendChild(d);
+});
+
+const go = document.getElementById("go");
+const resultEl = document.getElementById("result");
+const BTN_LABEL = "✨ نمونه‌ی رایگان را ببینید";
+
+go.onclick = async ()=>{
+  if(!selected){
+    alert("لطفاً ابتدا حوزه‌ی کاری‌تان را انتخاب کنید.");
+    return;
+  }
+  const topic = document.getElementById("topic").value;
+  go.disabled = true;
+  go.innerHTML = '<span class="spinner"></span> در حال آماده‌سازی نمونه...';
+  resultEl.style.display = "none";
+
+  try{
+    const res = await fetch(API_BASE + "/api/demo",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({niche:selected, topic})
+    });
+    const data = await res.json();
+    if(!data.ok){
+      resultEl.innerHTML = `<div class="article-shell"><div class="err"><span class="em">⏳</span>${data.error||"خطا"}</div></div>`;
+      resultEl.style.display = "block";
+      resultEl.scrollIntoView({behavior:"smooth",block:"start"});
+      return;
+    }
+    resultEl.innerHTML = `
+      <div class="frame-wrap"><iframe id="artframe" title="مقاله‌ی نمونه"></iframe></div>
+      <div class="cta">
+        <b>این دقیقاً همان مقاله‌ای است که هر روز دریافت می‌کنید ✨</b>
+        <p>نسخه‌ی کامل: هر روز به‌صورت خودکار، مقاله‌ی سئوشده همراه با عکس، آماده‌ی انتشار در تلگرام شما.</p>
+        <a class="contact" href="https://sagharnazari.ir/" target="_blank" rel="noopener">دریافت نسخه‌ی کامل ←</a>
+      </div>`;
+    const f = document.getElementById("artframe");
+    f.srcdoc = data.html || "";
+    f.onload = ()=>{
+      try{
+        const doc = f.contentDocument;
+        const fit = ()=>{
+          const h = doc.documentElement.scrollHeight;
+          if(h > 200) f.style.height = (h + 40) + "px";
+        };
+        fit();
+        // ارتفاع باید بعد از لودِ عکس‌های lazy هم دوباره تنظیم شود، وگرنه
+        // انتهای مقاله (سخن پایانی و منابع) بریده می‌شود.
+        new ResizeObserver(fit).observe(doc.body);
+        doc.querySelectorAll("img").forEach(img=>{
+          if(!img.complete) img.addEventListener("load", fit, {once:true});
+        });
+      }catch(e){}
+    };
+    resultEl.style.display = "block";
+    resultEl.scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(e){
+    resultEl.innerHTML = `<div class="article-shell"><div class="err"><span class="em">⚠️</span>اتصال برقرار نشد. لطفاً دوباره تلاش کنید.</div></div>`;
+    resultEl.style.display = "block";
+  }finally{
+    go.disabled = false;
+    go.innerHTML = BTN_LABEL;
+  }
+};
+</script>
+</body>
+</html>

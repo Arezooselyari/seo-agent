@@ -1,0 +1,27 @@
+# محیطِ مجازیِ محلی — Railway خودش از requirements.txt نصب می‌کند
+venv/
+__pycache__/
+*.pyc
+
+# اسرار: متغیرها در پنلِ Railway ست می‌شوند، نه از فایل
+.env
+
+# داده‌ی محلی — توکن‌ها روی volume نگه داشته می‌شوند نه در ایمیج
+agent.db
+data/
+logs/
+output/
+
+# بکاپ‌ها و تست‌های محلی
+*.bak
+*bak
+test_*.py
+dry_run_*.py
+compare_*.py
+live_smoke_test.py
+
+# کلیدِ پنلِ مدیریت — نباید داخلِ ایمیج برود
+adminkey.txt
+*.html
+!demo/*.html
+botadminkey.txt

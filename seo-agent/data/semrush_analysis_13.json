@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "copy ai",
+    "marketing automation software",
+    "marketing tools",
+    "copy artificial intelligence"
+  ],
+  "per_kw": {
+    "copy ai": {
+      "volume": 5400,
+      "kd": 40.0,
+      "competition": 0.25
+    },
+    "marketing automation software": {
+      "volume": 5400,
+      "kd": 52.0,
+      "competition": 0.07
+    },
+    "marketing tools": {
+      "volume": 5400,
+      "kd": 53.0,
+      "competition": 0.22
+    },
+    "copy artificial intelligence": {
+      "volume": 4400,
+      "kd": 53.0,
+      "competition": 0.25
+    }
+  },
+  "avg_kd": 49.5,
+  "verdict": "WEAK",
+  "notes": "میانگین KD=49.5 (سقف 40). داده از SEMrush API دیتابیس us."
+}

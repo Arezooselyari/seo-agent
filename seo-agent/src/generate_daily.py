@@ -1,0 +1,289 @@
+"""ارکستراتورِ تولیدِ روزانه — انتخابِ موضوع → زنجیره‌ی تولید → ذخیره‌ی pending.
+
+زنجیره: انتخابِ موضوع → collector.collect (+ گراندینگِ رسمی برای آموزشی) →
+analyzer.analyze (+fact_research) → writer.write_article → db.save_article(status=pending).
+سپس evaluate_and_sync (زمان‌بندِ جدا) مقاله‌ی pending را ارزیابی و در صورتِ عبور به تلگرام می‌فرستد.
+
+منبعِ موضوع: settings→generation.topic_source:
+    rss    — فقط خبری (از فیدهای RSS)
+    queue  — فقط آموزشی/معرفیِ ابزار (از config/tool_topics.yaml)
+    mixed  — هردو، با نسبتِ هدفِ settings→generation.content_mix (پیش‌فرض: توصیه‌شده)
+
+اجرا (از پوشه‌ی seo-agent):
+    python -m src.generate_daily                 # موضوع خودکار طبقِ topic_source
+    python -m src.generate_daily "موضوعِ دستی"    # override برای تست (content_type=news)
+"""
+import json
+import logging
+import sys
+
+from . import analyzer, collector, db, llm, writer
+from .config import load_settings
+
+logger = logging.getLogger(__name__)
+
+_TOPIC_PROMPT = """از میانِ عناوینِ تازه‌ی زیر (فیدهای RSS)، یک «موضوعِ مقاله‌ی وبلاگیِ سئو»
+به فارسی انتخاب کن که چند تا از این عناوین به آن مربوط باشند (تا منابعِ کافی برای نگارش پیدا شود).
+
+قوانین:
+- موضوع باید مشخص باشد و به حوزه‌ی کسب‌وکار/فناوری/هوش مصنوعیِ کاربردی نزدیک بماند.
+- علاوه بر موضوع، یک «کیوردِ اصلی» بده: یک عبارتِ **کوتاهِ ۲ تا ۴ کلمه‌ای** که مردم واقعاً
+  در گوگل جستجو می‌کنند (نه جمله‌ی توصیفیِ بلند). مثال: «امنیت هوش مصنوعی»، «چت‌بات فروش».
+- فقط JSON برگردان: {{"topic": "موضوعِ فارسی", "keyword": "کیوردِ کوتاهِ قابلِ‌جستجو", "why": "یک جمله دلیل"}}
+
+عناوینِ تازه:
+{listing}"""
+
+
+def derive_topic_from_rss(candidates: list[dict]) -> dict | None:
+    """از عناوینِ تازه‌ی RSS یک {topic, keyword} فارسی می‌سازد (یک تماسِ ارزانِ LLM)."""
+    limit = int(load_settings().get("generation", {}).get("max_topic_candidates", 25))
+    listing = "\n".join(f"{i}. {c['title']}" for i, c in enumerate(candidates[:limit]) if c.get("title"))
+    if not listing.strip():
+        return None
+    try:
+        result = llm.ask(
+            step="topic_selection",
+            user_content=_TOPIC_PROMPT.format(listing=listing),
+            model_tier="cheap",
+            json_output=True,
+            max_tokens=512,
+        )
+    except Exception as e:
+        logger.warning(f"انتخابِ موضوع با LLM نشد ({e}) — fallback به تازه‌ترین عنوان.")
+        title = candidates[0].get("title") or None
+        return {"topic": title, "keyword": title} if title else None
+    topic = (result.get("topic") or "").strip()
+    keyword = (result.get("keyword") or "").strip() or topic
+    if topic:
+        logger.info(f"موضوعِ RSS: «{topic}» | کیورد: «{keyword}» — {result.get('why', '')}")
+        return {"topic": topic, "keyword": keyword}
+    return None
+
+
+def _recent_content_types(limit: int = 10) -> list[str]:
+    """نوعِ آخرین N مقاله را از DB می‌خواند (برای سنجشِ نسبتِ آموزشی/خبری)."""
+    conn = db.connect()
+    try:
+        rows = conn.execute(
+            "SELECT payload FROM articles ORDER BY id DESC LIMIT ?", (limit,)
+        ).fetchall()
+    finally:
+        conn.close()
+    out = []
+    for (payload_json,) in rows:
+        try:
+            out.append(json.loads(payload_json).get("content_type", "news"))
+        except Exception:
+            out.append("news")
+    return out
+
+
+def _pick_content_type() -> str:
+    """نسبتِ هدف (settings.generation.content_mix) را روی تاریخچه‌ی اخیر می‌سنجد.
+
+    قطعی و خودتنظیم است (نه تصادفی): اگر سهمِ آموزشی از هدف عقب باشد، «tutorial»
+    انتخاب می‌شود؛ وگرنه «news». همگرا به نسبتِ هدف بدونِ نیاز به شمارنده‌ی جداگانه.
+    """
+    gen = load_settings().get("generation", {})
+    mix = gen.get("content_mix", {}) or {}
+    target_tutorial = float(mix.get("tutorial", 0.7))
+    window = int(gen.get("ratio_window", 10))
+    recent = _recent_content_types(window)
+    if not recent:
+        return "tutorial"  # شروع با آموزشی — رشدِ اصلی
+    actual_tutorial = recent.count("tutorial") / len(recent)
+    return "tutorial" if actual_tutorial < target_tutorial else "news"
+
+
+def derive_topic_from_tool_queue() -> dict | None:
+    """موضوعِ «آموزشی/معرفیِ ابزار» بعدی را از صفِ چرخشیِ config/tool_topics.yaml می‌سازد."""
+    from . import tool_queue
+    tool = tool_queue.next_tool()
+    if not tool:
+        logger.warning("صفِ ابزارها خالی است (config/tool_topics.yaml) — به rss برمی‌گردیم.")
+        return None
+    name = tool["name"]
+    return {
+        "topic": f"آموزش استفاده از {name}: راهنمای شروع به کار",
+        "keyword": tool.get("keyword_seed") or f"آموزش {name}",
+        "content_type": "tutorial",
+        "tool_name": name,
+        "official_url": tool.get("official_url"),
+    }
+
+
+def pick_topic() -> dict | None:
+    """منبعِ موضوع را طبقِ settings انتخاب می‌کند. {topic, keyword, content_type, ...}."""
+    source = load_settings().get("generation", {}).get("topic_source", "rss")
+
+    def _from_rss() -> dict | None:
+        candidates = collector.gather_candidates()
+        logger.info(f"{len(candidates)} آیتمِ تازه در RSS.")
+        if not candidates:
+            logger.warning("هیچ آیتمِ تازه‌ای در RSS نبود.")
+            return None
+        picked = derive_topic_from_rss(candidates)
+        if picked:
+            picked["content_type"] = "news"
+        return picked
+
+    if source == "rss":
+        return _from_rss()
+    if source == "queue":
+        return derive_topic_from_tool_queue()
+    if source == "mixed":
+        ctype = _pick_content_type()
+        logger.info(f"انتخابِ نوعِ محتوا (طبقِ نسبتِ هدف): «{ctype}»")
+        if ctype == "tutorial":
+            picked = derive_topic_from_tool_queue()
+            return picked or _from_rss()  # صفِ ابزار خالی بود → fallback به خبری
+        return _from_rss()
+    logger.warning(f"topic_source='{source}' ناشناخته — به rss برمی‌گردیم.")
+    return _from_rss()
+
+
+def _wikipedia_extract(title: str) -> str | None:
+    """خلاصه‌ی متنیِ ویکی‌پدیای انگلیسی برای این ابزار (fallback گراندینگِ قابلِ‌اتکا —
+    صفحاتِ فرودِ رسمیِ ابزارها اغلب جاوااسکریپتی/کم‌متن‌اند و trafilatura چیزی از آن‌ها
+    استخراج نمی‌کند؛ ویکی‌پدیا برای اکثرِ ابزارهای شناخته‌شده مقاله‌ی متنیِ واقعی دارد).
+    """
+    import requests
+    try:
+        r = requests.get(
+            "https://en.wikipedia.org/w/api.php",
+            params={"action": "query", "prop": "extracts", "explaintext": 1,
+                    "titles": title, "format": "json", "redirects": 1},
+            timeout=15, headers=collector.HEADERS,  # بدونِ UAِ مرورگر، ویکی‌پدیا ۴۰۳/پاسخِ خالی می‌دهد
+        )
+        pages = (r.json().get("query", {}) or {}).get("pages", {}) or {}
+        for p in pages.values():
+            extract = (p.get("extract") or "").strip()
+            if extract and "may refer to" not in extract[:200]:  # صفحه‌ی ابهام‌زدایی نیست
+                return extract
+    except Exception as e:
+        logger.warning(f"ویکی‌پدیا برای «{title}» نشد: {e}")
+    return None
+
+
+def _collect_for_type(topic: str, content_type: str, official_url: str | None,
+                      tool_name: str | None = None) -> list[dict]:
+    """منابع را جمع می‌کند. برای «tutorial»، صفحه‌ی رسمیِ ابزار (اگر متنِ کافی داشت) یا
+    fallback ویکی‌پدیا هم گراندینگ می‌شود — تضمین می‌کند ابزارهای کم‌پوشش در RSS هم
+    منبعِ واقعیِ حداقلی داشته باشند (نه صرفاً وابسته به تطابقِ خبری).
+    """
+    articles = []
+    if content_type == "tutorial" and official_url:
+        try:
+            text = collector.download_full_text({"url": official_url})
+            if text and len(text) > 300:
+                articles.append({
+                    "source": "صفحه‌ی رسمی",
+                    "url": official_url,
+                    # عنوانِ خوانا (نه URL) — چون در بخشِ «منابع» نمایش داده می‌شود
+                    "title": f"صفحه‌ی رسمی {tool_name or ''}".strip(),
+                    "text": text[:15000],
+                })
+                logger.info(f"صفحه‌ی رسمی گراندینگ شد: {official_url} (~{len(text)} کاراکتر)")
+        except Exception as e:
+            logger.warning(f"دانلودِ صفحه‌ی رسمی نشد ({official_url}): {e}")
+    if content_type == "tutorial" and tool_name and not articles:
+        wiki = _wikipedia_extract(tool_name)
+        if wiki and len(wiki) > 300:
+            articles.append({
+                "source": "ویکی‌پدیا",
+                "url": f"https://en.wikipedia.org/wiki/{tool_name.replace(' ', '_')}",
+                "title": f"{tool_name} در ویکی‌پدیا",
+                "text": wiki[:15000],
+            })
+            logger.info(f"ویکی‌پدیا گراندینگ شد: «{tool_name}» (~{len(wiki)} کاراکتر)")
+    try:
+        relevance_topic = tool_name if content_type == "tutorial" else None
+        articles.extend(collector.collect(topic, relevance_topic=relevance_topic))
+    except Exception as e:
+        logger.warning(f"جمع‌آوریِ RSS نشد ({e}).")
+    return articles
+
+
+def generate_one(topic: str | None = None, keyword: str | None = None) -> int | None:
+    """یک مقاله را تولید و به‌عنوان pending ذخیره می‌کند. Returns article_id یا None."""
+    content_type, tool_name, official_url = "news", None, None
+    if topic is None:
+        picked = pick_topic()
+        if not picked:
+            return None
+        topic, keyword = picked["topic"], picked.get("keyword")
+        content_type = picked.get("content_type", "news")
+        tool_name = picked.get("tool_name")
+        official_url = picked.get("official_url")
+    keyword = keyword or topic
+    logger.info(f"شروعِ تولید برای موضوع: «{topic}» (کیورد: «{keyword}»، نوع: «{content_type}»)")
+
+    articles = _collect_for_type(topic, content_type, official_url, tool_name)
+    if not articles:
+        logger.warning("هیچ منبعی با متنِ قابلِ‌استخراج جمع نشد — تولید لغو شد.")
+        return None
+
+    brief = analyzer.analyze(topic, articles)
+    # کیوردِ رایگان با seedِ تمیزِ LLM (نه موضوعِ توصیفیِ بلند)
+    keywords = None
+    try:
+        from . import keyword_free
+        keywords = keyword_free.research_topic(topic, seed=keyword)
+    except Exception as e:
+        logger.warning(f"کیوردِ رایگان نشد ({e}) — نویسنده خودش کیورد را برمی‌دارد.")
+    payload = writer.write_article(brief, keywords=keywords, content_type=content_type)
+
+    # تضمینِ حداقل ۲ لینکِ داخلی (به نوشته‌های واقعیِ سایت) — قبل از «منابع» تا ترتیبِ
+    # انتهای مقاله این باشد: نثر → مطالب مرتبط → منابع
+    try:
+        from . import internal_links
+        payload = internal_links.ensure_min_internal_links(payload, minimum=2)
+    except Exception as e:
+        logger.warning(f"تضمینِ لینکِ داخلی نشد ({e}).")
+
+    # بخشِ «منابع» — لینک به منابعِ واقعیِ جمع‌آوری‌شده (E-E-A-T)
+    try:
+        from . import references
+        payload = references.add_references_to_payload(payload)
+    except Exception as e:
+        logger.warning(f"افزودنِ منابع نشد ({e}) — مقاله بدونِ بخشِ منابع ادامه می‌یابد.")
+
+    # تصاویرِ استوکِ رایگان (شاخص + inline) — قبل از ذخیره تا در تلگرام هم دیده شوند
+    try:
+        from . import images
+        payload = images.add_images_to_payload(payload, inline=1)
+    except Exception as e:
+        logger.warning(f"افزودنِ تصاویر نشد ({e}) — مقاله بدونِ تصویر ادامه می‌یابد.")
+
+    conn = db.connect()
+    try:
+        aid = db.save_article(conn, topic, payload)
+    finally:
+        conn.close()
+    logger.info(f"✅ مقاله‌ی #{aid} به‌عنوان pending ذخیره شد: «{payload.get('title_seo')}»")
+
+    if tool_name:  # فقط بعد از ذخیره‌ی موفق — نوبتِ ابزارهای بعدی برسد
+        try:
+            from . import tool_queue
+            tool_queue.mark_used(tool_name)
+        except Exception as e:
+            logger.warning(f"علامت‌زدنِ استفاده‌ی ابزار نشد ({e}).")
+
+    return aid
+
+
+def main() -> None:
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s"
+    )
+    topic = sys.argv[1] if len(sys.argv) > 1 else None
+    aid = generate_one(topic)
+    if aid is None:
+        logger.warning("تولیدِ روزانه نتیجه‌ای نداشت.")
+        sys.exit(1)
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

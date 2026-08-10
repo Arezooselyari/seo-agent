@@ -1,0 +1,15 @@
+{
+  "targeted_keywords": [
+    "ai project management assistant"
+  ],
+  "per_kw": {
+    "ai project management assistant": {
+      "volume": 20,
+      "kd": 0.0,
+      "competition": 0.37
+    }
+  },
+  "avg_kd": null,
+  "verdict": "UNKNOWN",
+  "notes": "میانگین KD=None (سقف 40). داده از SEMrush API دیتابیس us."
+}

@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "ai voice assistant for business",
+    "zoom ai companion",
+    "ai-powered digital assistants",
+    "voiceflow"
+  ],
+  "per_kw": {
+    "ai voice assistant for business": {
+      "volume": 30,
+      "kd": 55.0,
+      "competition": 0.87
+    },
+    "zoom ai companion": {
+      "volume": 5400,
+      "kd": 49.0,
+      "competition": 0.17
+    },
+    "ai-powered digital assistants": {
+      "volume": 4400,
+      "kd": 56.0,
+      "competition": 0.33
+    },
+    "voiceflow": {
+      "volume": 6600,
+      "kd": 58.0,
+      "competition": 0.45
+    }
+  },
+  "avg_kd": 54.5,
+  "verdict": "WEAK",
+  "notes": "میانگین KD=54.5 (سقف 40). داده از SEMrush API دیتابیس us."
+}

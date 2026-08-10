@@ -1,0 +1,27 @@
+{
+  "targeted_keywords": [
+    "ai--powered media and sentiment analysis leading firm",
+    "customer sentiment",
+    "ai for crypto trading and sentiment analysis tools"
+  ],
+  "per_kw": {
+    "ai--powered media and sentiment analysis leading firm": {
+      "volume": 2400,
+      "kd": 26.0,
+      "competition": 0.0
+    },
+    "customer sentiment": {
+      "volume": 1300,
+      "kd": 40.0,
+      "competition": 0.05
+    },
+    "ai for crypto trading and sentiment analysis tools": {
+      "volume": 1000,
+      "kd": 38.0,
+      "competition": 0.0
+    }
+  },
+  "avg_kd": 34.7,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=34.7 (سقف 40). داده از SEMrush API دیتابیس us."
+}

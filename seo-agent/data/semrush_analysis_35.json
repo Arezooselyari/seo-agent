@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "sales forecasting software",
+    "predictive sales ai",
+    "sales forecasting tools",
+    "forecasting tool"
+  ],
+  "per_kw": {
+    "sales forecasting software": {
+      "volume": 1300,
+      "kd": 32.0,
+      "competition": 0.03
+    },
+    "predictive sales ai": {
+      "volume": 590,
+      "kd": 36.0,
+      "competition": 0.14
+    },
+    "sales forecasting tools": {
+      "volume": 480,
+      "kd": 27.0,
+      "competition": 0.12
+    },
+    "forecasting tool": {
+      "volume": 210,
+      "kd": 31.0,
+      "competition": 0.56
+    }
+  },
+  "avg_kd": 31.5,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=31.5 (سقف 40). داده از SEMrush API دیتابیس us."
+}

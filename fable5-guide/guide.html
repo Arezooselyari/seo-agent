@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>راهنمای کاربردی Fable 5</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif; color: #1a2332; background: #fff; font-size: 12px; line-height: 1.65; }
+  .page { width: 210mm; height: 296mm; overflow: hidden; padding: 11mm 12mm; page-break-after: always; position: relative; }
+  .page:last-child { page-break-after: avoid; }
+
+  /* ---------- Cover ---------- */
+  .cover { background: linear-gradient(160deg, #0f1b2d 0%, #1d3a5f 60%, #2a5a8a 100%); color: #fff; display: flex; flex-direction: column; justify-content: center; }
+  .cover h1 { font-size: 40px; font-weight: 800; line-height: 1.5; }
+  .cover .en { font-family: 'Segoe UI', sans-serif; color: #7fd1ff; font-size: 20px; letter-spacing: 2px; margin-bottom: 8px; }
+  .cover p.sub { font-size: 16px; color: #c9dcf0; margin-top: 14px; max-width: 80%; }
+  .toc { margin-top: 40px; background: rgba(255,255,255,.07); border-radius: 14px; padding: 20px 24px; }
+  .toc h3 { color: #7fd1ff; font-size: 15px; margin-bottom: 10px; }
+  .toc ol { margin-right: 20px; font-size: 14px; color: #e8f1fa; }
+  .toc li { margin-bottom: 4px; }
+  .cover .foot { position: absolute; bottom: 16mm; right: 14mm; color: #9fbdd8; font-size: 11px; }
+
+  /* ---------- Common ---------- */
+  h2.sec { font-size: 22px; font-weight: 800; color: #0f1b2d; display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .secnum { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 36px; border-radius: 10px; color: #fff; font-size: 18px; font-weight: 800; }
+  .lead { color: #4a5b70; font-size: 13px; margin-bottom: 14px; }
+  .divider { height: 3px; border-radius: 2px; margin: 8px 0 16px; }
+
+  .c1 { background: #2a5a8a; } .b1 { background: linear-gradient(90deg,#2a5a8a,#7fd1ff); }
+  .c2 { background: #7a4ccc; } .b2 { background: linear-gradient(90deg,#7a4ccc,#d3b6ff); }
+  .c3 { background: #c2417a; } .b3 { background: linear-gradient(90deg,#c2417a,#ffb3d1); }
+  .c4 { background: #1e8a5f; } .b4 { background: linear-gradient(90deg,#1e8a5f,#9be8c4); }
+  .c5 { background: #c47a1e; } .b5 { background: linear-gradient(90deg,#c47a1e,#ffd9a0); }
+  .c6 { background: #386070; } .b6 { background: linear-gradient(90deg,#386070,#a8d8e8); }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card { border: 1px solid #dde5ee; border-radius: 12px; padding: 9px 12px; background: #f8fafc; page-break-inside: avoid; }
+  .card h4 { font-size: 12.5px; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 8px; }
+  .card p { font-size: 11px; color: #44556b; line-height: 1.65; }
+  .badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 12.5px; font-weight: 800; flex-shrink: 0; }
+
+  .prompt { background: #0f1b2d; color: #d9e8f7; border-radius: 12px; padding: 11px 14px; margin: 10px 0; font-size: 10.5px; line-height: 1.75; white-space: pre-wrap; position: relative; page-break-inside: avoid; }
+  .prompt::before { content: "📋 پرامپت آماده — کپی کن و جاهای خالی را پر کن"; display: block; color: #7fd1ff; font-weight: 700; font-size: 10.5px; margin-bottom: 6px; border-bottom: 1px dashed #2a4a6a; padding-bottom: 5px; }
+  .prompt b { color: #ffd9a0; font-weight: 700; }
+  .ph { color: #9be8c4; font-weight: 700; }
+
+  .tip { background: #fff8e8; border-right: 4px solid #e0a82e; border-radius: 8px; padding: 8px 12px; margin: 8px 0; font-size: 11px; color: #5a4a1e; page-break-inside: avoid; }
+  .tip b { color: #8a6a10; }
+  .warn { background: #fdeef2; border-right: 4px solid #c2417a; border-radius: 8px; padding: 8px 12px; margin: 8px 0; font-size: 11px; color: #6a2a44; page-break-inside: avoid; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 8px 0; }
+  th { background: #0f1b2d; color: #fff; padding: 6px 9px; text-align: right; font-size: 11px; }
+  td { border: 1px solid #dde5ee; padding: 5px 9px; vertical-align: top; color: #2a3a50; }
+  tr:nth-child(even) td { background: #f4f8fb; }
+
+  .flow { display: flex; align-items: stretch; gap: 0; margin: 14px 0; }
+  .flow .step { flex: 1; background: #eef4fa; border: 1.5px solid #b9d0e6; border-radius: 10px; padding: 8px 6px; text-align: center; font-size: 10.5px; line-height: 1.6; position: relative; }
+  .flow .step b { display: block; color: #1d3a5f; font-size: 12.5px; }
+  .flow .arrow { display: flex; align-items: center; padding: 0 4px; color: #2a5a8a; font-size: 18px; font-weight: 900; }
+
+  .check { list-style: none; }
+  .check li { padding: 5px 30px 5px 0; position: relative; border-bottom: 1px dashed #e2e9f1; font-size: 11.5px; }
+  .check li::before { content: "✓"; position: absolute; right: 0; top: 6px; width: 20px; height: 20px; border-radius: 6px; background: #1e8a5f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .check li.x::before { content: "✗"; background: #c2417a; }
+
+  .pgfoot { position: absolute; bottom: 8mm; left: 14mm; right: 14mm; display: flex; justify-content: space-between; color: #8a9bb0; font-size: 10px; border-top: 1px solid #e8eef5; padding-top: 5px; }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<div class="page cover">
+  <div class="en">FABLE 5 · PRACTICAL GUIDE</div>
+  <h1>راهنمای کاربردی گرفتن<br>بهترین خروجی از Claude Fable 5</h1>
+  <p class="sub">دسته‌بندی‌شده، شماتیک و همراه با پرامپت آماده برای هر زمینه — طراحی وب‌سایت، ایجنت تولید محتوا، ایجنت سئو و ساخت هر ایجنت دلخواه. هدف: بیشترین بهره‌وری با کمترین کار.</p>
+  <div class="toc">
+    <h3>فهرست مطالب</h3>
+    <ol>
+      <li>۷ اصل طلایی پرامپت‌نویسی برای Fable 5</li>
+      <li>طراحی وب‌سایت با Claude + پرامپت آماده</li>
+      <li>ایجنت تولید محتوا + پرامپت سیستم آماده</li>
+      <li>ایجنت محتوای سئو شده + پرامپت آماده</li>
+      <li>قالب جامع ساخت هر ایجنت دلخواه</li>
+      <li>ترفندهای Claude Code برای بهره‌وری حداکثری</li>
+      <li>چک‌لیست نهایی و اشتباهات رایج</li>
+    </ol>
+  </div>
+  <div class="foot">تهیه‌شده با Claude Code · خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)</div>
+</div>
+
+<!-- ================= 1. PRINCIPLES ================= -->
+<div class="page">
+  <h2 class="sec"><span class="secnum c1">۱</span> هفت اصل طلایی پرامپت‌نویسی برای Fable 5</h2>
+  <p class="lead">این اصول پایه‌ی همه‌ی بخش‌های بعدی است. اگر فقط همین یک صفحه را اجرا کنی، کیفیت خروجی‌هایت چند برابر می‌شود.</p>
+  <div class="divider b1"></div>
+
+  <div class="grid2">
+    <div class="card"><h4><span class="badge c1">۱</span> نقش (Role) بده</h4><p>اولین جمله‌ی پرامپت، هویت مدل را تعیین کند: «تو یک طراح ارشد UI هستی با ۱۰ سال تجربه...». نقش دقیق = لحن، عمق و استاندارد دقیق.</p></div>
+    <div class="card"><h4><span class="badge c1">۲</span> ساختار با تگ XML</h4><p>بخش‌های مختلف پرامپت را با تگ جدا کن: <span dir="ltr">&lt;context&gt;</span>، <span dir="ltr">&lt;task&gt;</span>، <span dir="ltr">&lt;rules&gt;</span>، <span dir="ltr">&lt;output_format&gt;</span>. مدل‌های Claude برای این ساختار آموزش دیده‌اند.</p></div>
+    <div class="card"><h4><span class="badge c1">۳</span> مثال بده (Few-shot)</h4><p>یک یا دو نمونه از خروجی ایده‌آل ضمیمه کن. یک مثال خوب از ده خط توضیح مؤثرتر است؛ مدل سبک و فرمت را از مثال کپی می‌کند.</p></div>
+    <div class="card"><h4><span class="badge c1">۴</span> فرمت خروجی را قفل کن</h4><p>دقیق بگو خروجی چه شکلی باشد: «جدول با ۳ ستون»، «JSON با این کلیدها»، «مقاله با H2 و H3». مبهم بگذاری، سلیقه‌ای تحویل می‌گیری.</p></div>
+    <div class="card"><h4><span class="badge c1">۵</span> اجازه‌ی فکر کردن بده</h4><p>برای مسائل پیچیده بنویس: «قبل از پاسخ، قدم‌به‌قدم تحلیل کن». در Claude Code کلمه‌هایی مثل think و ultrathink عمق تفکر را بالا می‌برد.</p></div>
+    <div class="card"><h4><span class="badge c1">۶</span> مثبت دستور بده</h4><p>به‌جای «طولانی ننویس» بگو «در حداکثر ۳ پاراگراف بنویس». دستور مثبت و قابل‌اندازه‌گیری همیشه بهتر از نهی مبهم اجرا می‌شود.</p></div>
+    <div class="card"><h4><span class="badge c1">۷</span> کار بزرگ را بشکن</h4><p>به‌جای «یک سایت کامل بساز»، مرحله‌ای جلو برو: اول ساختار، بعد طراحی، بعد محتوا. هر مرحله را بازبینی کن و بعد ادامه بده.</p></div>
+    <div class="card"><h4><span class="badge c1">★</span> قانون کم‌کاری هوشمندانه</h4><p>یک‌بار پرامپت خوب بساز، ذخیره‌اش کن و هر بار فقط جاهای خالی را عوض کن. تمام پرامپت‌های این فایل با همین منطق نوشته شده‌اند.</p></div>
+  </div>
+
+  <div class="flow">
+    <div class="step"><b>نقش</b>تو کی هستی؟</div><div class="arrow">←</div>
+    <div class="step"><b>زمینه</b>اطلاعات لازم</div><div class="arrow">←</div>
+    <div class="step"><b>وظیفه</b>دقیقاً چه کاری؟</div><div class="arrow">←</div>
+    <div class="step"><b>قواعد</b>باید / نباید</div><div class="arrow">←</div>
+    <div class="step"><b>مثال</b>نمونه‌ی ایده‌آل</div><div class="arrow">←</div>
+    <div class="step"><b>فرمت</b>شکل خروجی</div>
+  </div>
+
+  <div class="prompt"><b>قالب عمومی (اسکلت هر پرامپت حرفه‌ای):</b>
+تو یک <span class="ph">[نقش متخصص + سطح تجربه]</span> هستی.
+
+&lt;context&gt;
+<span class="ph">[اطلاعات پروژه، مخاطب، هدف]</span>
+&lt;/context&gt;
+
+&lt;task&gt;
+<span class="ph">[وظیفه‌ی دقیق و مشخص]</span>
+&lt;/task&gt;
+
+&lt;rules&gt;
+- <span class="ph">[قاعده ۱ — مثبت و قابل اندازه‌گیری]</span>
+- <span class="ph">[قاعده ۲]</span>
+&lt;/rules&gt;
+
+&lt;output_format&gt;
+<span class="ph">[شکل دقیق خروجی: جدول/JSON/مقاله با تیترها]</span>
+&lt;/output_format&gt;
+
+قبل از پاسخ نهایی، قدم‌به‌قدم فکر کن.</div>
+
+  <div class="pgfoot"><span>راهنمای کاربردی Fable 5</span><span>صفحه ۲</span></div>
+</div>
+
+<!-- ================= 2. WEB DESIGN ================= -->
+<div class="page">
+  <h2 class="sec"><span class="secnum c2">۲</span> طراحی وب‌سایت با Claude</h2>
+  <p class="lead">Fable 5 در تولید کد فرانت‌اند (HTML/CSS/React/Tailwind) بسیار قوی است؛ کلید کار، مشخص‌کردن «حس بصری» و «مرجع سبک» است.</p>
+  <div class="divider b2"></div>
+
+  <div class="grid2">
+    <div class="card"><h4><span class="badge c2">۱</span> مرجع سبک بده</h4><p>اسم سایت یا سبک مرجع را بگو: «شبیه Linear / Stripe / مینیمال اسکاندیناوی». بدون مرجع، خروجی عمومی و بی‌روح می‌شود.</p></div>
+    <div class="card"><h4><span class="badge c2">۲</span> سیستم طراحی را اول قفل کن</h4><p>قبل از کدنویسی، پالت رنگ، فونت و فاصله‌گذاری را بخواه و تأیید کن. بعد بگو «همه‌ی صفحات را با همین سیستم بساز».</p></div>
+    <div class="card"><h4><span class="badge c2">۳</span> اسکرین‌شات بده</h4><p>Claude تصویر می‌بیند! از طرح مورد علاقه‌ات اسکرین‌شات بگیر و بگو «این حس را بازسازی کن». سریع‌ترین راه رسیدن به سلیقه‌ات.</p></div>
+    <div class="card"><h4><span class="badge c2">۴</span> تک‌فایل شروع کن</h4><p>برای نمونه‌ی اولیه، یک فایل HTML تک‌صفحه‌ای با Tailwind CDN بخواه — در مرورگر باز کن، ایراد بگیر، اصلاح کن، بعد به پروژه‌ی واقعی تبدیل کن.</p></div>
+  </div>
+
+  <div class="prompt"><b>پرامپت آماده — طراحی لندینگ‌پیج:</b>
+تو یک طراح وب ارشد و توسعه‌دهنده فرانت‌اند هستی با سلیقه‌ی مدرن.
+
+&lt;context&gt;
+کسب‌وکار: <span class="ph">[مثلاً فروشگاه قهوه‌ی تخصصی]</span>
+مخاطب: <span class="ph">[مثلاً جوانان ۲۰ تا ۳۵ ساله‌ی شهری]</span>
+هدف صفحه: <span class="ph">[مثلاً ثبت سفارش / جمع‌آوری ایمیل]</span>
+زبان سایت: فارسی (راست‌به‌چپ — RTL)
+&lt;/context&gt;
+
+&lt;task&gt;
+یک لندینگ‌پیج کامل و تک‌فایل (HTML + Tailwind CDN) بساز شامل:
+هیرو با CTA، بخش ویژگی‌ها (۳ کارت)، نظرات مشتریان، سوالات متداول و فوتر.
+&lt;/task&gt;
+
+&lt;rules&gt;
+- سبک بصری: <span class="ph">[مثلاً مینیمال و لوکس مثل سایت Apple]</span>
+- پالت رنگ: <span class="ph">[مثلاً کرم، قهوه‌ای تیره، طلایی]</span>
+- فونت فارسی Vazirmatn از CDN
+- کاملاً ریسپانسیو (موبایل اول)
+- انیمیشن‌های ظریف هنگام اسکرول
+&lt;/rules&gt;
+
+اول سیستم طراحی (رنگ/فونت/فاصله) را در ۵ خط پیشنهاد بده و تأیید بگیر، بعد کد بزن.</div>
+
+  <div class="tip"><b>ترفند طلایی:</b> بعد از دیدن خروجی، به‌جای توضیح کلی («قشنگ‌ترش کن») ایراد دقیق بگیر: «فاصله‌ی بخش هیرو را دو برابر کن، دکمه را گرادیان کن، سایه‌ی کارت‌ها را نرم‌تر کن». بازخورد دقیق = اصلاح یک‌مرحله‌ای.</div>
+  <div class="warn">برای سایت فارسی حتماً <b dir="ltr">dir="rtl"</b> و فونت فارسی را در پرامپت ذکر کن — وگرنه خروجی چپ‌به‌راست با فونت نامناسب می‌گیری.</div>
+
+  <div class="pgfoot"><span>راهنمای کاربردی Fable 5</span><span>صفحه ۳</span></div>
+</div>
+
+<!-- ================= 3. CONTENT AGENT ================= -->
+<div class="page">
+  <h2 class="sec"><span class="secnum c3">۳</span> ایجنت تولید محتوا</h2>
+  <p class="lead">یک‌بار «پرامپت سیستم» بساز، بارها استفاده کن. ایجنت محتوای خوب = صدای برند ثابت + فرایند چندمرحله‌ای + معیار کیفیت روشن.</p>
+  <div class="divider b3"></div>
+
+  <div class="flow">
+    <div class="step"><b>۱. بریف</b>موضوع و هدف</div><div class="arrow">←</div>
+    <div class="step"><b>۲. ایده‌پردازی</b>۳ زاویه‌ی متفاوت</div><div class="arrow">←</div>
+    <div class="step"><b>۳. سرفصل</b>تأیید ساختار</div><div class="arrow">←</div>
+    <div class="step"><b>۴. نگارش</b>پیش‌نویس کامل</div><div class="arrow">←</div>
+    <div class="step"><b>۵. ویرایش</b>نقد و بازنویسی خودش</div>
+  </div>
+
+  <div class="prompt"><b>پرامپت سیستم آماده — ایجنت محتوا (یک‌بار تنظیم کن):</b>
+تو «<span class="ph">[نام ایجنت]</span>»، نویسنده‌ی ارشد محتوای برند <span class="ph">[نام برند]</span> هستی.
+
+&lt;brand_voice&gt;
+لحن: <span class="ph">[مثلاً صمیمی اما حرفه‌ای، بدون اغراق]</span>
+مخاطب: <span class="ph">[مثلاً مدیران کسب‌وکارهای کوچک]</span>
+ممنوع: کلیشه‌های تبلیغاتی، جملات بیش از ۲۵ کلمه، ترجمه‌ی بوی‌دار
+الزامی: مثال واقعی و ملموس در هر بخش، شروع با قلاب (Hook)
+&lt;/brand_voice&gt;
+
+&lt;process&gt;
+برای هر درخواست محتوا این مراحل را اجرا کن:
+1. سه زاویه‌ی متفاوت برای موضوع پیشنهاد بده و بهترین را با دلیل انتخاب کن
+2. سرفصل‌بندی کامل بنویس
+3. پیش‌نویس کامل را بنویس
+4. پیش‌نویس را با چک‌لیست &lt;quality&gt; نقد کن و نسخه‌ی نهایی را تحویل بده
+&lt;/process&gt;
+
+&lt;quality&gt;
+- آیا ۳ ثانیه‌ی اول خواننده را نگه می‌دارد؟
+- آیا هر ادعا با مثال یا عدد پشتیبانی شده؟
+- آیا لحن در کل متن یکدست است؟
+- آیا CTA پایانی روشن و مشخص است؟
+&lt;/quality&gt;
+
+فرمت ورودی من همیشه این است: موضوع / قالب (پست، مقاله، کپشن) / طول</div>
+
+  <div class="tip"><b>کمترین کار، بیشترین خروجی:</b> این پرامپت را در یک فایل (مثلاً CLAUDE.md یا یک Project در claude.ai) ذخیره کن. از آن به بعد ورودی تو فقط یک خط است: «موضوع: قهوه‌ی سرد / قالب: پست اینستاگرام / طول: ۱۵۰ کلمه».</div>
+  <div class="tip"><b>تولید انبوه:</b> برای تقویم محتوایی، اول بخواه «۳۰ ایده برای ماه آینده در جدول (موضوع، قالب، هدف)» — بعد هر روز فقط شماره‌ی ردیف را بده: «ردیف ۷ را تولید کن».</div>
+
+  <div class="pgfoot"><span>راهنمای کاربردی Fable 5</span><span>صفحه ۴</span></div>
+</div>
+
+<!-- ================= 4. SEO AGENT ================= -->
+<div class="page">
+  <h2 class="sec"><span class="secnum c4">۴</span> ایجنت محتوای سئو شده</h2>
+  <p class="lead">سئو با Claude یعنی: قصد جستجو (Search Intent) را به مدل بده، ساختار را قفل کن، و از مدل بخواه مثل رقیب صفحه‌ی اول بنویسد — اما بهتر.</p>
+  <div class="divider b4"></div>
+
+  <table>
+    <tr><th>ورودی که باید بدهی</th><th>چرا مهم است</th></tr>
+    <tr><td>کلمه‌ی کلیدی اصلی + ۳ تا ۵ کلمه‌ی فرعی (LSI)</td><td>مدل به ابزار کیورد ریسرچ وصل نیست؛ داده را تو تأمین می‌کنی</td></tr>
+    <tr><td>قصد جستجو (اطلاعاتی / مقایسه‌ای / خرید)</td><td>ساختار مقاله‌ی اطلاعاتی با صفحه‌ی فروش زمین تا آسمان فرق دارد</td></tr>
+    <tr><td>سرفصل ۲ تا ۳ رقیب صفحه‌ی اول گوگل</td><td>مدل می‌فهمد گوگل برای این کوئری چه چیزی را پاداش می‌دهد</td></tr>
+    <tr><td>اطلاعات اختصاصی تو (تجربه، آمار، مشتری)</td><td>E-E-A-T؛ همان چیزی که محتوای تو را از محتوای ماشینی رقبا جدا می‌کند</td></tr>
+  </table>
+
+  <div class="prompt"><b>پرامپت آماده — مقاله‌ی سئو شده:</b>
+تو یک استراتژیست سئو و نویسنده‌ی محتوای فارسی هستی که اصول E-E-A-T گوگل را عمیقاً می‌شناسی.
+
+&lt;keywords&gt;
+کلمه‌ی کلیدی اصلی: <span class="ph">[مثلاً «خرید قهوه عربیکا»]</span>
+کلمات فرعی: <span class="ph">[کلمه ۱، کلمه ۲، کلمه ۳]</span>
+قصد جستجو: <span class="ph">[اطلاعاتی / مقایسه‌ای / تراکنشی]</span>
+&lt;/keywords&gt;
+
+&lt;competitors&gt;
+سرفصل‌های رقبای صفحه‌ی اول:
+<span class="ph">[سرفصل‌های H2 رقیب ۱ و ۲ را اینجا کپی کن]</span>
+&lt;/competitors&gt;
+
+&lt;my_advantage&gt;
+<span class="ph">[تجربه، آمار یا داستان اختصاصی تو که رقبا ندارند]</span>
+&lt;/my_advantage&gt;
+
+&lt;task&gt;
+مقاله‌ای <span class="ph">[۱۵۰۰]</span> کلمه‌ای بنویس که:
+- تمام موضوعات رقبا را پوشش دهد + حداقل ۲ بخش که هیچ‌کدام ندارند
+- کلمه‌ی کلیدی اصلی در: عنوان، H1، اولین ۱۰۰ کلمه، یک H2 و متا دیسکریپشن
+- کلمات فرعی به‌صورت طبیعی در H2/H3ها (بدون keyword stuffing)
+&lt;/task&gt;
+
+&lt;output_format&gt;
+1. عنوان سئو (حداکثر ۶۰ کاراکتر) — ۳ گزینه
+2. متا دیسکریپشن (حداکثر ۱۵۵ کاراکتر)
+3. متن کامل با H2/H3
+4. پیشنهاد ۳ لینک داخلی + اسکیمای FAQ (JSON-LD)
+&lt;/output_format&gt;</div>
+
+  <div class="tip"><b>به‌روزرسانی محتوا:</b> برای آپدیت مقالات قدیمی، متن فعلی را بده و بخواه: «این مقاله را با حفظ URL و ساختار، برای سال جدید به‌روز کن؛ بخش‌های ضعیف را مشخص و بازنویسی کن». آپدیت معمولاً سریع‌تر از تولید جدید رتبه می‌گیرد.</div>
+
+  <div class="pgfoot"><span>راهنمای کاربردی Fable 5</span><span>صفحه ۵</span></div>
+</div>
+
+<!-- ================= 5. ANY AGENT ================= -->
+<div class="page">
+  <h2 class="sec"><span class="secnum c5">۵</span> قالب جامع ساخت هر ایجنت دلخواه</h2>
+  <p class="lead">هر ایجنتی — پشتیبانی مشتری، تحلیل داده، ترجمه، مدیریت شبکه‌های اجتماعی — از همین ۶ بلوک ساخته می‌شود.</p>
+  <div class="divider b5"></div>
+
+  <div class="grid2">
+    <div class="card"><h4><span class="badge c5">۱</span> هویت (Identity)</h4><p>نقش، تخصص و شخصیت ایجنت. هرچه دقیق‌تر، رفتار پایدارتر.</p></div>
+    <div class="card"><h4><span class="badge c5">۲</span> دانش (Knowledge)</h4><p>اطلاعات اختصاصی که مدل نمی‌داند: محصولات تو، قیمت‌ها، سیاست‌ها. در تگ جدا بده.</p></div>
+    <div class="card"><h4><span class="badge c5">۳</span> فرایند (Process)</h4><p>مراحل عددگذاری‌شده‌ای که برای هر درخواست طی می‌کند. بدون فرایند، هر بار یک‌جور رفتار می‌کند.</p></div>
+    <div class="card"><h4><span class="badge c5">۴</span> مرزها (Boundaries)</h4><p>چه کاری نکند و کجا به انسان ارجاع بدهد. مهم‌ترین بلوک برای ایجنت‌های روبه‌مشتری.</p></div>
+    <div class="card"><h4><span class="badge c5">۵</span> فرمت (Format)</h4><p>قالب ثابت ورودی و خروجی. ورودی قالب‌دار = استفاده‌ی روزانه با یک خط تایپ.</p></div>
+    <div class="card"><h4><span class="badge c5">۶</span> مثال (Examples)</h4><p>۱ تا ۳ گفتگوی نمونه (ورودی ← خروجی ایده‌آل). مؤثرترین بلوک برای تثبیت کیفیت.</p></div>
+  </div>
+
+  <div class="prompt"><b>قالب آماده — هر ایجنتی که بخواهی:</b>
+# هویت
+تو «<span class="ph">[نام ایجنت]</span>» هستی: <span class="ph">[نقش + تخصص + شخصیت در یک جمله]</span>.
+
+&lt;knowledge&gt;
+<span class="ph">[اطلاعات اختصاصی: محصولات، قیمت‌ها، قوانین کسب‌وکار تو]</span>
+&lt;/knowledge&gt;
+
+&lt;process&gt;
+برای هر درخواست:
+1. <span class="ph">[مثلاً نیاز کاربر را در یک جمله بازگو کن]</span>
+2. <span class="ph">[مرحله‌ی اصلی کار]</span>
+3. <span class="ph">[بررسی کیفیت قبل از تحویل]</span>
+&lt;/process&gt;
+
+&lt;boundaries&gt;
+- اگر <span class="ph">[شرط خارج از حوزه]</span> بود، بگو: «<span class="ph">[پاسخ ارجاع]</span>»
+- هرگز <span class="ph">[خط قرمز — مثلاً قیمت خارج از لیست اعلام نکن]</span>
+- اگر اطلاعات کافی نداری، حدس نزن — سؤال بپرس
+&lt;/boundaries&gt;
+
+&lt;examples&gt;
+ورودی نمونه: <span class="ph">[یک درخواست واقعی]</span>
+خروجی ایده‌آل: <span class="ph">[دقیقاً همان‌طور که می‌خواهی]</span>
+&lt;/examples&gt;</div>
+
+  <div class="tip"><b>کجا اجرا کنم؟</b> ساده‌ترین: Projects در claude.ai (پرامپت را در Custom Instructions بگذار). حرفه‌ای‌تر: Claude Code با فایل CLAUDE.md. برنامه‌نویسی: Claude API با پارامتر system. در هر سه، همین قالب کار می‌کند.</div>
+  <div class="warn">ایجنت را با ۵ ورودی واقعی تست کن و هر جا خطا کرد، یک قاعده یا مثال به پرامپت اضافه کن. پرامپت خوب «نوشته نمی‌شود»، با تکرار «پرورش داده می‌شود».</div>
+
+  <div class="pgfoot"><span>راهنمای کاربردی Fable 5</span><span>صفحه ۶</span></div>
+</div>
+
+<!-- ================= 6. CLAUDE CODE ================= -->
+<div class="page">
+  <h2 class="sec"><span class="secnum c6">۶</span> ترفندهای Claude Code برای بهره‌وری حداکثری</h2>
+  <p class="lead">اگر از Claude Code (همین محیط) استفاده می‌کنی، این تنظیمات یک‌باره، هر روزِ کاری‌ات را سبک‌تر می‌کند.</p>
+  <div class="divider b6"></div>
+
+  <table>
+    <tr><th>ترفند</th><th>چطور</th><th>نتیجه</th></tr>
+    <tr><td><b>CLAUDE.md بساز</b></td><td>دستور <span dir="ltr">/init</span> را در پوشه‌ی پروژه بزن</td><td>مدل قواعد و ساختار پروژه‌ات را همیشه به‌خاطر دارد — دیگر تکرار نمی‌کنی</td></tr>
+    <tr><td><b>حالت برنامه‌ریزی (Plan Mode)</b></td><td>قبل از کارهای بزرگ، اول نقشه بخواه</td><td>به‌جای اصلاح ۱۰ باره، یک‌بار نقشه را تأیید می‌کنی و درست اجرا می‌شود</td></tr>
+    <tr><td><b>اسکرین‌شات بچسبان</b></td><td>تصویر را مستقیم در چت Paste کن</td><td>برای باگ UI یا کپی‌کردن طراحی، از هزار کلمه توضیح بهتر است</td></tr>
+    <tr><td><b>دستورهای شخصی (Skills)</b></td><td>کارهای تکراری را به اسکیل/اسلش‌کامند تبدیل کن</td><td>«تولید پست هفتگی» = تایپ یک دستور</td></tr>
+    <tr><td><b>think / ultrathink</b></td><td>در مسائل سخت به پرامپت اضافه کن</td><td>عمق تحلیل بالاتر برای معماری و دیباگ‌های پیچیده</td></tr>
+    <tr><td><b>زمان‌بندی (Schedule)</b></td><td>کارهای دوره‌ای را با <span dir="ltr">/schedule</span> خودکار کن</td><td>گزارش یا محتوای روزانه بدون حضور تو تولید می‌شود</td></tr>
+  </table>
+
+  <div class="prompt"><b>نمونه CLAUDE.md برای پروژه‌ی تولید محتوا:</b>
+# درباره‌ی این پروژه
+این مخزن، محتوای برند <span class="ph">[نام برند]</span> را نگه می‌دارد.
+
+# قواعد همیشگی
+- همه‌ی محتواها فارسی با لحن <span class="ph">[لحن برند]</span>
+- خروجی مقالات در پوشه‌ی <span dir="ltr">content/</span> با فرمت Markdown
+- هر مقاله: عنوان سئو + متا دیسکریپشن + متن با H2/H3
+- قبل از نوشتن مقاله‌ی جدید، فایل <span dir="ltr">keywords.md</span> را بخوان
+
+# سبک نگارش
+- جملات حداکثر ۲۵ کلمه، پاراگراف حداکثر ۴ خط
+- هر ادعا با مثال یا عدد</div>
+
+  <div class="tip"><b>فرمول کمترین کار:</b> ۸۰٪ بهره‌وری از سه چیز می‌آید: ① CLAUDE.md دقیق ② پرامپت‌های ذخیره‌شده‌ی این فایل ③ بازخورد مشخص به‌جای کلی‌گویی. بقیه جزئیات است.</div>
+
+  <div class="pgfoot"><span>راهنمای کاربردی Fable 5</span><span>صفحه ۷</span></div>
+</div>
+
+<!-- ================= 7. CHECKLIST ================= -->
+<div class="page">
+  <h2 class="sec"><span class="secnum c1">۷</span> چک‌لیست نهایی و اشتباهات رایج</h2>
+  <p class="lead">قبل از ارسال هر پرامپت مهم، ۳۰ ثانیه این فهرست را مرور کن.</p>
+  <div class="divider b1"></div>
+
+  <h4 style="margin:10px 0 6px; color:#1e8a5f;">✅ قبل از ارسال پرامپت</h4>
+  <ul class="check">
+    <li>نقش متخصص مشخص کرده‌ام («تو یک ... هستی»)</li>
+    <li>زمینه (مخاطب، هدف، برند) را داده‌ام — مدل ذهن‌خوانی نمی‌کند</li>
+    <li>فرمت دقیق خروجی را گفته‌ام (طول، ساختار، قالب)</li>
+    <li>حداقل یک مثال از خروجی ایده‌آل ضمیمه کرده‌ام</li>
+    <li>برای کار پیچیده، «قدم‌به‌قدم فکر کن» اضافه کرده‌ام</li>
+    <li>کار بزرگ را به مراحل قابل‌تأیید شکسته‌ام</li>
+  </ul>
+
+  <h4 style="margin:16px 0 6px; color:#c2417a;">❌ اشتباهات رایج (و درمانشان)</h4>
+  <ul class="check">
+    <li class="x"><b>پرامپت یک‌خطی مبهم</b> («یه مقاله درباره قهوه بنویس») ← از قالب صفحه‌ی ۲ استفاده کن</li>
+    <li class="x"><b>بازخورد کلی</b> («بهترش کن») ← دقیق بگو چه چیزی، کجا و چطور عوض شود</li>
+    <li class="x"><b>همه‌چیز در یک پیام</b> ← مرحله‌ای جلو برو؛ هر مرحله را تأیید کن بعد ادامه بده</li>
+    <li class="x"><b>شروع دوباره از صفر در هر جلسه</b> ← پرامپت سیستم را در Project یا CLAUDE.md ذخیره کن</li>
+    <li class="x"><b>اعتماد بی‌بررسی به آمار و لینک‌ها</b> ← اعداد، منابع و ادعاهای حساس را خودت چک کن</li>
+    <li class="x"><b>دستور منفی مبهم</b> («رسمی نباشه») ← مثبت بگو («لحن دوستانه مثل گفتگو با همکار»)</li>
+  </ul>
+
+  <div class="flow" style="margin-top:18px;">
+    <div class="step"><b>روز ۱</b>پرامپت‌های این فایل را شخصی‌سازی و ذخیره کن</div><div class="arrow">←</div>
+    <div class="step"><b>هفته ۱</b>با ورودی واقعی تست کن و قاعده/مثال اضافه کن</div><div class="arrow">←</div>
+    <div class="step"><b>همیشه</b>فقط جای خالی‌ها را پر کن — بقیه خودکار است</div>
+  </div>
+
+  <div class="tip" style="margin-top:14px;"><b>جمع‌بندی در یک جمله:</b> Fable 5 قوی‌ترین خروجی را وقتی می‌دهد که تو «مدیر دقیق» باشی، نه «کارفرمای مبهم» — یک‌بار خوب تعریف کن، بی‌نهایت بار استفاده کن.</div>
+
+  <div class="pgfoot"><span>راهنمای کاربردی Fable 5 · Claude</span><span>صفحه ۸</span></div>
+</div>
+
+</body>
+</html>

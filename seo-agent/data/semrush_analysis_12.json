@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "siemless",
+    "lead generation website",
+    "seamlessly",
+    "lead generation tools"
+  ],
+  "per_kw": {
+    "siemless": {
+      "volume": 8100,
+      "kd": 27.0,
+      "competition": 0.19
+    },
+    "lead generation website": {
+      "volume": 1900,
+      "kd": 41.0,
+      "competition": 0.14
+    },
+    "seamlessly": {
+      "volume": 8100,
+      "kd": 46.0,
+      "competition": 0.19
+    },
+    "lead generation tools": {
+      "volume": 3600,
+      "kd": 46.0,
+      "competition": 0.18
+    }
+  },
+  "avg_kd": 40.0,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=40.0 (سقف 40). داده از SEMrush API دیتابیس us."
+}

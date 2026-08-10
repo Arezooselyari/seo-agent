@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "whatsapp business api south africa provider automated notifications",
+    "manychat whatsapp",
+    "api whatsapp",
+    "whatsapp bot"
+  ],
+  "per_kw": {
+    "whatsapp business api south africa provider automated notifications": {
+      "volume": 1000,
+      "kd": 1.0,
+      "competition": 0.0
+    },
+    "manychat whatsapp": {
+      "volume": 720,
+      "kd": 41.0,
+      "competition": 0.5
+    },
+    "api whatsapp": {
+      "volume": 720,
+      "kd": 46.0,
+      "competition": 0.48
+    },
+    "whatsapp bot": {
+      "volume": 1000,
+      "kd": 47.0,
+      "competition": 0.33
+    }
+  },
+  "avg_kd": 33.8,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=33.8 (سقف 40). داده از SEMrush API دیتابیس us."
+}

@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "describe this outfit",
+    "seo product description",
+    "seo product descriptions",
+    "clothing description generator"
+  ],
+  "per_kw": {
+    "describe this outfit": {
+      "volume": 590,
+      "kd": 27.0,
+      "competition": 0.33
+    },
+    "seo product description": {
+      "volume": 590,
+      "kd": 17.0,
+      "competition": 0.02
+    },
+    "seo product descriptions": {
+      "volume": 590,
+      "kd": 31.0,
+      "competition": 0.57
+    },
+    "clothing description generator": {
+      "volume": 480,
+      "kd": 16.0,
+      "competition": 0.02
+    }
+  },
+  "avg_kd": 22.8,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=22.8 (سقف 40). داده از SEMrush API دیتابیس us."
+}

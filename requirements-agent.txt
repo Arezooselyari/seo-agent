@@ -1,0 +1,23 @@
+# وابستگی‌های کاملِ ایجنت (اجرای محلی روی ویندوز).
+# دمو از این استفاده نمی‌کند؛ دمو فقط requirements.txt سبک را نصب می‌کند.
+
+# --- AI providers (بسته به ai_provider در config.yaml) ---
+google-generativeai==0.8.3  # Gemini
+anthropic==0.39.0           # Claude
+openai==1.54.4              # OpenRouter (OpenAI-compatible)
+
+# --- Core engine ---
+feedparser==6.0.11          # خواندن RSS منابع
+trafilatura==1.12.2         # استخراج متن تمیز مقاله
+pydantic==2.9.2             # اعتبارسنجی config و مدل‌های داده
+pydantic-settings==2.6.1    # بارگذاری secrets از .env
+PyYAML==6.0.2               # خواندن config.yaml
+httpx==0.27.2               # درخواست HTTP (وردپرس، تلگرام، سایت‌مپ)
+supabase==2.31.0            # دیتابیس ابری (Postgres)
+
+# --- زمان‌بندی روزانه ---
+APScheduler==3.10.4
+
+# --- دموی وب (نسخه‌ی آزمایشی SaaS) ---
+fastapi==0.115.5
+uvicorn==0.32.1

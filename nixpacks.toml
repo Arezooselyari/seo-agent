@@ -1,0 +1,6 @@
+# پیکربندی build برای Railway (Nixpacks).
+# فقط وابستگی‌های سبکِ دمو نصب می‌شوند تا build سریع و بدون خطا باشد.
+providers = ["python"]
+
+[phases.install]
+cmds = ["pip install -r requirements-demo.txt"]

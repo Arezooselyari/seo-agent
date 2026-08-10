@@ -1,0 +1,23 @@
+# --- وب‌سرور ---
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.17
+
+# --- هوش مصنوعی (Gemini) ---
+google-generativeai==0.8.3
+
+# --- دیتابیس ---
+supabase==2.31.0
+websockets>=13,<16   # نسخه‌ی قدیمی‌تر pip را به نصب می‌کشد و با realtime ناسازگار است
+
+# --- پیکربندی ---
+pydantic==2.11.7
+pydantic-settings==2.7.1
+PyYAML==6.0.2
+
+# --- HTTP / استخراج محتوای وردپرس ---
+httpx==0.27.2
+beautifulsoup4==4.12.3
+
+# پایگاه منطقه‌های زمانی — ویندوز خودش ندارد
+tzdata==2024.2

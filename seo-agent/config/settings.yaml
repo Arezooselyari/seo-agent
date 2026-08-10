@@ -1,0 +1,138 @@
+# تنظیمات عمومی ایجنت
+
+# ارائه‌دهنده‌ی مدل: anthropic | gemini | openai | openrouter
+# claude-sonnet-5 (از openrouter) لحنِ فارسیِ به‌مراتب انسانی‌تری دارد — مقایسه‌ی زنده
+# انجام شد — ولی حسابِ OpenRouter اعتبارِ کافی ندارد (402: توانِ ~۳۴۰۰ توکن).
+# به‌محضِ شارژِ حساب، این را «openrouter» کن (بقیه‌ی تنظیمات آماده است).
+provider: "gemini"
+
+# مدل‌ها (Anthropic)
+models:
+  cheap: "claude-haiku-4-5-20251001"   # فیلتر و استخراج
+  main: "claude-fable-5"               # تولید مقاله‌ی نهایی
+
+# مدل‌ها (Gemini) — کلید شخصی (paid tier)
+gemini_models:
+  cheap: "gemini-flash-lite-latest"    # فیلتر و استخراج و ترجمه (ارزان و سریع، alias پایدار)
+  # نگارش با مدلِ Pro — لحنِ فارسیِ آن به‌مراتب انسانی‌تر از flash است (مقایسه‌ی زنده
+  # انجام شد: flash اداری/فهرست‌وار می‌نویسد، pro طبیعی و دوم‌شخص). مدلِ «تفکری» است،
+  # پس بخشی از max_output_tokens صرفِ استدلال می‌شود — سقف‌ها بالا نگه داشته شده‌اند.
+  main: "gemini-3.1-pro-preview"       # تولید و تحلیل نهایی
+
+# مدل‌ها (OpenAI / ChatGPT) — کلید OPEN_AI_API_KEY در .env
+# نیازمندِ اعتبارِ فعالِ API (نه اشتراکِ ChatGPT Plus). برای فعال‌سازی: provider را «openai» کن.
+openai_models:
+  cheap: "gpt-4o-mini"    # کارهای ارزان (فیلتر/استخراج/ترجمه)
+  main: "gpt-4.1"         # نگارشِ مقاله — نثرِ انسانیِ باکیفیت‌تر
+
+# مدل‌ها (OpenRouter) — کلید OPENROUTER_API_KEY در .env. یک کلید → همه‌ی مدل‌ها.
+# برای فعال‌سازی: provider را «openrouter» کن. شناسه‌ها به‌شکلِ «ارائه‌دهنده/مدل».
+# نامِ دقیق را از openrouter.ai/models چک کن؛ این‌ها پیش‌فرضِ خوبِ نگارشِ انسانی‌اند.
+openrouter_models:
+  cheap: "openai/gpt-5.4-mini"        # فیلتر/استخراج/ترجمه — ارزان ($0.75/$4.5 هر میلیون)
+  main: "anthropic/claude-sonnet-5"   # نگارش/انسانی‌سازی — بهترین لحنِ فارسی ($2/$10)
+
+# منبعِ کیورد: free (Google Autocomplete، رایگان — مناسبِ سایتِ تازه و long-tailِ کم‌رقابت)
+#            | semrush (نیازمندِ کلیدِ فعال). SEMrush تریال تمام شد → پیش‌فرض free.
+keywords:
+  provider: "free"
+
+# SEMrush (کیوردریسرچ قبل از تولید + تحلیل سئو بعد از تولید)
+# نکته: تماس‌های SEMrush را Claude با کانکتور MCP می‌زند (نیمه‌دستی)؛ کد فقط فایل واسط را می‌خواند.
+semrush:
+  enabled: true
+  market: "us"      # دیتابیس کیورد (جهانی/انگلیسی — پوشش فارسی SEMrush ضعیف است)
+  kd_max: 40        # حداکثر سختی کیورد (Keyword Difficulty) قابل‌قبول برای انتخاب
+
+# تولیدِ روزانه‌ی خودکار (ارکستراتور src/generate_daily.py)
+generation:
+  topic_source: "mixed"     # rss (فقط خبری) | queue (فقط آموزشی) | mixed (هردو، طبقِ content_mix)
+  max_topic_candidates: 25  # چند عنوانِ تازه‌ی RSS به انتخاب‌گرِ موضوع داده شود
+  content_mix:
+    # ۵۰-۵۰ (مصوب ۷ اوت ۲۰۲۶): کارفرما خبرِ مهمِ هوش مصنوعی بیشتری می‌خواهد، ولی
+    # خبر ترافیکِ زودگذر دارد و آموزشی ماه‌ها ترافیک می‌دهد — تعادل نگه داشته شد.
+    tutorial: 0.5            # سهمِ هدفِ محتوای آموزشی/معرفیِ ابزار (ترافیکِ ماندگار)
+    news: 0.5                 # سهمِ هدفِ محتوای خبری (تازگی/روند)
+  ratio_window: 10            # نسبت روی این‌تعداد از آخرین مقاله‌ها سنجیده می‌شود
+
+# جمع‌آوری
+collect:
+  max_per_source: 15        # حداکثر مقاله‌ی اخیر از هر منبع
+  max_age_days: 7           # فقط مقالات یک هفته‌ی اخیر
+  top_n_articles: 4         # چند مقاله‌ی برتر تحلیل عمیق شوند
+  min_relevance: 6          # حداقل امتیاز ارتباط (۰ تا ۱۰)
+  request_delay_seconds: 2  # تأخیر بین درخواست‌ها
+
+# مقاله‌ی خروجی
+article:
+  language: "fa"
+  min_words: 800
+  max_words: 1200
+  min_faq: 5
+
+# تصاویر
+images:
+  featured: 1
+  inline: 2
+
+# انتشار
+publish:
+  hour: 12                  # ساعت انتشار
+  default_status: "publish" # publish | draft
+  category_ids: []          # شناسه‌ی دسته‌های وردپرس (بعد از اتصال پر کن)
+
+# کانال تأیید: telegram | email | both
+approval_channel: "telegram"
+
+# تلگرام
+telegram:
+  bot_token: "${TELEGRAM_BOT_TOKEN}"  # از .env می‌خوانده می‌شود
+  chat_id: "${TELEGRAM_CHAT_ID}"      # از .env می‌خوانده می‌شود
+
+# ارزیابی SEO
+evaluation:
+  approval_threshold: 90              # حداقل امتیاز برای تایید خودکار
+  approval_interval_seconds: 300      # بررسی‌ی هر N ثانیه (۵ دقیقه)
+  telegram_review_min: 70             # needs_review با نمره ≥ این (=درصدِ عواملِ رتبه) هم به تلگرام می‌رود (با برچسب هشدار + دلایل)
+
+# گردش کار تحریریه (Editorial Workflow) — حلقه‌ی اصلاح خودکار
+qa:
+  minimum_score: 90        # هدف حلقه‌ی اصلاح (توقف اگر نمره ≥ این)
+  max_revision: 3          # حداکثر چرخه‌ی بازنویسی برای هر مقاله
+  min_improvement: 5       # توقف اگر یک دور کمتر از این مقدار نمره را بالا برد (همگرایی)
+  rewrite_enabled: true    # اگر false، رفتار قدیمی: ردشده → needs_review
+
+writer:
+  humanize: true
+  preserve_good_sections: true   # بخش‌های سالم دست نمی‌خورند
+  patch_rewrite: true            # فقط بخش‌های معیوب بازنویسی می‌شوند
+
+editor_memory:
+  enabled: true
+  minimum_occurrence: 3    # الگوی خطا بعد از N بار تکرار وارد حافظه می‌شود
+
+# دروازه‌ی کیفیت محتوا (پرامپت نقش‌محور: لحن انسانی + E-E-A-T + Conversion)
+quality_gate:
+  enabled: true
+  min_human_tone: 7        # حداقل امتیاز انسانی‌بودن (۰-۱۰) — داور سخت‌گیر است؛ ۷ یعنی لحن واقعاً خوب
+  min_weighted_score: 7.5  # حداقل میانگین وزنی ۷ بُعد (۰-۱۰)
+
+# لایه‌ی نمره‌ی نهایی متمرکز (src/final_score.py) — حالتِ ranking-aligned.
+# فلسفه (مصوب کاربر): «از گوگل سخت‌گیرتر نباش؛ فقط عواملی را که واقعاً به رتبه کمک
+# می‌کنند بررسی کن.» نمره‌ی نهایی = درصدِ عواملِ رتبه‌ی گوگل (seo_checklist).
+# داورِ سلیقه‌ایِ لحن (qa/gate) وزنِ عددی ندارد و فقط advisory است.
+# آنتی‌جعل (hard_policy_reject) و چک‌های قطعیِ کد دست‌نخورده باقی می‌مانند.
+final_score:
+  enabled: true
+  ranking_aligned_mode: true   # تصمیم بر پایه‌ی seo_ok + آنتی‌جعل؛ نه داورِ لحن
+  approval_threshold: 70       # = seo_checklist_min؛ نمره‌ی نهایی = درصدِ عواملِ رتبه
+  seo_checklist_min: 70        # حداقل درصدِ عواملِ رتبه‌ی گوگل برای پاس‌شدنِ چک‌لیست
+  weights:                     # نمره‌ی نهایی صرفاً چک‌لیستِ عواملِ رتبه است
+    seo: 1.0                   # چک‌لیستِ عینیِ On-Page (۰-۱۰۰)
+    qa: 0.0                    # advisory — در نمره اثر ندارد (فقط دلیلِ نمایشی)
+    gate: 0.0                  # advisory — در نمره اثر ندارد
+    semrush: 0.0               # advisory — WEAK همچنان گیتِ سخت است (پایین)
+  semrush_component:
+    GOOD: 100
+    WEAK: 50
+  reject_below: 50

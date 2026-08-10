@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save Your Time with AI - برند شخصی</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            direction: rtl;
+            font-family: 'Vazirmatn', sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        /* Color System */
+        :root {
+            --primary: #2D5B8E;
+            --accent: #D4A574;
+            --secondary: #4A7BA7;
+            --light-bg: #ECF0F5;
+            --text-dark: #2c3e50;
+            --text-gray: #666;
+            --white: #ffffff;
+            --border: #e0e0e0;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            border-bottom: 2px solid var(--primary);
+            padding: 1.2rem 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.3px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        section.dark {
+            background: linear-gradient(135deg, #f8f9fa 0%, var(--light-bg) 100%);
+        }
+
+        section h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        section .subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        section h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        section h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            line-height: 1.9;
+        }
+
+        /* Brand Foundation Section */
+        .intro-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-right: 4px solid var(--accent);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .card h4 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Values Grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .value-item {
+            background: var(--white);
+            padding: 1.8rem;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-top: 3px solid var(--accent);
+        }
+
+        .value-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .value-item h4 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .value-item p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Key Messages */
+        .messages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .message-box {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1.8rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .message-box strong {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .message-box p {
+            color: var(--white);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Visual Identity Section */
+        .logo-showcase {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 2.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .logo-showcase .logo-main {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin: 1rem 0;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        .logo-showcase .logo-sub {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Color Palette */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .color-item {
+            text-align: center;
+        }
+
+        .color-sample {
+            width: 100%;
+            height: 100px;
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+
+        .color-label {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .color-code {
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+
+        /* Typography */
+        .typography {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .font-sample {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .font-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .font-meta {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        /* Brand Voice Section */
+        .voice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .voice-card {
+            background: var(--white);
+            padding: 1.8rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .voice-card h4 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .voice-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .voice-card li {
+            color: var(--text-gray);
+            margin-bottom: 0.7rem;
+            padding-right: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .voice-card li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Applications */
+        .applications-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .app-card {
+            background: var(--light-bg);
+            padding: 1.8rem;
+            border-radius: 6px;
+            border-right: 4px solid var(--accent);
+        }
+
+        .app-card h4 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .app-code {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            direction: ltr;
+            text-align: left;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        /* Social Profiles */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-top: 3px solid var(--accent);
+        }
+
+        .platform-name {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .handle {
+            color: var(--accent);
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .title {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        /* Do's and Don'ts */
+        .dos-donts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .do-card {
+            border-right: 4px solid #27ae60;
+        }
+
+        .dont-card {
+            border-right: 4px solid #e74c3c;
+        }
+
+        .do-title {
+            color: #27ae60;
+        }
+
+        .dont-title {
+            color: #e74c3c;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: var(--white);
+            padding: 2.5rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        footer .version {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .intro-cards,
+            .values-grid,
+            .messages-grid,
+            .color-palette,
+            .typography,
+            .voice-grid,
+            .applications-grid,
+            .social-grid,
+            .dos-donts {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 2rem 0;
+            }
+
+            nav ul {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+
+            section h1 {
+                font-size: 2rem;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+
+            .logo-showcase .logo-main {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">Save Your Time with AI</div>
+            <ul>
+                <li><a href="#foundation">بنیاد برند</a></li>
+                <li><a href="#visual">هویت بصری</a></li>
+                <li><a href="#voice">صدای برند</a></li>
+                <li><a href="#applications">کاربردها</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Foundation Section -->
+    <section id="foundation" class="dark">
+        <div class="container">
+            <h1>Save Your Time with AI</h1>
+            <p class="subtitle">راه‌حل‌های هوش مصنوعی برای خودکارسازی کسب‌وکار و سازمان‌ها</p>
+
+            <h2>۰۱ بنیاد برند</h2>
+
+            <h3>درباره من</h3>
+            <div class="intro-cards">
+                <div class="card">
+                    <h4>معرفی</h4>
+                    <p>متخصص هوش مصنوعی با بیش از ۱۵ سال سابقه در فناوری اطلاعات، شبکه و امنیت. تجربه عملی در سازمان‌های دولتی و تخصص در طراحی سیستم‌های خودکار، Agent ها و Workflow های هوشمند برای کاهش ۷۰% کارهای تکراری سازمان‌ها.</p>
+                </div>
+                <div class="card">
+                    <h4>ماموریت</h4>
+                    <p>کمک به شرکت‌ها، کسب‌وکارها و فریلنسرها در خودکارسازی فرآیندهای تکراری و پیچیده. تبدیل چالش‌های سازمانی به فرصت‌های بهینه‌سازی با استفاده از هوش مصنوعی و افزایش ۳۵% بهره‌وری عملیاتی.</p>
+                </div>
+            </div>
+
+            <h3>ارزش‌های اصلی</h3>
+            <div class="values-grid">
+                <div class="value-item">
+                    <span class="icon">🔒</span>
+                    <h4>امنیت اطلاعات</h4>
+                    <p>محافظت ۱۰۰% داده‌های حساس شما در هر مرحله</p>
+                </div>
+                <div class="value-item">
+                    <span class="icon">⚙️</span>
+                    <h4>کارایی عملیاتی</h4>
+                    <p>بهبود بهره‌وری و کاهش هزینه‌های منابع انسانی</p>
+                </div>
+                <div class="value-item">
+                    <span class="icon">🎯</span>
+                    <h4>نتایج قابل سنجش</h4>
+                    <p>ارائه ROI واضح و قابل اندازه‌گیری برای هر پروژه</p>
+                </div>
+            </div>
+
+            <h3>چشم‌انداز و اهداف</h3>
+            <div class="card">
+                <h4>سال آینده</h4>
+                <p>تأسیس موسسه‌ای در حوزه هوش مصنوعی با تیمی از متخصصان. برگزاری کارگاه‌ها و وبینارهایی برای توسعه فرهنگ استفاده از هوش مصنوعی و اتوماسیون در سازمان‌های ایرانی. ایجاد خدمات مشاوره و پیاده‌سازی که به سازمان‌ها کمک کنند چالش‌های خود را حل کنند.</p>
+            </div>
+
+            <h3>نقاط قوت متمایز</h3>
+            <div class="messages-grid">
+                <div class="message-box">
+                    <strong>۱۵+ سال تجربه</strong>
+                    <p>کار در سازمان‌های بزرگ و درک عمیق از فرآیندهای پیچیده اداری</p>
+                </div>
+                <div class="message-box">
+                    <strong>راه‌حل‌های مقیاس‌پذیر</strong>
+                    <p>طراحی سیستم‌هایی برای کسب‌وکار کوچک تا شرکت‌های بزرگ</p>
+                </div>
+                <div class="message-box">
+                    <strong>تمرکز بر ROI</strong>
+                    <p>هر پروژه با هدف افزایش بازدهی و کاهش هزینه</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Identity Section -->
+    <section id="visual">
+        <div class="container">
+            <h2>۰۲ هویت بصری</h2>
+
+            <h3>لوگو</h3>
+            <div class="logo-showcase">
+                <div class="logo-main">SAVE YOUR TIME</div>
+                <div class="logo-sub">with AI</div>
+                <p>خودکارسازی هوشمند برای موفقیت کسب‌وکار</p>
+            </div>
+
+            <h3>پالت رنگی</h3>
+            <div class="color-palette">
+                <div class="color-item">
+                    <div class="color-sample" style="background-color: #2D5B8E;"></div>
+                    <div class="color-label">رنگ اصلی</div>
+                    <div class="color-code">#2D5B8E</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-sample" style="background-color: #D4A574;"></div>
+                    <div class="color-label">رنگ تاکیدی</div>
+                    <div class="color-code">#D4A574</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-sample" style="background-color: #4A7BA7;"></div>
+                    <div class="color-label">رنگ فرعی</div>
+                    <div class="color-code">#4A7BA7</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-sample" style="background-color: #ECF0F5;"></div>
+                    <div class="color-label">پس‌زمینه روشن</div>
+                    <div class="color-code">#ECF0F5</div>
+                </div>
+            </div>
+
+            <h3>تایپوگرافی</h3>
+            <div class="typography">
+                <div class="font-sample">
+                    <div class="font-title">Vazirmatn Bold</div>
+                    <p style="font-size: 0.9rem; color: var(--text-gray);">برای عناوین و متن‌های مهم</p>
+                    <div class="font-meta">سایز: ۲۸pt • وزن: Bold • رنگ: #2D5B8E</div>
+                </div>
+                <div class="font-sample">
+                    <div style="font-size: 1rem; color: var(--text-gray); margin-bottom: 0.5rem;">Vazirmatn Regular</div>
+                    <p style="font-size: 0.9rem; color: var(--text-gray);">برای متن‌های اصلی</p>
+                    <div class="font-meta">سایز: ۱۴pt • وزن: Regular • خط‌فاصله: ۱.۸</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Voice Section -->
+    <section id="voice" class="dark">
+        <div class="container">
+            <h2>۰۳ صدای برند</h2>
+
+            <h3>شخصیت و تن برند</h3>
+            <div class="voice-grid">
+                <div class="voice-card">
+                    <h4>حالت (Tone)</h4>
+                    <ul>
+                        <li>حرفه‌ای و قابل اعتماد</li>
+                        <li>واقع‌بینانه و عملی</li>
+                        <li>مثبت و تحریک‌کننده</li>
+                        <li>شفاف و بدون پیچیدگی‌های غیر‌ضروری</li>
+                    </ul>
+                </div>
+                <div class="voice-card">
+                    <h4>سبک برند</h4>
+                    <ul>
+                        <li>تمرکز بر نتایج و بازدهی سرمایه</li>
+                        <li>استفاده از داده و شواهد عملی</li>
+                        <li>زبان ساده و قابل فهم برای همه</li>
+                        <li>جلب تعهد و مشارکت فعال</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>پیام‌های اصلی</h3>
+            <div class="messages-grid">
+                <div class="message-box">
+                    <strong>کاهش هزینه و زمان</strong>
+                    <p>هر ساعت کار خودکار شده ارزش واقعی برای سازمان شما دارد</p>
+                </div>
+                <div class="message-box">
+                    <strong>امنیت و قابلیت اعتماد</strong>
+                    <p>سیستم‌های طراحی‌شده با حفاظت مکمل از داده‌های حساس</p>
+                </div>
+                <div class="message-box">
+                    <strong>تبدیل دیجیتالی</strong>
+                    <p>از سازمان متقلید به سازمانی نوآور و رقابتی</p>
+                </div>
+            </div>
+
+            <h3>آنچه باید بگوییم و نگوییم</h3>
+            <div class="dos-donts">
+                <div class="card do-card">
+                    <h4 class="do-title">✓ انجام دهید</h4>
+                    <ul>
+                        <li>«ما می‌توانیم ۷۰% کارهای تکراری شما را خودکار کنیم»</li>
+                        <li>«بازدهی شما ۳۵% افزایش خواهد یافت»</li>
+                        <li>«سیستم مناسب برای اندازه‌ی شما طراحی می‌کنیم»</li>
+                        <li>«داده‌های شما ۱۰۰% محفوظ هستند»</li>
+                    </ul>
+                </div>
+                <div class="card dont-card">
+                    <h4 class="dont-title">✗ انجام ندهید</h4>
+                    <ul>
+                        <li>«هوش مصنوعی جادو است»</li>
+                        <li>«می‌توانیم همه چیز را حل کنیم»</li>
+                        <li>«تکنولوژی خیلی پیچیده است برای شما»</li>
+                        <li>«نگران داده‌های خود نباشید»</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section id="applications">
+        <div class="container">
+            <h2>۰۴ کاربردهای برند</h2>
+
+            <h3>امضای ایمیل</h3>
+            <div class="app-card">
+                <h4>الگوی کامل</h4>
+                <div class="app-code">
+Arezu [Last Name]<br>
+AI Automation Specialist<br>
+Save Your Time with AI<br>
+<br>
+📧 your.email@domain.com<br>
+🔗 linkedin.com/in/yourprofile<br>
+🌐 www.yourwebsite.com
+                </div>
+            </div>
+
+            <h3>پروفایل‌های اجتماعی</h3>
+            <div class="social-grid">
+                <div class="social-card">
+                    <div class="platform-name">LinkedIn</div>
+                    <div class="handle">@arezu.profile</div>
+                    <div class="title">AI Automation Specialist | مشاور هوش مصنوعی</div>
+                </div>
+                <div class="social-card">
+                    <div class="platform-name">Twitter/X</div>
+                    <div class="handle">@yourhandle</div>
+                    <div class="title">AI Automation | Building Better Workflows</div>
+                </div>
+                <div class="social-card">
+                    <div class="platform-name">وبسایت شخصی</div>
+                    <div class="handle">saveyourtime.ai</div>
+                    <div class="title">مرکز منابع و خدمات مشاوره</div>
+                </div>
+            </div>
+
+            <h3>الگوهای ارائه</h3>
+            <div class="applications-grid">
+                <div class="app-card">
+                    <h4>عنوان اصلی</h4>
+                    <div class="app-code">
+Vazirmatn Bold<br>
+سایز: 28pt<br>
+رنگ: #2D5B8E
+                    </div>
+                </div>
+                <div class="app-card">
+                    <h4>متن بدنه</h4>
+                    <div class="app-code">
+Vazirmatn Regular<br>
+سایز: 14pt<br>
+خط‌فاصله: 1.8
+                    </div>
+                </div>
+                <div class="app-card">
+                    <h4>تاکید و اکسنت</h4>
+                    <div class="app-code">
+رنگ: #D4A574<br>
+برای دکمه‌ها<br>
+و لینک‌های اصلی
+                    </div>
+                </div>
+                <div class="app-card">
+                    <h4>پس‌زمینه</h4>
+                    <div class="app-code">
+رنگ: #ECF0F5<br>
+برای بخش‌های<br>
+جانبی و تاکیدی
+                    </div>
+                </div>
+            </div>
+
+            <h3>نکات مهم در استفاده از برند</h3>
+            <div class="dos-donts" style="margin-top: 2rem;">
+                <div class="card do-card">
+                    <h4 class="do-title">✓ بگذارید</h4>
+                    <ul>
+                        <li>استفاده از لوگو در اندازه و رنگ صحیح</li>
+                        <li>حفظ فاصله‌های مناسب اطراف لوگو</li>
+                        <li>رعایت پالت رنگی در تمام مواد</li>
+                        <li>استفاده از Vazirmatn برای متون</li>
+                        <li>حفظ تناسب و توازن در طراحی</li>
+                    </ul>
+                </div>
+                <div class="card dont-card">
+                    <h4 class="dont-title">✗ نکنید</h4>
+                    <ul>
+                        <li>تغییر رنگ و اندازه لوگو</li>
+                        <li>تغییر تناسب یا اعوجاج لوگو</li>
+                        <li>استفاده از فونت‌های دیگر</li>
+                        <li>استفاده از رنگ‌های خارج از پالت</li>
+                        <li>استفاده لوگو روی پس‌زمینه‌های نامناسب</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>Save Your Time with AI</strong></p>
+        <p>راه‌حل‌های هوش مصنوعی برای خودکارسازی کسب‌وکار و سازمان‌ها</p>
+        <div class="version">
+            <p>© ۱۴۰۳ - تمام حقوق محفوظ است</p>
+            <p>Brand Guide Version 1.0 | طراحی شده برای LinkedIn و پلتفرم‌های دیجیتالی</p>
+        </div>
+    </footer>
+</body>
+</html>

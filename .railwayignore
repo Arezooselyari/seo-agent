@@ -1,0 +1,19 @@
+# هرگز آپلود نشوند — امنیت و حجم
+.env
+*.env
+*.zip
+*.db
+
+# پوشه‌های سنگین و نامرتبط با دمو
+venv/
+**/venv/
+**/__pycache__/
+seo-agent/
+chatbot/
+outputs/
+logs/
+agent_log.txt
+*.log
+
+# فایل‌های محلی ویندوز که روی سرور بی‌معنی‌اند
+*.bat

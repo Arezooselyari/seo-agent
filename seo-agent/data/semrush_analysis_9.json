@@ -1,0 +1,33 @@
+{
+  "targeted_keywords": [
+    "ai email marketing automation",
+    "mailchimp news",
+    "mailchimp pricing",
+    "program for email marketing"
+  ],
+  "per_kw": {
+    "ai email marketing automation": {
+      "volume": 30,
+      "kd": 34.0,
+      "competition": 0.35
+    },
+    "mailchimp news": {
+      "volume": 14800,
+      "kd": 58.0,
+      "competition": 0.33
+    },
+    "mailchimp pricing": {
+      "volume": 8100,
+      "kd": 59.0,
+      "competition": 0.68
+    },
+    "program for email marketing": {
+      "volume": 5400,
+      "kd": 59.0,
+      "competition": 0.04
+    }
+  },
+  "avg_kd": 52.5,
+  "verdict": "WEAK",
+  "notes": "میانگین KD=52.5 (سقف 40). داده از SEMrush API دیتابیس us."
+}

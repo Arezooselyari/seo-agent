@@ -1,0 +1,27 @@
+{
+  "targeted_keywords": [
+    "advanced techniques fraud origination models detection prevention",
+    "fraud detection in banking",
+    "payment fraud detection"
+  ],
+  "per_kw": {
+    "advanced techniques fraud origination models detection prevention": {
+      "volume": 590,
+      "kd": 33.0,
+      "competition": 0.0
+    },
+    "fraud detection in banking": {
+      "volume": 480,
+      "kd": 36.0,
+      "competition": 0.14
+    },
+    "payment fraud detection": {
+      "volume": 480,
+      "kd": 36.0,
+      "competition": 0.13
+    }
+  },
+  "avg_kd": 35.0,
+  "verdict": "GOOD",
+  "notes": "میانگین KD=35.0 (سقف 40). داده از SEMrush API دیتابیس us."
+}

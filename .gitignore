@@ -1,0 +1,28 @@
+# secrets — never commit
+.env
+**/.env
+botsecret.txt
+botdomain.txt
+botadminkey.txt
+_backups/
+
+# python
+venv/
+**/venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# databases (binary, changes constantly — see _backups/ for snapshots)
+*.db
+
+# logs / cache
+*.log
+agent_log.txt
+logs/
+**/logs/
+cache/
+**/__pycache__/
+
+# node
+node_modules/
