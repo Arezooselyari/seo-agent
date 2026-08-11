@@ -43,18 +43,29 @@ def _fa(n) -> str:
     return str(n).translate(str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹"))
 
 
+# هر صفحه‌ی بن‌بست این دکمه را می‌گیرد؛ بدونش کاربر باید در تاریخچه‌ی چت بالا
+# برود تا منو را پیدا کند.
+_HOME_BUTTON = InlineKeyboardButton("🏠 منوی اصلی", callback_data="menu:main")
+
+
+def _home_markup() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([[_HOME_BUTTON]])
+
+
 def _niche_keyboard(prefix: str = "niche") -> InlineKeyboardMarkup:
     items = list(NICHES.items())
     rows = [[InlineKeyboardButton(lbl, callback_data=f"{prefix}:{key}")
              for key, lbl in items[i:i + 2]] for i in range(0, len(items), 2)]
+    rows.append([_HOME_BUTTON])
     return InlineKeyboardMarkup(rows)
 
 
 def _ctype_keyboard() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup([[
-        InlineKeyboardButton("آموزشی", callback_data="ctype:tutorial"),
-        InlineKeyboardButton("خبری", callback_data="ctype:news"),
-    ]])
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("آموزشی", callback_data="ctype:tutorial"),
+         InlineKeyboardButton("خبری", callback_data="ctype:news")],
+        [_HOME_BUTTON],
+    ])
 
 
 def _quota_line(cl) -> str:
@@ -65,7 +76,10 @@ def _quota_line(cl) -> str:
 
 
 def _subscribe_markup() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup([[InlineKeyboardButton("فعال‌سازی اشتراک", url=CONTACT_URL)]])
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("فعال‌سازی اشتراک", url=CONTACT_URL)],
+        [_HOME_BUTTON],
+    ])
 
 
 def _main_menu_keyboard() -> InlineKeyboardMarkup:
@@ -152,6 +166,7 @@ def _settings_view(cl) -> tuple[str, InlineKeyboardMarkup]:
         [InlineKeyboardButton(
             "خاموش کردن ارسال روزانه" if cl["daily_enabled"] else "روشن کردن ارسال روزانه",
             callback_data="set:daily")],
+        [_HOME_BUTTON],
     ])
     return f"حوزه‌ی پیش‌فرض: {niche}\nارسال روزانه: {daily}\n\n{_quota_line(cl)}", kb
 
@@ -184,7 +199,8 @@ async def cmd_settings(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def cmd_articles(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text(_articles_view(update.effective_user.id))
+    await update.message.reply_text(_articles_view(update.effective_user.id),
+                                    reply_markup=_main_menu_keyboard())
 
 
 async def cmd_subscription(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
@@ -199,7 +215,8 @@ async def cmd_whoami(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     u = update.effective_user
     await update.message.reply_text(
         f"شناسه شما: {u.id}\nنام: {u.full_name}"
-        + (f"\nیوزرنیم: @{u.username}" if u.username else ""))
+        + (f"\nیوزرنیم: @{u.username}" if u.username else ""),
+        reply_markup=_home_markup())
 
 
 async def cmd_get_article(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
@@ -211,7 +228,8 @@ async def cmd_get_article(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> Non
         return
     row = bot_db.get_article(art_id)
     if not row or row["chat_id"] != chat_id or row["status"] != "done":
-        await update.message.reply_text("این مقاله پیدا نشد.")
+        await update.message.reply_text("این مقاله پیدا نشد.",
+                                        reply_markup=_main_menu_keyboard())
         return
     await _send_article(ctx, chat_id, row["title"], row["html"], row["seo_score"])
 
@@ -350,7 +368,16 @@ async def on_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     data = q.data or ""
     await q.answer()
 
-    if data == "menu:new":
+    if data == "menu:main":
+        # ویزاردِ نیمه‌کاره هم پاک می‌شود؛ وگرنه پیامِ متنیِ بعدی به‌عنوان
+        # کلیدواژه‌ی همان ویزاردِ رهاشده تفسیر می‌شود.
+        bot_db.set_state(chat_id, None)
+        cl = bot_db.get_or_create_client(chat_id)
+        await ctx.bot.send_message(
+            chat_id, f"منوی اصلی\n\n{_quota_line(cl)}",
+            reply_markup=_main_menu_keyboard())
+
+    elif data == "menu:new":
         text, kb = await _new_flow_view(update.effective_user)
         await ctx.bot.send_message(chat_id, text, reply_markup=kb)
 
@@ -360,7 +387,8 @@ async def on_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
         await ctx.bot.send_message(chat_id, text, reply_markup=kb)
 
     elif data == "menu:articles":
-        await ctx.bot.send_message(chat_id, _articles_view(chat_id))
+        await ctx.bot.send_message(chat_id, _articles_view(chat_id),
+                                   reply_markup=_main_menu_keyboard())
 
     elif data == "menu:subscription":
         cl = bot_db.get_or_create_client(chat_id)
@@ -383,7 +411,8 @@ async def on_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
         await q.edit_message_text(
             f"حوزه: {NICHES.get(sd.get('niche',''), '—')}\nنوع: {CTYPES.get(ct, ct)}\n\n"
             "حالا موضوع یا کلیدواژه را بنویسید.\n"
-            "اگر می‌خواهید خودمان انتخاب کنیم، بنویسید: -")
+            "اگر می‌خواهید خودمان انتخاب کنیم، بنویسید: -",
+            reply_markup=_home_markup())
 
     elif data.startswith("set:niche"):
         bot_db.set_state(chat_id, "await_default_niche", {})
@@ -394,7 +423,8 @@ async def on_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
         key = data.split(":", 1)[1]
         bot_db.update_client(chat_id, niche=key)
         bot_db.set_state(chat_id, None)
-        await q.edit_message_text(f"حوزه‌ی پیش‌فرض ثبت شد: {NICHES.get(key, key)}")
+        await q.edit_message_text(f"حوزه‌ی پیش‌فرض ثبت شد: {NICHES.get(key, key)}",
+                                  reply_markup=_main_menu_keyboard())
 
     elif data == "set:daily":
         cl = bot_db.get_client(chat_id)
@@ -402,13 +432,16 @@ async def on_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
         if new and not cl["niche"]:
             await q.edit_message_text(
                 "برای ارسال روزانه اول باید حوزه‌ی پیش‌فرض را مشخص کنید.",
-                reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("انتخاب حوزه", callback_data="set:niche")]]))
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("انتخاب حوزه", callback_data="set:niche")],
+                    [_HOME_BUTTON],
+                ]))
             return
         bot_db.update_client(chat_id, daily_enabled=new)
         await q.edit_message_text(
             "ارسال روزانه روشن شد. هر روز صبح یک مقاله دریافت می‌کنید."
-            if new else "ارسال روزانه خاموش شد.")
+            if new else "ارسال روزانه خاموش شد.",
+            reply_markup=_main_menu_keyboard())
 
 
 # ── پیامِ متنی (کلیدواژه‌ی ویزارد) ───────────────────────────────────────────
@@ -416,7 +449,8 @@ async def on_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_user.id
     state, sd = bot_db.get_state(chat_id)
     if state != "await_keyword":
-        await update.message.reply_text("برای تولید مقاله /new را بزنید.")
+        await update.message.reply_text("از منوی زیر انتخاب کنید:",
+                                        reply_markup=_main_menu_keyboard())
         return
 
     keyword = (update.message.text or "").strip()
@@ -508,7 +542,8 @@ async def _process(app: Application, article_id: int) -> None:
         try:
             await app.bot.send_message(
                 chat_id, f"متأسفانه تولید این مقاله انجام نشد.\n\n{e}\n\n"
-                         "سهمیه‌ی شما کسر نشد. لطفاً دوباره تلاش کنید: /new")
+                         "سهمیه‌ی شما کسر نشد. لطفاً دوباره تلاش کنید.",
+                reply_markup=_main_menu_keyboard())
         except Exception:  # noqa: BLE001
             logger.warning("اطلاع‌رسانیِ خطا نشد.")
 
@@ -525,7 +560,8 @@ async def _send_article(app_or_ctx, chat_id: int, title: str, html: str,
     doc.name = "article.html"
     await bot.send_document(
         chat_id, document=doc, filename=f"{_slug(title)}.html",
-        caption="متن کامل مقاله — برای خواندن باز کنید.")
+        caption="متن کامل مقاله — برای خواندن باز کنید.",
+        reply_markup=_main_menu_keyboard())
 
 
 def _slug(title: str) -> str:
