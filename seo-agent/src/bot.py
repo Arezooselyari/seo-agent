@@ -68,6 +68,16 @@ def _subscribe_markup() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup([[InlineKeyboardButton("فعال‌سازی اشتراک", url=CONTACT_URL)]])
 
 
+def _main_menu_keyboard() -> InlineKeyboardMarkup:
+    """دکمه‌های اصلی مستقیم زیر پیام — بدون نیاز به منوی گوشه‌ی تلگرام."""
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("📝 تولید مقاله‌ی تازه", callback_data="menu:new")],
+        [InlineKeyboardButton("⚙️ تنظیمات", callback_data="menu:settings"),
+         InlineKeyboardButton("📚 مقاله‌های من", callback_data="menu:articles")],
+        [InlineKeyboardButton("💳 وضعیت اشتراک", callback_data="menu:subscription")],
+    ])
+
+
 # مراحلِ واقعیِ خطِ تولید — درصدها با on_step در generation.py یکی‌اند
 _STAGES = [
     (10, "بررسی و گردآوری منابع"),
@@ -105,8 +115,8 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
         f"سلام {name}؛ خوش آمدید.\n\n"
         "این دستیارِ تولید محتوای سئوی شماست. حوزه و موضوع را مشخص می‌کنید و یک "
         "مقاله‌ی کامل با ارجاع به منابع معتبر برایتان نوشته می‌شود.\n\n"
-        f"{_quota_line(cl)}\n\n"
-        "برای شروع /new را بزنید.")
+        f"{_quota_line(cl)}",
+        reply_markup=_main_menu_keyboard())
 
 
 async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
@@ -117,29 +127,24 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
         "/articles — مقاله‌های من\n"
         "/subscription — وضعیت اشتراک\n\n"
         "تولید هر مقاله حدود دو تا سه دقیقه طول می‌کشد و نتیجه به‌صورت فایل "
-        "برایتان ارسال می‌شود.")
+        "برایتان ارسال می‌شود.",
+        reply_markup=_main_menu_keyboard())
 
 
-async def cmd_new(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
-    chat_id = update.effective_user.id
-    cl = bot_db.get_or_create_client(chat_id, update.effective_user.full_name or "",
-                                     update.effective_user.username or "")
+async def _new_flow_view(u) -> tuple[str, InlineKeyboardMarkup]:
+    """متن+دکمه‌ی شروعِ ویزاردِ تولید. هم از /new و هم از دکمه‌ی منو صدا زده می‌شود."""
+    chat_id = u.id
+    cl = bot_db.get_or_create_client(chat_id, u.full_name or "", u.username or "")
     left = cl["quota_total"] - cl["quota_used"]
     expired = bool(cl["period_end"]) and cl["period_end"] < _today()
     if left <= 0 or expired:
-        await update.message.reply_text(
-            "سهمیه‌ی شما تمام شده است.\n\nبرای تولید مقاله‌های بیشتر اشتراک را "
-            "فعال کنید.", reply_markup=_subscribe_markup())
-        return
-
+        return ("سهمیه‌ی شما تمام شده است.\n\nبرای تولید مقاله‌های بیشتر اشتراک را "
+                 "فعال کنید."), _subscribe_markup()
     bot_db.set_state(chat_id, "await_niche", {})
-    await update.message.reply_text("حوزه‌ی کاری‌تان را انتخاب کنید:",
-                                    reply_markup=_niche_keyboard())
+    return "حوزه‌ی کاری‌تان را انتخاب کنید:", _niche_keyboard()
 
 
-async def cmd_settings(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
-    chat_id = update.effective_user.id
-    cl = bot_db.get_or_create_client(chat_id)
+def _settings_view(cl) -> tuple[str, InlineKeyboardMarkup]:
     niche = NICHES.get(cl["niche"] or "", "انتخاب نشده")
     daily = "روشن" if cl["daily_enabled"] else "خاموش"
     kb = InlineKeyboardMarkup([
@@ -148,31 +153,45 @@ async def cmd_settings(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
             "خاموش کردن ارسال روزانه" if cl["daily_enabled"] else "روشن کردن ارسال روزانه",
             callback_data="set:daily")],
     ])
-    await update.message.reply_text(
-        f"حوزه‌ی پیش‌فرض: {niche}\nارسال روزانه: {daily}\n\n{_quota_line(cl)}",
-        reply_markup=kb)
+    return f"حوزه‌ی پیش‌فرض: {niche}\nارسال روزانه: {daily}\n\n{_quota_line(cl)}", kb
+
+
+def _articles_view(chat_id: int) -> str:
+    rows = bot_db.list_articles(chat_id, limit=10)
+    if not rows:
+        return "هنوز مقاله‌ای تولید نکرده‌اید. /new"
+    lines = [f"{_fa(i)}. {r['title']}  ({_fa(round(r['seo_score']))}٪) — /a{r['id']}"
+             for i, r in enumerate(rows, 1)]
+    return ("مقاله‌های شما:\n\n" + "\n".join(lines) +
+            "\n\nبرای دریافت دوباره‌ی هر مقاله، کدِ زیرش را بزنید.")
+
+
+def _subscription_view(cl, chat_id: int) -> tuple[str, InlineKeyboardMarkup]:
+    # شناسه لازم است تا مشتری بتواند برای فعال‌سازی اشتراک آن را اعلام کند
+    return f"{_quota_line(cl)}\n\nشناسه شما: {chat_id}", _subscribe_markup()
+
+
+async def cmd_new(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    text, kb = await _new_flow_view(update.effective_user)
+    await update.message.reply_text(text, reply_markup=kb)
+
+
+async def cmd_settings(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_user.id
+    cl = bot_db.get_or_create_client(chat_id)
+    text, kb = _settings_view(cl)
+    await update.message.reply_text(text, reply_markup=kb)
 
 
 async def cmd_articles(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
-    chat_id = update.effective_user.id
-    rows = bot_db.list_articles(chat_id, limit=10)
-    if not rows:
-        await update.message.reply_text("هنوز مقاله‌ای تولید نکرده‌اید. /new")
-        return
-    lines = [f"{_fa(i)}. {r['title']}  ({_fa(round(r['seo_score']))}٪) — /a{r['id']}"
-             for i, r in enumerate(rows, 1)]
-    await update.message.reply_text(
-        "مقاله‌های شما:\n\n" + "\n".join(lines) +
-        "\n\nبرای دریافت دوباره‌ی هر مقاله، کدِ زیرش را بزنید.")
+    await update.message.reply_text(_articles_view(update.effective_user.id))
 
 
 async def cmd_subscription(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_user.id
     cl = bot_db.get_or_create_client(chat_id)
-    # شناسه لازم است تا مشتری بتواند برای فعال‌سازی اشتراک آن را اعلام کند
-    await update.message.reply_text(
-        f"{_quota_line(cl)}\n\nشناسه شما: {chat_id}",
-        reply_markup=_subscribe_markup())
+    text, kb = _subscription_view(cl, chat_id)
+    await update.message.reply_text(text, reply_markup=kb)
 
 
 async def cmd_whoami(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
@@ -331,7 +350,24 @@ async def on_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     data = q.data or ""
     await q.answer()
 
-    if data.startswith("niche:"):
+    if data == "menu:new":
+        text, kb = await _new_flow_view(update.effective_user)
+        await ctx.bot.send_message(chat_id, text, reply_markup=kb)
+
+    elif data == "menu:settings":
+        cl = bot_db.get_or_create_client(chat_id)
+        text, kb = _settings_view(cl)
+        await ctx.bot.send_message(chat_id, text, reply_markup=kb)
+
+    elif data == "menu:articles":
+        await ctx.bot.send_message(chat_id, _articles_view(chat_id))
+
+    elif data == "menu:subscription":
+        cl = bot_db.get_or_create_client(chat_id)
+        text, kb = _subscription_view(cl, chat_id)
+        await ctx.bot.send_message(chat_id, text, reply_markup=kb)
+
+    elif data.startswith("niche:"):
         key = data.split(":", 1)[1]
         _, sd = bot_db.get_state(chat_id)
         sd["niche"] = key
