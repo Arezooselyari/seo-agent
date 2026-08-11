@@ -15,6 +15,7 @@ from contextlib import contextmanager
 from supabase import Client, create_client
 
 from .config import Secrets
+from .llm import call_with_retry, _is_retryable_network_error
 
 _client: Client | None = None
 
@@ -43,23 +44,33 @@ def connect(secrets: Secrets | None = None):
 
 
 def init_db(secrets: Secrets | None = None) -> None:
-    """بررسی می‌کند که جدول‌ها ساخته شده‌اند؛ اگر نه، خطای راهنما می‌دهد."""
+    """بررسی می‌کند که جدول‌ها ساخته شده‌اند؛ اگر نه، خطای راهنما می‌دهد.
+
+    قطعیِ موقتِ VPN/شبکه (که در این پروژه شناخته‌شده و متناوب است) با
+    `call_with_retry` تحمل می‌شود تا یک لحظه‌قطعی، اجرای کل پایپ‌لاین را
+    با پیامِ گمراه‌کننده‌ی «جدول‌ها موجود نیستند» نکشد.
+    """
     client = get_client(secrets)
-    try:
-        # چند جدول را تست کن
-        for table_name in ["sources", "topics", "articles"]:
-            try:
-                client.from_(table_name).select("id").limit(1).execute()
-                break
-            except Exception:  # noqa: BLE001
-                continue
-        else:
-            raise RuntimeError("هیچ جدولی در دسترس نیست.")
-    except Exception as e:  # noqa: BLE001
+    last_exc: Exception | None = None
+    for table_name in ["sources", "topics", "articles"]:
+        try:
+            call_with_retry(
+                lambda t=table_name: client.from_(t).select("id").limit(1).execute(),
+                retries=3,
+            )
+            return
+        except Exception as e:  # noqa: BLE001
+            last_exc = e
+            continue
+    if last_exc is not None and _is_retryable_network_error(last_exc):
         raise RuntimeError(
-            "جدول‌های Supabase در دسترس نیستند. migrations/001_init.sql را "
-            "در SQL Editor داشبورد Supabase اجرا کن."
-        ) from e
+            "اتصال به Supabase برقرار نشد (به‌نظر خطای شبکه/VPN است، نه نبودِ "
+            "جدول‌ها). VPN را چک کن و دوباره اجرا کن."
+        ) from last_exc
+    raise RuntimeError(
+        "جدول‌های Supabase در دسترس نیستند. migrations/001_init.sql را "
+        "در SQL Editor داشبورد Supabase اجرا کن."
+    ) from last_exc
 
 
 # --------------------------------------------------------------------------
