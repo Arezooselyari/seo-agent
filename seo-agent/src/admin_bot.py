@@ -223,8 +223,22 @@ async def on_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_admin(chat_id):
         await q.answer("دسترسی مجاز نیست.", show_alert=True)
         return
-    await q.answer()
     data = q.data or ""
+
+    # تاییدِ مقاله‌های سایتِ خودمان: تصمیم را اینجا اجرا نمی‌کنیم چون دیتابیسِ
+    # آن مقاله‌ها روی کامپیوترِ خانگی است. کلیک را در صف می‌گذاریم تا
+    # process_approvals محلی برش دارد (همان کاری که قبلاً getUpdates می‌کرد).
+    if data.startswith("approval_"):
+        try:
+            bot_db.store_relay(data, q.message.chat_id, q.message.message_id,
+                               q.message.text)
+            await q.answer("ثبت شد ✓ — تا چند دقیقه‌ی دیگر اعمال می‌شود")
+        except Exception:  # noqa: BLE001 — کلیکِ گم‌شده بدترین حالت است، نه کرش
+            logger.exception("ثبتِ کلیکِ تایید نشد.")
+            await q.answer("ثبت نشد — دوباره بزنید.", show_alert=True)
+        return
+
+    await q.answer()
 
     if data == "a:home":
         text, kb = _home_text(), _home_keyboard()

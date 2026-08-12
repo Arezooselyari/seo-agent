@@ -57,6 +57,20 @@ CREATE TABLE IF NOT EXISTS articles (
 );
 CREATE INDEX IF NOT EXISTS idx_articles_chat ON articles(chat_id, id DESC);
 CREATE INDEX IF NOT EXISTS idx_articles_status ON articles(status);
+-- کلیکِ تایید/ردِ مقاله‌های *سایتِ خودمان* که به باتِ مدیریت می‌رسد. تصمیم را
+-- اینجا نمی‌گیریم: دیتابیسِ آن مقاله‌ها روی همان کامپیوترِ خانگی است، پس فقط
+-- کلیک را نگه می‌داریم تا اسکریپتِ محلی برش دارد. با webhook دیگر getUpdates
+-- در دسترس نیست و این جدول جای آن صف را می‌گیرد.
+CREATE TABLE IF NOT EXISTS relay_updates (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at   TEXT    NOT NULL,
+    data         TEXT    NOT NULL,   -- callback_data خام
+    chat_id      INTEGER NOT NULL,
+    message_id   INTEGER NOT NULL,
+    message_text TEXT,
+    consumed_at  TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_relay_pending ON relay_updates(consumed_at, id);
 """
 
 
@@ -225,6 +239,40 @@ def list_clients(limit: int = 100) -> list[sqlite3.Row]:
     with conn() as c:
         return c.execute(
             "SELECT * FROM clients ORDER BY created_at DESC LIMIT ?", (limit,)).fetchall()
+
+
+# ── صفِ کلیک‌های تاییدِ مقاله‌های سایتِ خودمان ───────────────────────────────
+def store_relay(data: str, chat_id: int, message_id: int,
+                message_text: str | None) -> int:
+    with conn() as c:
+        cur = c.execute(
+            "INSERT INTO relay_updates(created_at, data, chat_id, message_id, "
+            "message_text) VALUES(datetime('now'),?,?,?,?)",
+            (data, chat_id, message_id, message_text))
+        return cur.lastrowid
+
+
+def pending_relay(limit: int = 50) -> list[sqlite3.Row]:
+    with conn() as c:
+        return c.execute(
+            "SELECT id, created_at, data, chat_id, message_id, message_text "
+            "FROM relay_updates WHERE consumed_at IS NULL ORDER BY id LIMIT ?",
+            (limit,)).fetchall()
+
+
+def ack_relay(ids: list[int]) -> int:
+    """کلیک‌های پردازش‌شده را علامت می‌زند. فقط پس از موفقیتِ پردازشِ محلی.
+
+    ردیف پاک نمی‌شود تا اگر تصمیمی گم شد بتوان ردّش را گرفت.
+    """
+    if not ids:
+        return 0
+    with conn() as c:
+        cur = c.execute(
+            f"UPDATE relay_updates SET consumed_at=datetime('now') "
+            f"WHERE consumed_at IS NULL AND id IN ({','.join('?' * len(ids))})",
+            [int(i) for i in ids])
+        return cur.rowcount
 
 
 def client_token_usage() -> dict[int, tuple[int, int, int]]:

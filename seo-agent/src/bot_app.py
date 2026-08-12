@@ -310,6 +310,30 @@ async def admin_setend(key: str = "", chat_id: int = Form(...), days: int = Form
     return RedirectResponse(f"/admin?key={key}", status_code=303)
 
 
+# ── صفِ کلیک‌های تاییدِ مقاله (برای اسکریپتِ محلی) ───────────────────────────
+# چرا اصلاً وجود دارد: با فعال‌شدنِ webhook روی توکنِ باتِ مالک، getUpdates
+# دیگر کار نمی‌کند؛ اسکریپتِ محلیِ process_approvals کلیک‌ها را از اینجا
+# برمی‌دارد. کلیدِ ادمین همان BOT_ADMIN_KEY است.
+@app.get("/relay/approvals")
+async def relay_list(key: str = "") -> JSONResponse:
+    if not _admin_ok(key):
+        return JSONResponse({"error": "forbidden"}, status_code=403)
+    rows = bot_db.pending_relay()
+    return JSONResponse({"items": [dict(r) for r in rows]})
+
+
+@app.post("/relay/approvals/ack")
+async def relay_ack(key: str = "", ids: str = Form(...)) -> JSONResponse:
+    """`ids` فهرستِ جداشده با «،» — فقط پس از پردازشِ موفقِ محلی صدا زده شود."""
+    if not _admin_ok(key):
+        return JSONResponse({"error": "forbidden"}, status_code=403)
+    try:
+        wanted = [int(x) for x in ids.split(",") if x.strip()]
+    except ValueError:
+        return JSONResponse({"error": "bad ids"}, status_code=400)
+    return JSONResponse({"acked": bot_db.ack_relay(wanted)})
+
+
 @app.post("/webhook-admin/{secret}")
 async def webhook_admin(secret: str, request: Request):
     if not SECRET or secret != SECRET:
