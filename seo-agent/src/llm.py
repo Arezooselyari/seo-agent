@@ -5,9 +5,36 @@
 """
 import json
 import re
+import threading
 
 from .config import PROMPTS_DIR, env, load_settings
 from . import db
+
+# شمارنده‌ی مصرفِ توکن به‌ازای هر «کارِ» در حال اجرا. thread-local است چون
+# باتِ مشتری چند مقاله را هم‌زمان در ThreadPoolExecutor تولید می‌کند و یک
+# شمارنده‌ی سراسری، مصرفِ مشتری‌ها را با هم قاطی می‌کرد.
+_usage_local = threading.local()
+
+
+def reset_usage() -> None:
+    """شروعِ شمارش برای کارِ جاری (در همین ترد)."""
+    _usage_local.tokens = [0, 0]
+
+
+def get_usage() -> tuple[int, int]:
+    """(ورودی، خروجی) از آخرین reset_usage در همین ترد."""
+    t = getattr(_usage_local, "tokens", None)
+    return (t[0], t[1]) if t else (0, 0)
+
+
+def _log_tokens(conn, model: str, step: str, usage) -> None:
+    """هم در token_log می‌نویسد، هم به شمارنده‌ی کارِ جاری اضافه می‌کند."""
+    db.log_tokens(conn, model, step, usage)
+    t = getattr(_usage_local, "tokens", None)
+    if t is not None:
+        t[0] += getattr(usage, "input_tokens", 0) or 0
+        t[1] += getattr(usage, "output_tokens", 0) or 0
+
 
 _client = None
 _gemini_ready = False
@@ -207,7 +234,7 @@ def ask(
     resp = client().messages.create(**kwargs)
 
     conn = db.connect()
-    db.log_tokens(conn, model, step, resp.usage)
+    _log_tokens(conn, model, step, resp.usage)
     conn.close()
 
     text = "".join(b.text for b in resp.content if b.type == "text")
@@ -245,7 +272,7 @@ def _ask_gemini(
     try:
         um = resp.usage_metadata
         conn = db.connect()
-        db.log_tokens(conn, model_name, step, type("U", (), {
+        _log_tokens(conn, model_name, step, type("U", (), {
             "input_tokens": um.prompt_token_count,
             "output_tokens": um.candidates_token_count,
             "cache_read_input_tokens": 0,
@@ -316,7 +343,7 @@ def _openai_chat(client, model_name, step, user_content, *,
     try:
         u = resp.usage
         conn = db.connect()
-        db.log_tokens(conn, model_name, step, type("U", (), {
+        _log_tokens(conn, model_name, step, type("U", (), {
             "input_tokens": u.prompt_tokens,
             "output_tokens": u.completion_tokens,
             "cache_read_input_tokens": 0,

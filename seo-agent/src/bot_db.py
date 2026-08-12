@@ -63,7 +63,9 @@ CREATE INDEX IF NOT EXISTS idx_articles_status ON articles(status);
 # ستون‌هایی که بعداً اضافه شده‌اند — `CREATE TABLE IF NOT EXISTS` آن‌ها را به
 # جدولِ از قبل موجود اضافه نمی‌کند، پس دستی مهاجرت می‌دهیم.
 _MIGRATIONS = {
-    "articles": {"msg_id": "INTEGER"},
+    # tokens_* برای گزارشِ مصرفِ هر مشتری در داشبوردِ مدیریتی. NULL یعنی
+    # مقاله‌ای که پیش از افزودنِ این ستون‌ها ساخته شده — نه «صفر مصرف».
+    "articles": {"msg_id": "INTEGER", "tokens_in": "INTEGER", "tokens_out": "INTEGER"},
     # آخرین یادآوریِ انقضایی که فرستاده شده، به‌شکلِ «<period_end>:<روزِ مانده>».
     # چون کلید شاملِ تاریخِ پایان است، تمدیدِ اشتراک خودبه‌خود اجازه‌ی یادآوریِ
     # دوره‌ی بعد را می‌دهد بدونِ اینکه لازم باشد چیزی پاک شود.
@@ -225,6 +227,55 @@ def list_clients(limit: int = 100) -> list[sqlite3.Row]:
             "SELECT * FROM clients ORDER BY created_at DESC LIMIT ?", (limit,)).fetchall()
 
 
+def client_token_usage() -> dict[int, tuple[int, int, int]]:
+    """{chat_id: (مقاله‌ی تمام‌شده، توکن ورودی، توکن خروجی)} — برای داشبورد.
+
+    فقط مقاله‌های `done` شمرده می‌شوند؛ کارِ شکست‌خورده سهمیه‌اش برگشته و
+    مصرفش هم نباید به پای مشتری نوشته شود.
+    """
+    with conn() as c:
+        rows = c.execute(
+            "SELECT chat_id, COUNT(*) n, "
+            "       COALESCE(SUM(tokens_in), 0) ti, COALESCE(SUM(tokens_out), 0) to_ "
+            "FROM articles WHERE status='done' GROUP BY chat_id").fetchall()
+    return {r["chat_id"]: (r["n"], r["ti"], r["to_"]) for r in rows}
+
+
+def stats() -> dict:
+    """شمارشِ کلی برای صفحه‌ی خلاصه‌ی داشبورد."""
+    with conn() as c:
+        row = c.execute(
+            "SELECT (SELECT COUNT(*) FROM clients) clients, "
+            "       (SELECT COUNT(*) FROM clients WHERE plan <> 'trial' "
+            "          AND period_end IS NOT NULL AND period_end <> '' "
+            "          AND period_end >= date('now')) active, "
+            "       (SELECT COUNT(*) FROM clients WHERE period_end IS NOT NULL "
+            "          AND period_end <> '' AND period_end < date('now')) expired, "
+            "       (SELECT COUNT(*) FROM articles WHERE status='done') done, "
+            "       (SELECT COUNT(*) FROM articles WHERE status='done' "
+            "          AND date(created_at)=date('now')) done_today, "
+            "       (SELECT COUNT(*) FROM articles WHERE status IN ('queued','running')) busy, "
+            "       (SELECT COUNT(*) FROM articles WHERE status='error') errors, "
+            "       (SELECT COALESCE(SUM(tokens_in), 0) FROM articles) ti, "
+            "       (SELECT COALESCE(SUM(tokens_out), 0) FROM articles) to_"
+        ).fetchone()
+    return dict(row)
+
+
+def last_article_at() -> str | None:
+    with conn() as c:
+        row = c.execute("SELECT MAX(created_at) t FROM articles "
+                        "WHERE status='done'").fetchone()
+    return row["t"] if row else None
+
+
+def recent_errors(limit: int = 5) -> list[sqlite3.Row]:
+    with conn() as c:
+        return c.execute(
+            "SELECT id, chat_id, created_at, keyword, error FROM articles "
+            "WHERE status='error' ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
+
+
 def list_clients_by_urgency(limit: int = 300) -> list[sqlite3.Row]:
     """برای داشبورد: نزدیک‌ترین‌به‌انقضا اول، بدونِ‌تاریخ (آزمایشی) آخر.
 
@@ -261,10 +312,12 @@ def mark_running(article_id: int) -> None:
         c.execute("UPDATE articles SET status='running' WHERE id=?", (article_id,))
 
 
-def finish_job(article_id: int, title: str, html: str, score: float) -> None:
+def finish_job(article_id: int, title: str, html: str, score: float,
+               tokens_in: int = 0, tokens_out: int = 0) -> None:
     with conn() as c:
-        c.execute("UPDATE articles SET status='done', title=?, html=?, seo_score=? "
-                  "WHERE id=?", (title, html, score, article_id))
+        c.execute("UPDATE articles SET status='done', title=?, html=?, seo_score=?, "
+                  "tokens_in=?, tokens_out=? WHERE id=?",
+                  (title, html, score, tokens_in, tokens_out, article_id))
 
 
 def fail_job(article_id: int, error: str) -> None:

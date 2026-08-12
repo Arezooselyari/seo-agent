@@ -33,6 +33,7 @@ from . import llm  # noqa: E402
 # خودمان (پروسه‌ی جدا) با تنظیماتِ خودش کار می‌کند.
 llm._settings["provider"] = os.environ.get("DEMO_PROVIDER", "openrouter")
 
+from . import admin_bot  # noqa: E402
 from . import bot as botmod  # noqa: E402
 from . import bot_db  # noqa: E402
 
@@ -44,7 +45,12 @@ TOKEN = (os.environ.get("TELEGRAM_BOT_TOKEN") or "").strip()
 SECRET = (os.environ.get("BOT_WEBHOOK_SECRET") or "").strip()
 BASE_URL = (os.environ.get("BOT_BASE_URL") or "").rstrip("/")
 
-_app = None          # telegram.ext.Application
+# باتِ مدیریت اختیاری است: بدونِ این توکن، سرویس دقیقاً مثلِ قبل فقط باتِ
+# مشتری را بالا می‌آورد.
+ADMIN_TOKEN = (os.environ.get("ADMIN_BOT_TOKEN") or "").strip()
+
+_app = None          # telegram.ext.Application — باتِ مشتری
+_admin_app = None    # telegram.ext.Application — باتِ مدیریت (اختیاری)
 _tasks: list = []
 
 
@@ -85,6 +91,33 @@ async def _expiry_loop(tg_app) -> None:
         await asyncio.sleep(3600)      # ساعتی یک بار کافی است
 
 
+async def _start_admin_bot() -> None:
+    """باتِ مدیریت را بالا می‌آورد. شکستش نباید باتِ مشتری را زمین بزند."""
+    global _admin_app
+    if not ADMIN_TOKEN:
+        logger.info("ADMIN_BOT_TOKEN تنظیم نشده — باتِ مدیریت غیرفعال است.")
+        return
+    if ADMIN_TOKEN == TOKEN:
+        # یک توکن نمی‌تواند دو webhook داشته باشد؛ دومی اولی را بی‌صدا می‌کُشد
+        logger.error("ADMIN_BOT_TOKEN با TELEGRAM_BOT_TOKEN یکی است — "
+                     "باتِ مدیریت بالا نیامد تا باتِ مشتری خراب نشود.")
+        return
+    try:
+        _admin_app = admin_bot.build_application(ADMIN_TOKEN)
+        await _admin_app.initialize()
+        await _admin_app.start()
+        await _admin_app.bot.set_my_commands(admin_bot.COMMANDS)
+        if BASE_URL and SECRET:
+            url = f"{BASE_URL}/webhook-admin/{SECRET}"
+            await _admin_app.bot.set_webhook(
+                url=url, drop_pending_updates=True,
+                allowed_updates=["message", "callback_query"])
+            logger.info("webhook باتِ مدیریت ثبت شد.")
+    except Exception:  # noqa: BLE001
+        logger.exception("باتِ مدیریت بالا نیامد — باتِ مشتری ادامه می‌دهد.")
+        _admin_app = None
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global _app, _tasks
@@ -106,6 +139,9 @@ async def lifespan(app: FastAPI):
     else:
         logger.warning("BOT_BASE_URL یا BOT_WEBHOOK_SECRET نیست — webhook ثبت نشد.")
 
+    botmod._customer_bot = _app.bot     # باتِ مدیریت از این برای خبردادن استفاده می‌کند
+    await _start_admin_bot()
+
     _tasks = await botmod.start_workers(_app)
     _tasks.append(asyncio.create_task(_daily_loop(_app)))
     _tasks.append(asyncio.create_task(_expiry_loop(_app)))
@@ -117,6 +153,9 @@ async def lifespan(app: FastAPI):
             t.cancel()
         await _app.stop()
         await _app.shutdown()
+        if _admin_app is not None:
+            await _admin_app.stop()
+            await _admin_app.shutdown()
 
 
 app = FastAPI(title="باتِ تولید محتوا", lifespan=lifespan)
@@ -269,6 +308,20 @@ async def admin_setend(key: str = "", chat_id: int = Form(...), days: int = Form
         return PlainTextResponse("forbidden", status_code=403)
     bot_db.set_period_end(chat_id, days)
     return RedirectResponse(f"/admin?key={key}", status_code=303)
+
+
+@app.post("/webhook-admin/{secret}")
+async def webhook_admin(secret: str, request: Request):
+    if not SECRET or secret != SECRET:
+        return PlainTextResponse("forbidden", status_code=403)
+    if _admin_app is None:
+        return PlainTextResponse("admin bot not enabled", status_code=503)
+    upd = Update.de_json(await request.json(), _admin_app.bot)
+    u = upd.effective_user
+    if u:
+        logger.info(f"آپدیتِ مدیریت از {u.id}")
+    await _admin_app.process_update(upd)
+    return PlainTextResponse("ok")
 
 
 @app.post("/webhook/{secret}")

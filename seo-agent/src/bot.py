@@ -18,7 +18,7 @@ from telegram.constants import ParseMode
 from telegram.ext import (Application, CallbackQueryHandler, CommandHandler,
                           ContextTypes, MessageHandler, filters)
 
-from . import bot_db, demo_render, generation
+from . import bot_db, demo_render, generation, llm
 from .generation import NICHES
 
 logger = logging.getLogger(__name__)
@@ -30,6 +30,11 @@ WORKERS = int(os.environ.get("BOT_WORKERS", "3"))
 
 _queue: asyncio.Queue | None = None
 _pool = ThreadPoolExecutor(max_workers=WORKERS, thread_name_prefix="gen")
+
+# باتِ مشتری، برای ماژول‌هایی که باید به مشتری خبر بدهند ولی خودشان با باتِ
+# دیگری کار می‌کنند (مثلاً باتِ مدیریت هنگام تمدیدِ اشتراک). در lifespan پر
+# می‌شود؛ None یعنی سرویس هنوز بالا نیامده.
+_customer_bot = None
 
 CTYPES = {"tutorial": "آموزشی", "news": "خبری"}
 
@@ -520,14 +525,20 @@ async def _process(app: Application, article_id: int) -> None:
         if msg_id:
             asyncio.run_coroutine_threadsafe(_edit(percent), loop)
 
+    def _generate_tracked():
+        """شمارنده‌ی توکن باید داخلِ همان تردِ تولید ست شود (thread-local)."""
+        llm.reset_usage()
+        payload = generation.generate(row["niche"], row["ctype"],
+                                      row["keyword"] or "", on_step)
+        return payload, llm.get_usage()
+
     try:
-        payload = await loop.run_in_executor(
-            _pool, generation.generate, row["niche"], row["ctype"],
-            row["keyword"] or "", on_step)
+        payload, (tok_in, tok_out) = await loop.run_in_executor(
+            _pool, _generate_tracked)
         html = demo_render.render_page(payload, paywall=False)
         title = payload.get("title_seo", "") or payload.get("h1", "")
         score = generation.seo_score(payload)
-        bot_db.finish_job(article_id, title, html, score)
+        bot_db.finish_job(article_id, title, html, score, tok_in, tok_out)
         if msg_id:      # نوارِ پیشرفت نیمه‌کاره نماند
             try:
                 await app.bot.edit_message_text(
