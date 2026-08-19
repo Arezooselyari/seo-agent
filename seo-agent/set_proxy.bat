@@ -19,7 +19,10 @@ if not defined PROXY set "PROXY=127.0.0.1:10808"
 set "HTTP_PROXY=http://%PROXY%"
 set "HTTPS_PROXY=http://%PROXY%"
 set "GRPC_PROXY=http://%PROXY%"
-set "NO_PROXY=localhost,127.0.0.1,::1,.local"
+REM سایتِ مقصدِ انتشار باید *بیرونِ* پروکسی بماند: میزبانِ ایرانی، ترافیکِ آمده از
+REM IPِ خارجیِ VPN را دور می‌اندازد. علامتش «Read timed out» موقعِ انتشار است، در
+REM حالی که همان آدرس بدونِ پروکسی ۲۰۰ می‌دهد. (اگر WP_URL عوض شد، اینجا را هم عوض کن.)
+set "NO_PROXY=localhost,127.0.0.1,::1,.local,sagharnazari.ir,www.sagharnazari.ir"
 
 REM ردِ تشخیصی: وقتی دوباره چیزی شکست، اول اینجا را نگاه کن.
 if exist logs echo [%date% %time%] proxy=%PROXY% >> logs\proxy.log
