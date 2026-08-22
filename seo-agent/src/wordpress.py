@@ -201,13 +201,22 @@ def publish_article(article_id: int, payload: dict, *,
 
 
 def publish_by_id(article_id: int, *, status: str | None = None,
-                  dry_run: bool = False) -> dict:
+                  dry_run: bool = False, force: bool = False) -> dict:
     """مقاله را از agent.db می‌خواند، منتشر می‌کند و در صورتِ موفقیت DB را علامت می‌زند."""
     conn = db.connect()
     try:
         art = db.get_article(conn, article_id)
         if not art:
             raise WPError(f"مقاله #{article_id} در دیتابیس نیست.")
+        # هر بار POST به /posts یک پستِ *تازه* می‌سازد؛ وردپرس با پسوندِ ‎-2/-3 به slug
+        # جلوی خطا را می‌گیرد ولی نسخه‌ی تکراری روی سایت زنده می‌ماند — که برای سئو
+        # دقیقاً همان چیزی است که نباید بشود. پس انتشارِ دوباره باید صریح خواسته شود.
+        if not dry_run and not force and art.get("published_at"):
+            raise WPError(
+                f"مقاله #{article_id} قبلاً در {art['published_at']} منتشر شده"
+                f"{' — ' + art['wp_post_url'] if art.get('wp_post_url') else ''}. "
+                "برای ساختِ نسخه‌ی دوم --force بده، وگرنه پستِ موجود را ویرایش کن."
+            )
         payload = art["payload"]
         if dry_run:
             ok, cfg_msg = check_connection()  # اعتبارِ رمز را جدا گزارش کن (غیرمسدودکننده)
@@ -219,6 +228,7 @@ def publish_by_id(article_id: int, *, status: str | None = None,
                 "title": payload.get("title_seo"),
                 "slug": payload.get("slug"),
                 "status": status or load_settings().get("publish", {}).get("default_status"),
+                "already_published": art.get("published_at"),
                 "featured_image": bool(payload.get("featured_image_url")),
                 "body_chars": len(body),
                 "markers_remaining": body.count("[["),
@@ -271,7 +281,7 @@ def main() -> None:
         sys.exit(0 if ok else 1)
     ids = [a for a in args if a.isdigit()]
     if not ids:
-        print("استفاده: python -m src.wordpress --check | <article_id> [--dry-run] [--status draft|publish]")
+        print("استفاده: python -m src.wordpress --check | <article_id> [--dry-run] [--force] [--status draft|publish]")
         sys.exit(2)
     status = None
     if "--status" in args:
@@ -280,7 +290,8 @@ def main() -> None:
             status = args[i + 1]
     dry = "--dry-run" in args
     try:
-        result = publish_by_id(int(ids[0]), status=status, dry_run=dry)
+        result = publish_by_id(int(ids[0]), status=status, dry_run=dry,
+                               force="--force" in args)
         print(result)
         sys.exit(0)
     except WPError as e:
