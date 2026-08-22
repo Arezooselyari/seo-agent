@@ -130,6 +130,31 @@ def _upload_media(session: requests.Session, api: str, auth: HTTPBasicAuth,
         return None
 
 
+def _find_live_post_by_slug(session: requests.Session, api: str,
+                            auth: HTTPBasicAuth, slug: str) -> dict | None:
+    """پستِ زنده‌ای با همین slug را پیدا می‌کند (سطلِ زباله عمداً کنار گذاشته می‌شود).
+
+    اگر انتشارِ قبلی پست را ساخته باشد ولی قبل از ثبت در DB خطا خورده باشد، تنها
+    ردِ آن روی خودِ وردپرس است — نه در agent.db. بدونِ این جست‌وجو، تلاشِ بعدی
+    نسخه‌ی دومی با پسوندِ ‎-2 می‌سازد. پست‌های trash نادیده گرفته می‌شوند چون
+    برداشتنشان تصمیمِ آگاهانه‌ی کاربر بوده و نباید دوباره زنده شوند.
+    """
+    if not slug:
+        return None
+    try:
+        r = session.get(f"{api}/posts", auth=auth, timeout=30, params={
+            "slug": slug, "context": "edit", "per_page": 10,
+            "status": "publish,draft,pending,future,private",
+        })
+        if r.status_code != 200:
+            return None
+        hits = r.json()
+        return hits[0] if hits else None
+    except Exception as e:                       # جست‌وجو نباید مسیرِ انتشار را بشکند
+        logger.warning(f"wordpress: جست‌وجوی slug نشد ({e}) — بدونِ آن ادامه می‌دهم.")
+        return None
+
+
 def publish_article(article_id: int, payload: dict, *,
                     status: str | None = None,
                     category_ids: list[int] | None = None) -> dict:
@@ -154,9 +179,18 @@ def publish_article(article_id: int, payload: dict, *,
 
     session = requests.Session()
 
-    # ۱) عکسِ شاخص
+    # ۰) آیا پستی با همین slug از تلاشِ قبلی زنده مانده؟ اگر آره ویرایشش کن، نساز.
+    existing = _find_live_post_by_slug(session, api, auth, payload.get("slug", ""))
+    if existing:
+        logger.info(f"wordpress: پستِ موجود با همین slug پیدا شد "
+                    f"(#{existing['id']}) — به‌جای ساختِ نسخه‌ی دوم، همان به‌روز می‌شود.")
+
+    # ۱) عکسِ شاخص — اگر پستِ موجود قبلاً عکس دارد، دوباره آپلود نکن
     featured_media = None
     fimg = payload.get("featured_image_url")
+    if existing and existing.get("featured_media"):
+        featured_media = existing["featured_media"]
+        fimg = None
     if fimg:
         slug = payload.get("slug") or f"article-{article_id}"
         media = _upload_media(session, api, auth, fimg,
@@ -180,12 +214,15 @@ def publish_article(article_id: int, payload: dict, *,
     if category_ids:
         post["categories"] = category_ids
 
-    r = session.post(f"{api}/posts", auth=auth, json=post, timeout=60)
+    endpoint = f"{api}/posts/{existing['id']}" if existing else f"{api}/posts"
+    verb = "به‌روز شد" if existing else "ساخته شد"
+    r = session.post(endpoint, auth=auth, json=post, timeout=60)
     if r.status_code not in (200, 201):
-        raise WPError(f"ساختِ پست نشد ({r.status_code}): {r.text[:240]}")
+        raise WPError(f"{'به‌روزرسانیِ' if existing else 'ساختِ'} پست نشد "
+                      f"({r.status_code}): {r.text[:240]}")
     data = r.json()
     post_id, url = data.get("id"), data.get("link")
-    logger.info(f"wordpress: پست #{post_id} ساخته شد ({status}) — {url}")
+    logger.info(f"wordpress: پست #{post_id} {verb} ({status}) — {url}")
 
     # ۳) فوکوس‌کیوردِ RankMath (best-effort — اگر ثبت‌نشده باشد نادیده گرفته می‌شود)
     tk = payload.get("target_keywords") or {}
@@ -215,7 +252,7 @@ def publish_by_id(article_id: int, *, status: str | None = None,
             raise WPError(
                 f"مقاله #{article_id} قبلاً در {art['published_at']} منتشر شده"
                 f"{' — ' + art['wp_post_url'] if art.get('wp_post_url') else ''}. "
-                "برای ساختِ نسخه‌ی دوم --force بده، وگرنه پستِ موجود را ویرایش کن."
+                "برای انتشارِ دوباره --force بده (پستِ همان slug ویرایش می‌شود، نه تکرار)."
             )
         payload = art["payload"]
         if dry_run:
