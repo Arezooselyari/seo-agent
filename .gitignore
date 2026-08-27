@@ -1,9 +1,14 @@
 # secrets — never commit
+# نکته: الگوهای بدونِ ‎/ در هر پوشه‌ای مطابقت می‌کنند، پس زیرپوشه‌ها هم پوشش دارند.
 .env
 **/.env
 botsecret.txt
 botdomain.txt
 botadminkey.txt
+adminkey.txt
+domain.txt
+*secret*.txt
+*adminkey*.txt
 _backups/
 
 # python

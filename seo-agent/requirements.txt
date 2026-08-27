@@ -10,5 +10,13 @@ python-dotenv>=1.0.0
 # دموی کلاینت (src/client_demo.py) — سرو وب و کلاینت OpenRouter
 fastapi>=0.115.0
 uvicorn>=0.32.0
-openai>=1.50.0
+openai>=1.50.0            # مسیرِ فعلی: provider=openrouter از همین SDK استفاده می‌کند
 python-multipart>=0.0.9   # پارسِ فرم‌های POST — داشبوردِ مدیریتی در bot_app.py
+
+# provider=gemini — در llm.py با importِ تنبل صدا می‌شود، پس تا وقتی provider
+# «openrouter» است نبودش خطا نمی‌دهد و روی VPS هم بی‌سروصدا کار می‌کند تا لحظه‌ای
+# که provider را عوض کنی. برای همین اینجا صریح آمده.
+google-generativeai>=0.8.0
+
+# src/web_server.py — روی مسیرِ اجرای روزانه نیست، ولی بدونِ این importش می‌شکند.
+flask>=3.0.0
