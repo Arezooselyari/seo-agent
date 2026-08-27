@@ -10,7 +10,7 @@ tools:
 - name: Gemini
   keyword_seed: آموزش Gemini
   official_url: https://gemini.google.com/
-  usage_count: 0
+  usage_count: 1
 - name: Perplexity
   keyword_seed: آموزش Perplexity
   official_url: https://www.perplexity.ai/
@@ -18,11 +18,11 @@ tools:
 - name: Midjourney
   keyword_seed: آموزش Midjourney
   official_url: https://www.midjourney.com/
-  usage_count: 0
+  usage_count: 1
 - name: Notion AI
   keyword_seed: آموزش Notion AI
   official_url: https://www.notion.so/product/ai
-  usage_count: 0
+  usage_count: 1
 - name: GitHub Copilot
   keyword_seed: آموزش GitHub Copilot
   official_url: https://github.com/features/copilot

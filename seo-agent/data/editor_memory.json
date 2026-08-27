@@ -1,31 +1,31 @@
 {
   "counts": {
-    "robotic_language": 189,
+    "robotic_language": 194,
     "missing_visuals": 2,
-    "low_eeat": 389,
-    "low_information_gain": 203,
-    "unnatural_keyword": 143,
-    "ai_cliche": 467,
-    "missing_link": 69,
-    "generic_example": 62,
-    "repetitive_sentence": 85,
-    "weak_title": 51,
+    "low_eeat": 467,
+    "low_information_gain": 236,
+    "unnatural_keyword": 181,
+    "ai_cliche": 538,
+    "missing_link": 85,
+    "generic_example": 74,
+    "repetitive_sentence": 87,
+    "weak_title": 57,
     "forbidden_phrases": 19,
-    "faq_duplicate": 35,
-    "weak_meta": 90,
-    "weak_cta": 112,
+    "faq_duplicate": 38,
+    "weak_meta": 105,
+    "weak_cta": 136,
     "echo_heading": 22,
-    "incomplete_sentence": 10,
+    "incomplete_sentence": 12,
     "commercial_tone": 1,
-    "keyword_missing": 42,
+    "keyword_missing": 60,
     "other": 1,
     "weak_hook": 22,
-    "poor_scannability": 26,
+    "poor_scannability": 27,
     "paragraph_too_long": 28,
     "structural_deviation": 1,
     "missing_image_suggestion": 7,
     "specific_product_mention": 2,
-    "missing_local_example": 74,
+    "missing_local_example": 81,
     "structure": 3,
     "faq_count_exceeded": 3,
     "faq_count_mismatch": 4,
@@ -36,13 +36,13 @@
     "unsourced_claim": 10,
     "weak_internal_link": 6,
     "structural_issue": 4,
-    "explicit_dates": 8,
+    "explicit_dates": 15,
     "missing_h1": 3,
     "internal_metadata": 2,
     "repetitive_link": 1,
     "weak_internal_linking": 1,
     "missing_image_alt": 7,
-    "keyword_stuffing": 31,
+    "keyword_stuffing": 34,
     "unnatural_internal_link_format": 1,
     "missing_metadata": 1,
     "missing_images": 1,
@@ -86,10 +86,10 @@
     "missing_implementation_details": 1,
     "technical_accuracy": 3,
     "faq_weak_answer": 1,
-    "unsupported_soft_claim": 48,
+    "unsupported_soft_claim": 50,
     "technical_detail_missing": 1,
-    "soft_quantitative_claim": 1,
-    "alt_text_fa": 16,
+    "soft_quantitative_claim": 4,
+    "alt_text_fa": 19,
     "inconsistent_title": 1,
     "technical_oversimplification": 1,
     "missing_technical_detail": 1,
@@ -97,7 +97,11 @@
     "article_too_short": 2,
     "insufficient_internal_links": 1,
     "article_length": 1,
-    "poor_data_presentation": 2
+    "poor_data_presentation": 2,
+    "title_meta_length": 3,
+    "max_one_question_per_section": 6,
+    "no_forbidden_phrases": 1,
+    "local_angle_used": 1
   },
   "examples": {
     "robotic_language": [
@@ -444,11 +448,14 @@
       "امنیت داده و رعایت استانداردهای حریم خصوصی نیز از جمله ملاحظات مهم در این اتصالات است."
     ],
     "soft_quantitative_claim": [
-      "به سرعت از نقطه قطع‌شده مکالمه ادامه دهد"
+      "به سرعت از نقطه قطع‌شده مکالمه ادامه دهد",
+      "زمان زیادی از کسب‌وکارها می‌گیرد.",
+      "به طور منظم به‌روزرسانی می‌کند."
     ],
     "alt_text_fa": [
       "Smartphone showing OpenAI ChatGPT in focus, on top of an open book, highlighting technology and learning.",
-      "alt=\"Smartphone showing OpenAI ChatGPT in focus, on top of an open book, highlighting technology and learning.\""
+      "alt=\"Smartphone showing OpenAI ChatGPT in focus, on top of an open book, highlighting technology and learning.\"",
+      "Bold 'Zero Trust' text against a textured black background, symbolizing cybersecurity."
     ],
     "inconsistent_title": [
       "H1: \"نرم‌افزار پیش‌بینی فروش با هوش مصنوعی: راهنمای کامل\" | SEO Title: \"نرم‌افزار پیش‌بینی فروش مبتنی بر هوش مصنوعی: راه"
@@ -475,7 +482,21 @@
     "poor_data_presentation": [
       "کمیسیون خدمات عمومی جورجیا (Georgia PSC) سال گذشته قانونی را تصویب کرد",
       "هزینه‌های سرمایه‌ای (capital expenditures) آلفابت برای سال جاری بین ۱۸۰ تا ۱۹۰ میلیارد دلار باشد"
+    ],
+    "title_meta_length": [
+      "با آموزش ChatGPT، قابلیت‌ها و نحوه شروع به کار این مدل زبان بزرگ را بیاموزید. برای ارتقای مهارت‌های روزمره خود همین حالا"
+    ],
+    "max_one_question_per_section": [
+      "فرض کنید در یک شرکت پخش مواد غذایی، قصد دارید داده‌های فروش ماهانه را تحلیل کنید، یا در یک کلینیک دندانپزشکی، فرایند پشت",
+      "چگونه می‌توانیم با ChatGPT شروع به کار کنیم؟ یک راهنمای عملی",
+      "فعال‌سازی و به‌کارگیری Notion AI شامل چند مرحله‌ی ساده است که به شما امکان می‌دهد از قابلیت‌های هوش مصنوعی در فضای کاری "
+    ],
+    "no_forbidden_phrases": [
+      "تصور کنید جلسه‌ای طولانی داشته‌اید و نیاز به خلاصه‌ای از نکات کلیدی و اقدامات لازم دارید."
+    ],
+    "local_angle_used": [
+      "هیچ مثال یا اشاره‌ای به کسب‌وکارهای ایرانی یا شرایط بومی وجود ندارد."
     ]
   },
-  "updated_at": "2026-08-06T07:52:08.824708+00:00"
+  "updated_at": "2026-08-24T09:34:25.272176+00:00"
 }
