@@ -297,6 +297,11 @@ def _ask_gemini(
     return _extract_json(text) if json_output else text
 
 
+# مدل‌هایی که خاموش‌کردنِ استدلال را رد کرده‌اند. یک بار خطا می‌گیریم، بعد یادمان
+# می‌ماند — وگرنه هر فراخوانیِ بعدی هم یک درخواستِ شکست‌خورده هدر می‌دهد.
+_reasoning_required: set[str] = set()
+
+
 def _openai_chat(client, model_name, step, user_content, *,
                  system=None, json_output=True, max_tokens=4096, temperature=0,
                  extra_body=None):
@@ -336,6 +341,15 @@ def _openai_chat(client, model_name, step, user_content, *,
             resp = client.chat.completions.create(**kwargs)
         elif "max_completion_tokens" in msg or "max_tokens" in msg:
             kwargs["max_tokens"] = kwargs.pop("max_completion_tokens")
+            resp = client.chat.completions.create(**kwargs)
+        elif "reasoning" in msg and ("mandatory" in msg or "cannot be disabled" in msg):
+            # مدل‌های تفکری (gemini-3.1-pro) خاموش‌کردنِ استدلال را نمی‌پذیرند و ۴۰۰
+            # می‌دهند. کمترین استدلالِ ممکن را می‌خواهیم — نه پیش‌فرضِ مدل — چون
+            # توکنِ استدلال از همان سقفِ خروجی خرج می‌شود و مرحله‌ی نگارش را
+            # truncate می‌کند. سقف هم بالا می‌رود تا جا برای هر دو باشد.
+            _reasoning_required.add(model_name)
+            kwargs["extra_body"] = {"reasoning": {"effort": "low"}}
+            kwargs["max_completion_tokens"] = min(max_out * 2, 64000)
             resp = client.chat.completions.create(**kwargs)
         else:
             raise
@@ -380,7 +394,13 @@ def _ask_openrouter(step, user_content, *, model_tier="cheap", system=None,
     مقاله به سقفِ ۲۰۰۰۰ می‌خورد و truncate می‌شد. برای روشن‌کردن: OPENROUTER_REASONING=1
     """
     reasoning_on = (env("OPENROUTER_REASONING") or "").strip().lower() in ("1", "true", "yes")
-    return _openai_chat(_openrouter(), _settings["openrouter_models"][model_tier], step, user_content,
+    model_name = _settings["openrouter_models"][model_tier]
+    if reasoning_on:
+        extra = None                                  # استدلالِ کاملِ پیش‌فرضِ مدل
+    elif model_name in _reasoning_required:
+        extra = {"reasoning": {"effort": "low"}}      # اجباری است → کمترین مقدار
+    else:
+        extra = {"reasoning": {"enabled": False}}
+    return _openai_chat(_openrouter(), model_name, step, user_content,
                         system=system, json_output=json_output, max_tokens=max_tokens,
-                        temperature=temperature,
-                        extra_body=None if reasoning_on else {"reasoning": {"enabled": False}})
+                        temperature=temperature, extra_body=extra)
