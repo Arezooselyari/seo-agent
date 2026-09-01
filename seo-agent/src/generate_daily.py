@@ -205,6 +205,48 @@ def _collect_for_type(topic: str, content_type: str, official_url: str | None,
     return articles
 
 
+_SHORT_KEYWORD_PROMPT = """از موضوعِ زیر یک «کیوردِ اصلیِ سئو» بساز.
+
+قوانین:
+- **۲ تا ۴ کلمه**، همان‌طور که مردم واقعاً در گوگل جستجو می‌کنند.
+- جمله‌ی توصیفی نده. نامِ خاص را فقط اگر خودش پرجستجوست نگه دار.
+- مثال: از «شکایت سونی موزیک و وارنر از Anthropic بر سر نقض کپی‌رایت» →
+  «کپی‌رایت هوش مصنوعی».
+
+فقط JSON برگردان: {{"keyword": "کیوردِ کوتاه"}}
+
+موضوع: {topic}"""
+
+
+def derive_keyword_from_topic(topic: str) -> str:
+    """کیوردِ کوتاهِ قابلِ‌جستجو از یک موضوعِ توصیفی.
+
+    چرا لازم است: `keyword_free.research_topic` هرچه را seed بگیرد عیناً
+    primary می‌کند. اگر موضوعِ بلند مستقیم seed شود، کیورد یک جمله‌ی ۱۵ کلمه‌ای
+    می‌شود و چک‌لیستِ سئو سه قانون را رد می‌کند (کیورد در H2، در جمع‌بندی، و
+    پوششِ LSI) — چون هیچ H2ای یک جمله‌ی کامل را در خود ندارد.
+    """
+    topic = (topic or "").strip()
+    words = [w for w in topic.split() if w]
+    if len(words) <= 4:
+        return topic                      # از قبل کوتاه است
+    try:
+        result = llm.ask(
+            step="keyword_shorten",
+            user_content=_SHORT_KEYWORD_PROMPT.format(topic=topic),
+            model_tier="cheap", json_output=True, max_tokens=128,
+        )
+        kw = (result.get("keyword") or "").strip()
+        if kw and len(kw.split()) <= 6:
+            logger.info(f"کیوردِ کوتاه‌شده: «{topic}» → «{kw}»")
+            return kw
+    except Exception as e:  # noqa: BLE001 — نبودِ کیوردِ خوب نباید تولید را بکُشد
+        logger.warning(f"کوتاه‌سازیِ کیورد نشد ({e}) — به سه کلمه‌ی نخست برمی‌گردیم.")
+    # fallback قطعی: سه کلمه‌ی محتواییِ نخست
+    sig = [w for w in words if len(w) > 1][:3]
+    return " ".join(sig) or topic
+
+
 def generate_one(topic: str | None = None, keyword: str | None = None) -> int | None:
     """یک مقاله را تولید و به‌عنوان pending ذخیره می‌کند. Returns article_id یا None."""
     content_type, tool_name, official_url = "news", None, None
@@ -216,7 +258,8 @@ def generate_one(topic: str | None = None, keyword: str | None = None) -> int | 
         content_type = picked.get("content_type", "news")
         tool_name = picked.get("tool_name")
         official_url = picked.get("official_url")
-    keyword = keyword or topic
+    # موضوعِ دستی معمولاً کیورد ندارد؛ کلِ جمله را کیورد نکن (باگِ مقاله‌ی #۵۱)
+    keyword = keyword or derive_keyword_from_topic(topic)
     logger.info(f"شروعِ تولید برای موضوع: «{topic}» (کیورد: «{keyword}»، نوع: «{content_type}»)")
 
     articles = _collect_for_type(topic, content_type, official_url, tool_name)
