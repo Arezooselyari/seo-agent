@@ -15,6 +15,7 @@ analyzer.analyze (+fact_research) → writer.write_article → db.save_article(s
 """
 import json
 import logging
+import re
 import sys
 
 from . import analyzer, collector, db, llm, writer
@@ -30,9 +31,15 @@ _TOPIC_PROMPT = """از میانِ عناوینِ تازه‌ی زیر (فیده
 - علاوه بر موضوع، یک «کیوردِ اصلی» بده: یک عبارتِ **کوتاهِ ۲ تا ۴ کلمه‌ای** که مردم واقعاً
   در گوگل جستجو می‌کنند (نه جمله‌ی توصیفیِ بلند). مثال: «امنیت هوش مصنوعی»، «چت‌بات فروش».
 - فقط JSON برگردان: {{"topic": "موضوعِ فارسی", "keyword": "کیوردِ کوتاهِ قابلِ‌جستجو", "why": "یک جمله دلیل"}}
-
+{avoid}
 عناوینِ تازه:
 {listing}"""
+
+_AVOID_BLOCK = """
+**این کیوردها قبلاً پوشش داده شده‌اند — کیوردِ تازه‌ای بده که با هیچ‌کدام یکی نباشد**
+(دو مقاله روی یک کیورد با هم رقابت می‌کنند و رتبه‌ی هر دو را پایین می‌آورند):
+{keywords}
+"""
 
 
 def derive_topic_from_rss(candidates: list[dict]) -> dict | None:
@@ -41,10 +48,14 @@ def derive_topic_from_rss(candidates: list[dict]) -> dict | None:
     listing = "\n".join(f"{i}. {c['title']}" for i, c in enumerate(candidates[:limit]) if c.get("title"))
     if not listing.strip():
         return None
+    # کیوردهای پوشش‌داده‌شده به پرامپت داده می‌شوند تا انتخابگر سراغشان نرود
+    covered = recent_keywords()
+    avoid = _AVOID_BLOCK.format(
+        keywords="\n".join(f"- {k}" for k in dict.fromkeys(covered))) if covered else ""
     try:
         result = llm.ask(
             step="topic_selection",
-            user_content=_TOPIC_PROMPT.format(listing=listing),
+            user_content=_TOPIC_PROMPT.format(listing=listing, avoid=avoid),
             model_tier="cheap",
             json_output=True,
             max_tokens=512,
@@ -58,6 +69,51 @@ def derive_topic_from_rss(candidates: list[dict]) -> dict | None:
     if topic:
         logger.info(f"موضوعِ RSS: «{topic}» | کیورد: «{keyword}» — {result.get('why', '')}")
         return {"topic": topic, "keyword": keyword}
+    return None
+
+
+def _norm_kw(s: str) -> str:
+    """نرمال‌سازی برای مقایسه‌ی کیورد: عربی/فارسی، نیم‌فاصله، فاصله‌ی اضافه."""
+    s = (s or "").replace("ي", "ی").replace("ك", "ک").replace("‌", " ")
+    return re.sub(r"\s+", " ", s).strip().lower()
+
+
+def recent_keywords(limit: int = 40) -> list[str]:
+    """کیوردِ اصلیِ مقاله‌های اخیر.
+
+    چرا لازم است: انتخابگرِ موضوع هیچ حافظه‌ای ندارد و وقتی خبرهای مشابه
+    می‌آیند دوباره همان کیورد را می‌سازد — چهار مقاله روی «چت‌بات هوش مصنوعی
+    برای رستوران» و دو مقاله روی «هوش مصنوعی کاربردی» در یک روز، نتیجه‌ی همین
+    بود. دو مقاله روی یک کیورد در گوگل با هم رقابت می‌کنند (cannibalization).
+    """
+    conn = db.connect()
+    try:
+        rows = conn.execute(
+            "SELECT payload FROM articles ORDER BY id DESC LIMIT ?", (limit,)
+        ).fetchall()
+    finally:
+        conn.close()
+    out = []
+    for row in rows:
+        payload_json = row[0]
+        try:
+            tk = json.loads(payload_json).get("target_keywords") or {}
+        except Exception:  # noqa: BLE001 — payloadِ خراب نباید انتخابِ موضوع را بکُشد
+            continue
+        kw = (tk.get("primary_fa") or tk.get("primary") or "").strip()
+        if kw:
+            out.append(kw)
+    return out
+
+
+def is_duplicate_keyword(keyword: str, limit: int = 40) -> str | None:
+    """اگر این کیورد بینِ مقاله‌های اخیر باشد، همان را برمی‌گرداند؛ وگرنه None."""
+    target = _norm_kw(keyword)
+    if not target:
+        return None
+    for kw in recent_keywords(limit):
+        if _norm_kw(kw) == target:
+            return kw
     return None
 
 
@@ -260,6 +316,17 @@ def generate_one(topic: str | None = None, keyword: str | None = None) -> int | 
         official_url = picked.get("official_url")
     # موضوعِ دستی معمولاً کیورد ندارد؛ کلِ جمله را کیورد نکن (باگِ مقاله‌ی #۵۱)
     keyword = keyword or derive_keyword_from_topic(topic)
+
+    # تورِ ایمنی: پرامپت به انتخابگر می‌گوید سراغِ کیوردهای پوشش‌داده‌شده نرود،
+    # ولی مدل گاهی نادیده می‌گیرد. مقاله‌ی دومِ یک کیورد در گوگل با اولی رقابت
+    # می‌کند و رتبه‌ی هر دو را پایین می‌آورد؛ پس تولید نکردن بهتر از تولیدِ رقیب است.
+    dup = is_duplicate_keyword(keyword)
+    if dup:
+        logger.warning(
+            f"⛔ کیوردِ «{keyword}» قبلاً پوشش داده شده («{dup}») — تولید انجام نشد "
+            "تا دو مقاله روی یک کیورد با هم رقابت نکنند.")
+        return None
+
     logger.info(f"شروعِ تولید برای موضوع: «{topic}» (کیورد: «{keyword}»، نوع: «{content_type}»)")
 
     articles = _collect_for_type(topic, content_type, official_url, tool_name)
