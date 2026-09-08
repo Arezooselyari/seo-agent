@@ -94,7 +94,7 @@ def generate(niche: str, ctype: str, keyword: str,
     except Exception as e:  # noqa: BLE001
         logger.warning(f"افزودنِ منابع نشد: {e}")
     try:
-        payload = images.add_images_to_payload(payload, inline=1)
+        payload = images.add_images_to_payload(payload)
     except Exception as e:  # noqa: BLE001
         logger.warning(f"افزودنِ تصویر نشد: {e}")
 

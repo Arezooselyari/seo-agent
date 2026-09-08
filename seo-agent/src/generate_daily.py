@@ -371,7 +371,7 @@ def generate_one(topic: str | None = None, keyword: str | None = None) -> int | 
     # تصاویرِ استوکِ رایگان (شاخص + inline) — قبل از ذخیره تا در تلگرام هم دیده شوند
     try:
         from . import images
-        payload = images.add_images_to_payload(payload, inline=1)
+        payload = images.add_images_to_payload(payload)
     except Exception as e:
         logger.warning(f"افزودنِ تصاویر نشد ({e}) — مقاله بدونِ تصویر ادامه می‌یابد.")
 

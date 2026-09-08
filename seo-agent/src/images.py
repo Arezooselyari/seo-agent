@@ -66,14 +66,49 @@ def search_images(query: str, count: int = 1, orientation: str = "landscape") ->
         return []
 
 
-def add_images_to_payload(payload: dict, inline: int = 1) -> dict:
-    """تصویرِ شاخص (فیلدِ جدا) + (اختیاری) یک تصویرِ inline بعد از اولین H2 را اضافه می‌کند.
+def _inline_slots(body: str, count: int) -> list[int]:
+    """محلِ درجِ تصویرها را بینِ H2ها پخش می‌کند (نه همه در آغازِ متن).
 
-    - featured_image_url/alt/credit: فیلدهای payload (شاخص جدا از متن — برای وردپرس و پیش‌نمایش)
-    - inline: به‌صورتِ <figure><img> در body_html درج می‌شود (در متن دیده می‌شود)
+    تصویرِ شاخص خودش بالای مقاله دیده می‌شود، پس H2ِ اول رد می‌شود؛ وگرنه هر دو
+    تصویر بالای صفحه جمع می‌شوند و بقیه‌ی مقاله بی‌تصویر می‌ماند.
     """
+    ends = [m.end() for m in re.finditer(r"</h2>", body)]
+    if not ends or count <= 0:
+        return []
+    candidates = ends[1:] if len(ends) > 1 else ends
+    if count >= len(candidates):
+        return candidates
+    step = len(candidates) / (count + 1)
+    picked: list[int] = []
+    for i in range(1, count + 1):
+        idx = min(len(candidates) - 1, round(i * step))
+        if candidates[idx] not in picked:
+            picked.append(candidates[idx])
+    return picked
+
+
+def _figure_html(im: dict) -> str:
+    return (f'<figure><img src="{im["url"]}" alt="{im["alt"]}" loading="lazy" '
+            f'style="max-width:100%;height:auto;border-radius:12px">'
+            f'<figcaption style="font-size:.85rem;color:#888">'
+            f'عکس: {im.get("photographer", "Pexels")} / Pexels</figcaption></figure>')
+
+
+def add_images_to_payload(payload: dict, inline: int | None = None) -> dict:
+    """تصویرِ شاخص (فیلدِ جدا) + چند تصویرِ inline پخش‌شده در متن اضافه می‌کند.
+
+    - featured_image_url/alt/credit: فیلدهای payload (شاخص جدا از متن — وردپرس آن را
+      بالای مقاله نشان می‌دهد)
+    - inline: <figure><img> در body_html، پخش‌شده بینِ H2های میانی. تعدادش از
+      settings→images.inline خوانده می‌شود (پارامتر فقط برای override دستی).
+    """
+    if inline is None:
+        from .config import load_settings
+        inline = int((load_settings().get("images", {}) or {}).get("inline", 1))
+    inline = max(inline, 0)
+
     q = _english_query(payload)
-    imgs = search_images(q, count=1 + max(inline, 0))
+    imgs = search_images(q, count=1 + inline)
     if not imgs:
         logger.info(f"images: تصویری برای «{q}» یافت نشد.")
         return payload
@@ -83,15 +118,20 @@ def add_images_to_payload(payload: dict, inline: int = 1) -> dict:
     payload["image_credit"] = imgs[0].get("photographer")
     payload["image_query"] = q
 
+    placed = 0
     if inline and len(imgs) > 1:
-        im = imgs[1]
-        fig = (f'<figure><img src="{im["url"]}" alt="{im["alt"]}" loading="lazy" '
-               f'style="max-width:100%;height:auto;border-radius:12px">'
-               f'<figcaption style="font-size:.85rem;color:#888">عکس: {im.get("photographer","Pexels")} / Pexels</figcaption></figure>')
         body = payload.get("body_html", "") or ""
-        m = re.search(r"</h2>", body)
-        body = (body[:m.end()] + fig + body[m.end():]) if m else (fig + body)
+        figures = [_figure_html(im) for im in imgs[1:1 + inline]]
+        slots = _inline_slots(body, len(figures))
+        if slots:
+            # از انتها به ابتدا درج کن تا آفستِ محل‌های بعدی جابه‌جا نشود
+            for fig, pos in sorted(zip(figures, slots), key=lambda t: -t[1]):
+                body = body[:pos] + fig + body[pos:]
+            placed = len(slots)
+        else:
+            body += "".join(figures)
+            placed = len(figures)
         payload["body_html"] = body
 
-    logger.info(f"images: شاخص + {min(inline, max(len(imgs)-1, 0))} inline افزوده شد (query='{q}').")
+    logger.info(f"images: شاخص + {placed} inline افزوده شد (query='{q}').")
     return payload
