@@ -129,9 +129,18 @@ def _recent_content_types(limit: int = 10) -> list[str]:
     out = []
     for (payload_json,) in rows:
         try:
-            out.append(json.loads(payload_json).get("content_type", "news"))
+            d = json.loads(payload_json)
         except Exception:
             out.append("news")
+            continue
+        ctype = d.get("content_type")
+        if not ctype:
+            # مقاله‌های قدیمی content_type ندارند (ویراستار آن را از payload می‌انداخت).
+            # حدسِ «news» برای همه‌شان سهمِ آموزشی را مصنوعاً پایین نشان می‌داد و
+            # انتخابگر را در حلقه‌ی «هر روز آموزش» قفل می‌کرد؛ پس از موضوع تشخیص بده.
+            topic = f"{d.get('topic', '')} {d.get('title_seo', '')}"
+            ctype = "tutorial" if ("آموزش" in topic or d.get("tool_name")) else "news"
+        out.append(ctype)
     return out
 
 
@@ -143,7 +152,7 @@ def _pick_content_type() -> str:
     """
     gen = load_settings().get("generation", {})
     mix = gen.get("content_mix", {}) or {}
-    target_tutorial = float(mix.get("tutorial", 0.7))
+    target_tutorial = float(mix.get("tutorial", 0.3))
     window = int(gen.get("ratio_window", 10))
     recent = _recent_content_types(window)
     if not recent:

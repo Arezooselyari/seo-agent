@@ -464,11 +464,12 @@ def rewrite_article(payload: dict, revision_plan: dict, revision_no: int = 1) ->
         print(f"[writer] ⚠ پچ‌های ردشده توسط fact_policy: "
               f"{json.dumps(new_payload['rewrite_warnings'], ensure_ascii=False)}")
 
-    # فیلدهای زمینه‌ای که مدل برنمی‌گرداند را از payload قبلی حفظ کن
-    for key in ("topic", "source_urls", "target_keywords", "image_keywords",
-                "citable_facts", "verified_facts", "approved_cta"):
-        if key in payload and key not in new_payload:
-            new_payload[key] = payload[key]
+    # هر کلیدی که ویراستار برنگردانده از نسخه‌ی اصلی حفظ می‌شود. لیستِ سفیدِ ثابت
+    # قبلاً content_type و featured_image_url را جا می‌انداخت: مقاله بدون تصویرِ شاخص
+    # منتشر می‌شد و انتخابگرِ نسبتِ آموزشی/خبری نوعِ مقاله را گم می‌کرد.
+    for key, value in payload.items():
+        if key not in new_payload:
+            new_payload[key] = value
 
     word_count = len(new_payload.get("body_html", "").split())
     print(f"[writer] ✎ بازنویسی دور {revision_no}: «{new_payload.get('title_seo')}» (~{word_count} کلمه، {len(patches)} پچ)")
@@ -700,10 +701,12 @@ def cleanup_article(payload: dict, cleanup_plan: dict) -> dict:
         max_tokens=32000,
         temperature=0.3,   # پاک‌سازی محافظه‌کارانه — وفاداری بالا
     )
-    for key in ("topic", "source_urls", "target_keywords", "image_keywords",
-                "citable_facts", "verified_facts", "approved_cta"):
-        if key in payload and key not in new_payload:
-            new_payload[key] = payload[key]
+    # هر کلیدی که ویراستار برنگردانده از نسخه‌ی اصلی حفظ می‌شود. لیستِ سفیدِ ثابت
+    # قبلاً content_type و featured_image_url را جا می‌انداخت: مقاله بدون تصویرِ شاخص
+    # منتشر می‌شد و انتخابگرِ نسبتِ آموزشی/خبری نوعِ مقاله را گم می‌کرد.
+    for key, value in payload.items():
+        if key not in new_payload:
+            new_payload[key] = value
     word_count = len(new_payload.get("body_html", "").split())
     print(f"[writer] 🧹 پاک‌سازی اجباری: «{new_payload.get('title_seo')}» (~{word_count} کلمه، {len(patches)} پچ)")
     return new_payload
@@ -766,10 +769,12 @@ def humanize_article(payload: dict, gate_report: dict, revision_no: int = 1) -> 
         temperature=0.3,  # ویراستار سبک: وفاداری به متن مهم‌تر از خلاقیت است (قبلاً 0.9 برای بازنویسی خلاق)
     )
 
-    for key in ("topic", "source_urls", "target_keywords", "image_keywords",
-                "citable_facts", "verified_facts", "approved_cta"):
-        if key in payload and key not in new_payload:
-            new_payload[key] = payload[key]
+    # هر کلیدی که ویراستار برنگردانده از نسخه‌ی اصلی حفظ می‌شود. لیستِ سفیدِ ثابت
+    # قبلاً content_type و featured_image_url را جا می‌انداخت: مقاله بدون تصویرِ شاخص
+    # منتشر می‌شد و انتخابگرِ نسبتِ آموزشی/خبری نوعِ مقاله را گم می‌کرد.
+    for key, value in payload.items():
+        if key not in new_payload:
+            new_payload[key] = value
 
     # Validator قطعی: اگر ویراستار واقعیت جدید ساخته، خروجی این دور رد و نسخه‌ی قبلی حفظ می‌شود
     violations = validate_humanize(payload, new_payload)
