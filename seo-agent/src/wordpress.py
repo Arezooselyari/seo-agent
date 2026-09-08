@@ -24,6 +24,7 @@ import logging
 import re
 
 import requests
+from urllib.parse import urlparse
 from requests.auth import HTTPBasicAuth
 
 from . import db
@@ -130,6 +131,35 @@ def _upload_media(session: requests.Session, api: str, auth: HTTPBasicAuth,
         return None
 
 
+def _localize_body_images(session: requests.Session, api: str, auth: HTTPBasicAuth,
+                          body: str, slug: str) -> str:
+    """عکس‌های میان‌متن را در کتابخانه‌ی رسانه آپلود و src را به آدرسِ سایت عوض می‌کند.
+
+    چرا: تصویرهای inline مستقیم از pexels.com لینک می‌شدند. اگر Pexels آدرس را عوض
+    کند مقاله‌های قدیمی بی‌عکس می‌مانند، و بارگذاری از دامنه‌ی بیرونی هم کندتر است.
+    آپلودِ ناموفق مانعِ انتشار نمی‌شود — همان لینکِ بیرونی می‌ماند.
+    """
+    host = urlparse(api).netloc          # عکس‌هایی که از قبل روی خودِ سایت‌اند رد شوند
+    srcs = []
+    for m in re.finditer(r'<img[^>]+src="(https?://[^"]+)"', body):
+        url = m.group(1)
+        if url not in srcs and urlparse(url).netloc != host:
+            srcs.append(url)
+    if not srcs:
+        return body
+    for i, url in enumerate(srcs, 1):
+        alt_m = re.search(r'<img[^>]+src="' + re.escape(url) + r'"[^>]*alt="([^"]*)"', body)
+        media = _upload_media(session, api, auth, url,
+                             alt=alt_m.group(1) if alt_m else "",
+                             filename=f"{slug}-{i}"[:60])
+        if media and media.get("source_url"):
+            body = body.replace(url, media["source_url"])
+            logger.info(f"wordpress: عکسِ میان‌متن #{i} آپلود شد (media #{media['id']}).")
+        else:
+            logger.warning(f"wordpress: عکسِ میان‌متن #{i} آپلود نشد — لینکِ بیرونی ماند.")
+    return body
+
+
 def _find_live_post_by_slug(session: requests.Session, api: str,
                             auth: HTTPBasicAuth, slug: str) -> dict | None:
     """پستِ زنده‌ای با همین slug را پیدا می‌کند (سطلِ زباله عمداً کنار گذاشته می‌شود).
@@ -184,6 +214,10 @@ def publish_article(article_id: int, payload: dict, *,
     if existing:
         logger.info(f"wordpress: پستِ موجود با همین slug پیدا شد "
                     f"(#{existing['id']}) — به‌جای ساختِ نسخه‌ی دوم، همان به‌روز می‌شود.")
+
+    # ۱) عکس‌های میان‌متن را به کتابخانه‌ی رسانه منتقل کن (قبل از ساختِ بدنه‌ی پست)
+    body = _localize_body_images(session, api, auth, body,
+                                 payload.get("slug") or f"article-{article_id}")
 
     # ۱) عکسِ شاخص — اگر پستِ موجود قبلاً عکس دارد، دوباره آپلود نکن
     featured_media = None
