@@ -315,6 +315,7 @@ def derive_keyword_from_topic(topic: str) -> str:
 def generate_one(topic: str | None = None, keyword: str | None = None) -> int | None:
     """یک مقاله را تولید و به‌عنوان pending ذخیره می‌کند. Returns article_id یا None."""
     content_type, tool_name, official_url = "news", None, None
+    topic_was_auto = topic is None
     if topic is None:
         picked = pick_topic()
         if not picked:
@@ -331,10 +332,30 @@ def generate_one(topic: str | None = None, keyword: str | None = None) -> int | 
     # می‌کند و رتبه‌ی هر دو را پایین می‌آورد؛ پس تولید نکردن بهتر از تولیدِ رقیب است.
     dup = is_duplicate_keyword(keyword)
     if dup:
-        logger.warning(
-            f"⛔ کیوردِ «{keyword}» قبلاً پوشش داده شده («{dup}») — تولید انجام نشد "
-            "تا دو مقاله روی یک کیورد با هم رقابت نکنند.")
-        return None
+        logger.warning(f"⛔ کیوردِ «{keyword}» قبلاً پوشش داده شده («{dup}»).")
+        # قبلاً همین‌جا تسلیم می‌شد و آن روز اصلاً مقاله‌ای ساخته نمی‌شد (۹ سپتامبر).
+        # انتخابگر معمولاً موضوعِ دیگری در همان فیدها دارد؛ چند بار دوباره بپرس.
+        if topic_was_auto:
+            for attempt in (1, 2):
+                picked = pick_topic()
+                if not picked:
+                    break
+                alt_topic = picked["topic"]
+                alt_kw = picked.get("keyword") or derive_keyword_from_topic(alt_topic)
+                if is_duplicate_keyword(alt_kw):
+                    logger.info(f"   تلاشِ {attempt}: «{alt_kw}» هم تکراری بود.")
+                    continue
+                logger.info(f"   تلاشِ {attempt}: موضوعِ جایگزین «{alt_topic}» انتخاب شد.")
+                topic, keyword = alt_topic, alt_kw
+                content_type = picked.get("content_type", content_type)
+                tool_name = picked.get("tool_name")
+                official_url = picked.get("official_url")
+                dup = None
+                break
+        if dup:
+            logger.warning("موضوعِ غیرتکراری پیدا نشد — تولید انجام نشد "
+                           "تا دو مقاله روی یک کیورد با هم رقابت نکنند.")
+            return None
 
     logger.info(f"شروعِ تولید برای موضوع: «{topic}» (کیورد: «{keyword}»، نوع: «{content_type}»)")
 

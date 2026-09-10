@@ -63,10 +63,19 @@ CREATE INDEX IF NOT EXISTS idx_pve_stage
 """
 
 
+def _migrate(conn: sqlite3.Connection) -> None:
+    """ستون‌هایی که بعد از ساختِ اولیه‌ی جدول اضافه شده‌اند (CREATE IF NOT EXISTS آنها را نمی‌آورد)."""
+    have = {r[1] for r in conn.execute("PRAGMA table_info(articles)")}
+    if "notified_at" not in have:
+        conn.execute("ALTER TABLE articles ADD COLUMN notified_at TEXT")
+        conn.commit()
+
+
 def connect() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    _migrate(conn)
     return conn
 
 
@@ -203,6 +212,19 @@ def today_token_summary(conn: sqlite3.Connection) -> str:
     ).fetchall()
     lines = [f"{r['model']}: in={r['i']} out={r['o']} cached={r['c']}" for r in rows]
     return "\n".join(lines) if lines else "بدون مصرف توکن"
+
+
+def mark_notified(conn: sqlite3.Connection, article_id: int) -> None:
+    """ثبت می‌کند که مقاله برای تایید به تلگرام رفته است.
+
+    بدون این علامت، هر اجرای روزانه‌ی ارزیابی همه‌ی مقاله‌های pending را دوباره
+    ارزیابی و دوباره ارسال می‌کرد — مقاله‌ی #۵۷ سه روز پیاپی فرستاده شد و هزینه‌ی
+    LLMاش هم سه بار پرداخت شد. عمداً فقط پس از ارسالِ *موفق* ست می‌شود تا اگر
+    تلگرام در دسترس نبود، دفعه‌ی بعد دوباره تلاش شود.
+    """
+    conn.execute("UPDATE articles SET notified_at = datetime('now') WHERE id = ?",
+                 (article_id,))
+    conn.commit()
 
 
 def pending_articles(conn: sqlite3.Connection) -> list[dict]:

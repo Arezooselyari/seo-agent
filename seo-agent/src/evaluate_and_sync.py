@@ -103,10 +103,22 @@ async def process_approved_articles(
                     token=token,
                     chat_id=chat_id,
                 )
+            _mark_notified(result["article_id"])
             logger.info(
                 f"مقاله #{result['article_id']} برای تایید به تلگرام ارسال شد "
                 f"(فنی: {result['seo_grade']}، نهایی: {result.get('final_score', '-')})"
             )
+
+
+def _mark_notified(article_id: int) -> None:
+    """مقاله را «فرستاده‌شده» علامت می‌زند تا اجرای فردا دوباره برش ندارد."""
+    conn = db.connect()
+    try:
+        db.mark_notified(conn, article_id)
+    except Exception as e:  # noqa: BLE001 — پیام رفته؛ نبودِ علامت نباید چرخه را بکُشد
+        logger.warning(f"علامت‌زدنِ ارسالِ مقاله #{article_id} نشد: {e}")
+    finally:
+        conn.close()
 
 
 def mark_articles_as_needs_review(needs_review_results: list[dict]) -> None:
@@ -679,6 +691,7 @@ async def async_evaluate_pending() -> None:
                     featured_url=item.get("featured_image_url", ""),
                     featured_alt=item.get("featured_image_alt", ""),
                 )
+                _mark_notified(item["article_id"])
                 logger.info(
                     f"⚠️ مقاله #{item['article_id']} (فنی {item['seo_grade']}، "
                     f"نهایی {item.get('final_score', '-')}) با برچسب «نیاز به بررسی» + فایلِ کامل به تلگرام رفت"

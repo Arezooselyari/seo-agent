@@ -20,7 +20,8 @@ logger = logging.getLogger(__name__)
 def get_pending_articles(conn) -> list[dict]:
     """تمام مقالات pending را می‌خواند."""
     rows = conn.execute(
-        "SELECT * FROM articles WHERE status = 'pending' ORDER BY created_at DESC"
+        "SELECT * FROM articles WHERE status = 'pending' AND notified_at IS NULL "
+        "ORDER BY created_at DESC"
     ).fetchall()
 
     out = []
