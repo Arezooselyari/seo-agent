@@ -28,8 +28,15 @@ _TOPIC_PROMPT = """از میانِ عناوینِ تازه‌ی زیر (فیده
 
 قوانین:
 - موضوع باید مشخص باشد و به حوزه‌ی کسب‌وکار/فناوری/هوش مصنوعیِ کاربردی نزدیک بماند.
-- علاوه بر موضوع، یک «کیوردِ اصلی» بده: یک عبارتِ **کوتاهِ ۲ تا ۴ کلمه‌ای** که مردم واقعاً
-  در گوگل جستجو می‌کنند (نه جمله‌ی توصیفیِ بلند). مثال: «امنیت هوش مصنوعی»، «چت‌بات فروش».
+- علاوه بر موضوع، یک «کیوردِ اصلی» بده: یک عبارتِ **کوتاهِ ۲ تا ۵ کلمه‌ای** که یک
+  فارسی‌زبان واقعاً در گوگل تایپ می‌کند.
+- **کیورد باید فارسیِ دستوری و روان باشد.** ترجمه‌ی کلمه‌به‌کلمه‌ی عبارتِ انگلیسی ممنوع
+  است؛ در فارسی ترتیبِ کلمات فرق می‌کند و اغلب به حرفِ اضافه («با»، «برای»، «در») نیاز
+  دارد. قبل از پاسخ، عبارت را بلند بخوان: اگر مثلِ تیترِ ترجمه‌شده به‌نظر می‌رسد، بازش کن.
+    ❌ «هوش مصنوعی پادکست»      ✅ «ساخت پادکست با هوش مصنوعی»
+    ❌ «هوش مصنوعی موسیقی»       ✅ «ساخت موسیقی با هوش مصنوعی»
+    ❌ «هوش مصنوعی ویدیو»        ✅ «بهترین ابزار هوش مصنوعی برای ویدیو»
+  («امنیت هوش مصنوعی» و «چت‌بات فروش» درست‌اند — اینها ترکیبِ اضافیِ طبیعیِ فارسی‌اند.)
 - فقط JSON برگردان: {{"topic": "موضوعِ فارسی", "keyword": "کیوردِ کوتاهِ قابلِ‌جستجو", "why": "یک جمله دلیل"}}
 {avoid}
 عناوینِ تازه:
@@ -52,18 +59,24 @@ def derive_topic_from_rss(candidates: list[dict]) -> dict | None:
     covered = recent_keywords()
     avoid = _AVOID_BLOCK.format(
         keywords="\n".join(f"- {k}" for k in dict.fromkeys(covered))) if covered else ""
-    try:
-        result = llm.ask(
-            step="topic_selection",
-            user_content=_TOPIC_PROMPT.format(listing=listing, avoid=avoid),
-            model_tier="cheap",
-            json_output=True,
-            max_tokens=512,
-        )
-    except Exception as e:
-        logger.warning(f"انتخابِ موضوع با LLM نشد ({e}) — fallback به تازه‌ترین عنوان.")
+    prompt = _TOPIC_PROMPT.format(listing=listing, avoid=avoid)
+    result = None
+    # کیورد کلِ مقاله را تعیین می‌کند؛ flash-lite عبارت‌های ترجمه‌ایِ نافارسی می‌ساخت
+    # («هوش مصنوعی پادکست») و مقاله حولِ همان نوشته می‌شد. اگر مدلِ اصلی نشد، مدلِ
+    # ارزان را امتحان کن — هر دو بهتر از تیترِ خامِ انگلیسی‌اند.
+    for tier, cap in (("main", 2048), ("cheap", 512)):
+        try:
+            result = llm.ask(step="topic_selection", user_content=prompt,
+                             model_tier=tier, json_output=True, max_tokens=cap)
+            break
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"انتخابِ موضوع با مدلِ «{tier}» نشد: {e}")
+    if result is None:
+        # آخرین چاره: تیترِ فید. انگلیسی است و کیوردِ فارسیِ خوبی نمی‌شود، پس فقط
+        # موضوع را بده و بگذار derive_keyword_from_topic کیورد را بسازد.
         title = candidates[0].get("title") or None
-        return {"topic": title, "keyword": title} if title else None
+        logger.warning("هیچ مدلی موضوع نداد — به تیترِ تازه‌ترین خبر برمی‌گردیم.")
+        return {"topic": title, "keyword": None} if title else None
     topic = (result.get("topic") or "").strip()
     keyword = (result.get("keyword") or "").strip() or topic
     if topic:

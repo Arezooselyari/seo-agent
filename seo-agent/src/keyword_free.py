@@ -32,6 +32,22 @@ _QUESTION_CUES = ("چیست", "چگونه", "چطور", "چرا", "آیا", "ک�
 _NOISE = frozenset({"بله", "خیر", "آره", "نه", "نیست"})
 
 
+def _is_relevant(suggestion: str, base_tokens: set[str]) -> bool:
+    """آیا پیشنهاد واقعاً هم‌موضوعِ کیوردِ اصلی است؟
+
+    قاعده: باید (تقریباً) **همه‌ی** واژه‌های محتواییِ کیورد را داشته باشد، نه یکی.
+    اشتراکِ یک واژه دو جور خراب می‌شد:
+      «هوش مصنوعی پادکست»      → «هوش مصنوعی ساخت عکس رایگان» (فقط «هوش مصنوعی» مشترک)
+      «تولید صدا با هوش مصنوعی» → «تولید صدا در حنجره علوم هفتم» (فقط «تولید صدا» مشترک)
+    هر دو از فیلترِ قبلی رد می‌شدند و نویسنده مجبور می‌شد بی‌ربط‌ها را در متن بگنجاند.
+    """
+    if not base_tokens:
+        return True
+    covered = len(_tokens(suggestion) & base_tokens) / len(base_tokens)
+    # کیوردهای بلندتر حقِ یک واژه اغماض دارند؛ کوتاه‌ها باید کامل بیایند
+    return covered >= (0.75 if len(base_tokens) > 4 else 1.0)
+
+
 def _tokens(s: str) -> set[str]:
     # lower() برای مقایسه‌ی درستِ توکن‌های انگلیسی («Claude» باید با «claude» یکی باشد)؛
     # روی حروفِ فارسی بی‌اثر است.
@@ -121,8 +137,9 @@ def research_topic(topic: str, seed: str | None = None,
             key = s.lower()
             if key in seen or key == base.lower():
                 continue
-            # فیلترِ ربط: حداقل یک کلمه‌ی محتواییِ موضوع در پیشنهاد باشد (جلوگیری از drift)
-            if base_tokens and not (_tokens(s) & base_tokens):
+            # فیلترِ ربط: پیشنهاد باید حداقل یکی از واژه‌های *متمایزکننده‌ی* موضوع را
+            # داشته باشد — نه صرفاً «هوش مصنوعی» که در همه‌ی موضوع‌ها هست.
+            if not _is_relevant(s, base_tokens):
                 continue
             if _tokens(s) & _NOISE:      # تکمیل‌های نویزِ بله/خیر را دور بریز
                 continue
