@@ -430,12 +430,14 @@ def main() -> None:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s"
     )
+    from . import alerts
     topic = sys.argv[1] if len(sys.argv) > 1 else None
-    aid = generate_one(topic)
-    if aid is None:
-        logger.warning("تولیدِ روزانه نتیجه‌ای نداشت.")
-        sys.exit(1)
-    sys.exit(0)
+    with alerts.watch("تولید روزانه"):
+        aid = generate_one(topic)
+        if aid is None:
+            # این خودش یک WARNING است، پس در هشدارِ پایانِ اجرا دیده می‌شود
+            logger.warning("تولیدِ روزانه نتیجه‌ای نداشت — امروز مقاله‌ای ساخته نشد.")
+    sys.exit(0 if aid is not None else 1)
 
 
 if __name__ == "__main__":

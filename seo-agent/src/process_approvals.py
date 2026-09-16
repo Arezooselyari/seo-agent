@@ -196,5 +196,9 @@ async def process_pending_clicks() -> int:
 
 
 if __name__ == "__main__":
-    n = asyncio.run(process_pending_clicks())
+    from . import alerts
+    # این هر ۵ دقیقه اجرا می‌شود؛ چکِ موجودی اینجا یعنی ۲۸۸ تماسِ اضافه در روز،
+    # پس خاموش است — تولید و ارزیابی روزی یک‌بار موجودی را می‌پایند.
+    with alerts.watch("پردازش تاییدها", check_credits=False):
+        n = asyncio.run(process_pending_clicks())
     print(f"\n{n} کلیک پردازش شد.")

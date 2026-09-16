@@ -700,6 +700,12 @@ async def async_evaluate_pending() -> None:
 
 def run_once() -> None:
     """یک بار ارزیابی را اجرا می‌کند."""
+    from . import alerts
+    with alerts.watch("ارزیابی روزانه"):
+        _run_once_inner()
+
+
+def _run_once_inner() -> None:
     try:
         logger.info("=" * 60)
         logger.info("شروع چرخه‌ی ارزیابی")
