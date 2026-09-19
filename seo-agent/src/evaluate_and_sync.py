@@ -241,7 +241,10 @@ def evaluate_pending() -> None:
             # فاز C: تحلیل SEMrush. اگر کلید API باشد و هنوز تحلیلی نباشد، خودکار اجرا کن
             # (فقط یک بار per مقاله — کیوردها بین دورهای بازنویسی عوض نمی‌شوند)
             semrush_report = semrush_bridge.load_analysis(article_id)
-            if semrush_report is None and env("SEMRUSH_API_KEY"):
+            # پرچمِ settings→semrush.enabled قبلاً اینجا نادیده گرفته می‌شد و تماس فقط به
+            # وجودِ کلید بسته بود؛ با موجودیِ صفرِ واحدهای API هر روز ۴۰۳ برمی‌گشت.
+            if (semrush_report is None and env("SEMRUSH_API_KEY")
+                    and (config.get("semrush") or {}).get("enabled", False)):
                 tk = payload.get("target_keywords", {})
                 # فقط کیوردهای هدف مقاله (primary + secondary) — نه کل استخر ریسرچ.
                 # میانگین‌گرفتن از کل استخر، KD کیوردهای پررقابتِ ردشده را هم می‌شمرد.
