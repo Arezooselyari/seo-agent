@@ -29,7 +29,7 @@
   (استفاده از همان `persian_writer.md` + `render.py`)
 
 ## ۴. دیپلوی روی Railway ✅ زنده
-- CLI: `@railway/cli` نصب شد؛ لاگین: `<حساب گیت‌هاب شما>`
+- CLI: `@railway/cli` نصب شد؛ لاگین: `<حساب Railway شما>`
 - پروژه: `seo-demo` (id: 40da1d2b-355b-48b4-b1f8-b1de7d6d5bbf)
 - **آدرس عمومی: https://seo-demo-production.up.railway.app**
 - متغیر محیطی: `GEMINI_API_KEY` روی سرویس ست شده
