@@ -302,6 +302,16 @@ def _ask_gemini(
 _reasoning_required: set[str] = set()
 
 
+def _reasoning_effort() -> str:
+    """چقدر استدلال، وقتی مدل اجازه‌ی خاموش‌کردنش را نمی‌دهد.
+
+    low | medium | high — بالاتر یعنی نثرِ سنجیده‌تر ولی توکنِ بیشتر و کندتر.
+    از settings خوانده می‌شود تا برای مقایسه‌ی کیفیتِ لحن نیازی به تغییرِ کد نباشد.
+    """
+    val = str(_settings.get("openrouter_reasoning_effort") or "low").strip().lower()
+    return val if val in ("low", "medium", "high") else "low"
+
+
 def _openai_chat(client, model_name, step, user_content, *,
                  system=None, json_output=True, max_tokens=4096, temperature=0,
                  extra_body=None):
@@ -348,7 +358,7 @@ def _openai_chat(client, model_name, step, user_content, *,
             # توکنِ استدلال از همان سقفِ خروجی خرج می‌شود و مرحله‌ی نگارش را
             # truncate می‌کند. سقف هم بالا می‌رود تا جا برای هر دو باشد.
             _reasoning_required.add(model_name)
-            kwargs["extra_body"] = {"reasoning": {"effort": "low"}}
+            kwargs["extra_body"] = {"reasoning": {"effort": _reasoning_effort()}}
             kwargs["max_completion_tokens"] = min(max_out * 2, 64000)
             resp = client.chat.completions.create(**kwargs)
         else:
@@ -398,7 +408,7 @@ def _ask_openrouter(step, user_content, *, model_tier="cheap", system=None,
     if reasoning_on:
         extra = None                                  # استدلالِ کاملِ پیش‌فرضِ مدل
     elif model_name in _reasoning_required:
-        extra = {"reasoning": {"effort": "low"}}      # اجباری است → کمترین مقدار
+        extra = {"reasoning": {"effort": _reasoning_effort()}}   # اجباری است → از کانفیگ
     else:
         extra = {"reasoning": {"enabled": False}}
     return _openai_chat(_openrouter(), model_name, step, user_content,

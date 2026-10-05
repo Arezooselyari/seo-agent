@@ -40,3 +40,11 @@ seo-agent/output/
 content/
 !demo/library/**
 !seo-agent/demo/**
+
+# فضای کارِ Claude (worktreeهای موقت)
+.claude/
+**/.claude/
+
+# خروجیِ گذرای هر اجرا (هر بار بازنویسی می‌شود — ارزشِ تاریخچه ندارد)
+seo-agent/data/revision_patch.json
+seo-agent/data/revision_plan.json

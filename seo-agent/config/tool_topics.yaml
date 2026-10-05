@@ -26,19 +26,19 @@ tools:
 - name: GitHub Copilot
   keyword_seed: آموزش GitHub Copilot
   official_url: https://github.com/features/copilot
-  usage_count: 0
+  usage_count: 1
 - name: Cursor
   keyword_seed: آموزش Cursor
   official_url: https://www.cursor.com/
-  usage_count: 0
+  usage_count: 1
 - name: n8n
   keyword_seed: آموزش n8n
   official_url: https://n8n.io/
-  usage_count: 0
+  usage_count: 1
 - name: Zapier AI
   keyword_seed: آموزش Zapier AI
   official_url: https://zapier.com/ai
-  usage_count: 0
+  usage_count: 1
 - name: Canva Magic Studio
   keyword_seed: آموزش Canva Magic Studio
   official_url: https://www.canva.com/magic-studio/
